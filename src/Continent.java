@@ -211,4 +211,8 @@ public class Continent {
         addTerritory(Greenland);
 
     }
+
+    public String getName() {
+        return name;
+    }
 }
