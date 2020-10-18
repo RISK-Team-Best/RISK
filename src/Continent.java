@@ -97,4 +97,8 @@ public class Continent {
     {
 
     }
+
+    public String getName() {
+        return name;
+    }
 }
