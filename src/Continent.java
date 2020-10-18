@@ -139,6 +139,7 @@ public class Continent {
 
         Territory Iceland=new Territory("Iceland");
         addTerritory(Iceland);
+
     }
 
     public void createAfrica()
