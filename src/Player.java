@@ -9,7 +9,7 @@ public class Player {
      */
     public Player(String name)
     {
-
+        this.name = name;
     }
 
     /**
@@ -18,7 +18,7 @@ public class Player {
      */
     public void increasetroops(int num)
     {
-
+        troops+=num;
     }
 
     /**
@@ -27,7 +27,7 @@ public class Player {
      */
     public void decreasetroops(int num)
     {
-
+        troops -= num;
     }
 
     /**
