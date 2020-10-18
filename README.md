@@ -1,10 +1,10 @@
 # RISK
 
 ## Team Members:
--Guanqun Dong
--Jiawei Ma
--Jiatong Han
--Tiantian Lin
+-Guanqun Dong 
+-Jiawei Ma 
+-Jiatong Han 
+-Tiantian Lin 
 
 ## Introduction:
 This team project is to reproduce a simplified version of the classic strategy game RISK.  
