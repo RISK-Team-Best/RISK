@@ -7,6 +7,16 @@ public class Territory {
     private Player holder;
     private HashMap<String,Territory> neighbour;
     private ArrayList<Territory> neighbourList;
+    public boolean noTroopInteruptFlag; //user must clear this flag after use
+
+    public Territory(String name)
+    {
+        this.name = name;
+        troops = 0;
+        neighbour = new HashMap<>();
+        neighbourList = new ArrayList<>();
+        noTroopInteruptFlag = false;
+    }
 
     /**
      *
@@ -14,6 +24,7 @@ public class Territory {
      */
     public void increaseTroops(int num)
     {
+        troops += num;
 
     }
 
@@ -21,8 +32,11 @@ public class Territory {
      *
      * @param num
      */
-    public void decreaseTroops(int num)
+    public void decreaseTroops(int num)throws RuntimeException
     {
+        troops -= num;
+        if (troops<0){throw new RuntimeException("troops cannot be negative");}
+        else if (troops==0){noTroopInteruptFlag = true;}
 
     }
 
@@ -38,11 +52,12 @@ public class Territory {
     /**
      *
      * @param direction
-     * @param neighbour
+     * @param t
      */
-    public void setNeighbour(String direction,Territory neighbour)
+    public void setNeighbour(String direction,Territory t)
     {
-
+        neighbour.put(direction,t);
+        neighbourList.add(t);
     }
 
     /**
