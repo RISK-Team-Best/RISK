@@ -1,18 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Continent {
     private String name;
     private int bonusTroops;
     private Player holder;
-    private ArrayList<Territory> territories;
-    private static final String E = "east";
-    private static final String W = "west";
-    private static final String N = "north";
-    private static final String S = "SOUTH";
-    private static final String NE = "northeast";
-    private static final String NW = "northwest";
-    private static final String SE = "southeast";
-    private static final String SW = "southwest";
+    private HashMap<String,Territory> territories;
 
     /**
      *
@@ -23,8 +16,20 @@ public class Continent {
     {
         this.name = name;
         bonusTroops = bonus;
-        territories = new ArrayList<>();
+        territories = new HashMap<>();
 
+    }
+
+    public Player getHolder() {
+        return holder;
+    }
+
+    public int getBonusTroops() {
+        return bonusTroops;
+    }
+
+    public HashMap<String, Territory> getTerritories() {
+        return territories;
     }
 
     /**
@@ -41,39 +46,32 @@ public class Continent {
      */
     public void addTerritory(Territory territory)
     {
-        territories.add(territory);
-
-    }
-    public void createContinents()
-    {
-        createAustralia();
-
-
+        territories.put(territory.getName(),territory);
 
     }
 
     public void createAustralia()
     {
-        Territory westernAustralia = new Territory("westernAustralia");
-        Territory easternAustralia = new Territory("easternAustralia");
-        Territory newGuinea = new Territory("newGuinea");
-        Territory indonesia = new Territory("indonesia");
+        Territory westernAustralia = new Territory("WesternAustralia");
+        Territory easternAustralia = new Territory("EasternAustralia");
+        Territory newGuinea = new Territory("NewGuinea");
+        Territory indonesia = new Territory("Indonesia");
 
         addTerritory(westernAustralia);
         addTerritory(easternAustralia);
         addTerritory(newGuinea);
         addTerritory(indonesia);
 
-        westernAustralia.setNeighbour(E,easternAustralia);
-        westernAustralia.setNeighbour(N,indonesia);
-        westernAustralia.setNeighbour(NE,newGuinea);
-        easternAustralia.setNeighbour(W, westernAustralia);
-        easternAustralia.setNeighbour(N, newGuinea);
-        newGuinea.setNeighbour(W,indonesia);
-        newGuinea.setNeighbour(SW,westernAustralia);
-        newGuinea.setNeighbour(S,easternAustralia);
-        indonesia.setNeighbour(S,easternAustralia);
-        indonesia.setNeighbour(E,newGuinea);
+        westernAustralia.setNeighbour(easternAustralia);
+        westernAustralia.setNeighbour(indonesia);
+        westernAustralia.setNeighbour(newGuinea);
+        easternAustralia.setNeighbour(westernAustralia);
+        easternAustralia.setNeighbour(newGuinea);
+        newGuinea.setNeighbour(indonesia);
+        newGuinea.setNeighbour(westernAustralia);
+        newGuinea.setNeighbour(easternAustralia);
+        indonesia.setNeighbour(easternAustralia);
+        indonesia.setNeighbour(newGuinea);
 
     }
 
@@ -175,16 +173,16 @@ public class Continent {
         addTerritory(Peru);
         addTerritory(Venezuela);
 
-        Argentina.setNeighbour(N,Peru);
-        Argentina.setNeighbour(NE,Brazil);
-        Peru.setNeighbour(E,Brazil);
-        Peru.setNeighbour(N,Venezuela);
-        Peru.setNeighbour(S,Argentina);
-        Brazil.setNeighbour(W,Peru);
-        Brazil.setNeighbour(NW,Venezuela);
-        Brazil.setNeighbour(SW,Argentina);
-        Venezuela.setNeighbour(SW,Peru);
-        Venezuela.setNeighbour(SE,Brazil);
+        Argentina.setNeighbour(Peru);
+        Argentina.setNeighbour(Brazil);
+        Peru.setNeighbour(Brazil);
+        Peru.setNeighbour(Venezuela);
+        Peru.setNeighbour(Argentina);
+        Brazil.setNeighbour(Peru);
+        Brazil.setNeighbour(Venezuela);
+        Brazil.setNeighbour(Argentina);
+        Venezuela.setNeighbour(Peru);
+        Venezuela.setNeighbour(Brazil);
 
 
     }

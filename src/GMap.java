@@ -56,6 +56,30 @@ public class GMap {
         southAmerica.createSouthAmerica();
         addContinent(southAmerica);
 
+        linkContinents(southAmerica,"Brazil",africa,"NorthAfrica");
+        linkContinents(southAmerica,"Venezuela",northAmerica,"CentralAmerica");
+
+        linkContinents(africa,"Egypt",europe,"SouthernEurope");
+        linkContinents(africa,"Egypt",asia,"MiddleEast");
+        linkContinents(africa,"EastAfrica",asia,"MiddleEast");
+        linkContinents(africa,"NorthAfrica",europe,"WesternEurope");
+
+
+        linkContinents(asia,"Siam",australia,"Indonesia");
+        linkContinents(asia,"Kamchatka",northAmerica,"Alaska");
+        linkContinents(asia,"Ural",europe,"Ukraine");
+        linkContinents(asia,"Afghanistan",europe,"Ukraine");
+
+        linkContinents(europe,"Iceland",northAmerica,"Greenland");
+
+    }
+
+    public void linkContinents(Continent continentA, String territoryA,Continent continentB,String territoryB)
+    {
+        Territory temp1 = continentA.getTerritories().get(territoryA);
+        Territory temp2 = continentB.getTerritories().get(territoryB);
+        temp1.setNeighbour(temp2);
+        temp2.setNeighbour(temp1);
     }
 
 
