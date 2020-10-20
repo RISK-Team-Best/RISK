@@ -10,7 +10,6 @@ public class Game {
     private State currentState;
     private Parser parser;
 
-
     //public static final int  RECRUIT=0;
    // public static final int  ATTACK=1;
     //public static final int  DEFEND=2;
@@ -27,7 +26,7 @@ public class Game {
         currentPlayer = new Player();//第一个玩家
         players = new LinkedList<>();//玩家列表设置成循环列表
         currentState = State.DRAFT;//初始状态为draft
-        int armyNum;
+
 
 
     }
@@ -146,7 +145,7 @@ public class Game {
      *
      * @param territory
      */
-    public void attack(Command command)//Mario有空可以写这个
+    public void attack(Command command)
 
     {  String attackCountryName = command.getSecondWord();
        String defenceCountryName = command.getThirdWord();
@@ -159,7 +158,7 @@ public class Game {
      * @param territory
      * @param Armynum
      */
-    public void fortify(Command command)//Mario有空可以写这个
+    public void fortify(Command command)
     {    String departCountryName = command.getSecondWord();
          String destinationCountryName = command.getThirdWord();
          int moveTroopNum = Integer.parseInt(command.getFourthWord());
