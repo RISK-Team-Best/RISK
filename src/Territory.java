@@ -18,6 +18,22 @@ public class Territory {
         noTroopInteruptFlag = false;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getTroops() {
+        return troops;
+    }
+
+    public ArrayList<Territory> getNeighbourList() {
+        return neighbourList;
+    }
+
+    public HashMap<String, Territory> getNeighbour() {
+        return neighbour;
+    }
+
     /**
      *
      * @param num
@@ -51,13 +67,13 @@ public class Territory {
 
     /**
      *
-     * @param direction
-     * @param t
+     *
+     * @param territory
      */
-    public void setNeighbour(String direction,Territory t)
+    public void setNeighbour(Territory territory)
     {
-        neighbour.put(direction,t);
-        neighbourList.add(t);
+        neighbour.put(territory.getName(),territory);
+        neighbourList.add(territory);
     }
 
     /**
