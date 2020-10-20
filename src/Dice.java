@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Die {
+public class Dice {
     private ArrayList<Integer> dices;
     private int dicesAmount;
 
@@ -8,8 +8,10 @@ public class Die {
      *
      * @param dicesAmount
      */
-    public void Dices(int dicesAmount)
-    {
+    public Dice(int dicesAmount)
+    {   dices = new ArrayList<Integer>();
+        this.dicesAmount = dicesAmount;
+
 
     }
 
@@ -18,6 +20,9 @@ public class Die {
      */
     public void diceRolling()
     {
+       int number = (int)(1+Math.random()*(6-1+1));
+
+
 
     }
 

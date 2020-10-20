@@ -9,10 +9,11 @@ public class CommandWords {
     {
         validCommands = new HashMap<>();
         validCommands.put("skip", CommandWord.SKIP);
-        validCommands.put("draft", CommandWord.DRAFT);
-        validCommands.put("attack", CommandWord.ATTACK);
-        validCommands.put("fortify", CommandWord.FORTIFY);
+        validCommands.put("draft", CommandWord.DRAFT);// draft A 12
+        validCommands.put("attack", CommandWord.ATTACK);// attack A to B
+        validCommands.put("fortify", CommandWord.FORTIFY);//fortify A to B
         validCommands.put("quit", CommandWord.QUIT);
+        validCommands.put("pass", CommandWord.PASS);
 
     }
 

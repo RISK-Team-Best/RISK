@@ -1,5 +1,5 @@
 public enum CommandWord {
-    ATTACK,SKIP,QUIT,FORTIFY,DRAFT,UNKNOWN;
+    ATTACK,SKIP,QUIT,FORTIFY,DRAFT,PASS,UNKNOWN;
 
     private String commandString;
 
