@@ -23,6 +23,8 @@ public Command(CommandWord firstWord,String secondWord,String thirdWord,String f
 
 
 }
+
+
     /**
      * Return the command word (the first word) of this command. If the
      * command was not understood, the result is null.

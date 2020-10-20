@@ -42,7 +42,7 @@ public class Dice {
         return dicesAmount;
     }
 
-    public int getDiceByIndex()
+    public int getDiceByIndex(int i)
     {
         return -1;
     }

@@ -42,7 +42,8 @@ public class Parser {
             }
         }
 
-        return new Command(commands.getCommandWord(word1),word2,word3,word4);
+         return new Command(commands.getCommandWord(word1), word2, word3, word4);
+
     }
     public void showcommand() {
         commands.Look();
