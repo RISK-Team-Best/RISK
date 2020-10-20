@@ -67,4 +67,17 @@ public class Player {
     public Territory getTerritory(String name){
         return Territory;
     }
+
+    public String getName(){
+        return this.name;
+    }
+    public void removeTerritory(Territory name){
+
+    }
+    public void addTerritory(Territory name){
+
+    }
+    public boolean hasTerritory(String name){
+
+    }
 }

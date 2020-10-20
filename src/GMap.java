@@ -352,7 +352,7 @@ public class GMap {
         linkContinents(Iceland,Greenland);
 
     }
-    public Territory getTerritory(String countryName){
+    public Territory getTerritory(String countryName){}
 
     public void linkContinents(Territory territoryA,Territory territoryB)
     {
