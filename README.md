@@ -24,7 +24,7 @@ In the game:
 1.enter the number of player(2 to 6)     
 2.enter players'name      
 3.draft（This step cannot skip):
-    (1)enter the territory name      
+    &emsp;(1)enter the territory name      
     (2)enter the number of troops that want to draft in this territory       
          
 4.attack（This step could choose skip):
