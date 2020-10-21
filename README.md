@@ -12,33 +12,38 @@ For the simple version of RISK, we skip the initial phase where players take tur
 
 ### Milestone 1:  
 A text-based playable version of the game, the players could use console to play the game. The console can print out the state of the map,for example:The outcome of an attack, whose turn it is to play, the elimination of a player, etc.     
-• Instruction:    
+
+#### Instruction:    
 Use cmd  to run this program: java -jar RISK.jar      
 (Please note that this project is designed and compiled in JDK 14, if encounter Java version issue, please install JDK14)    
 Use IntelliJ to run this program: click Game.java > Run    
 (The Game.java includes the static main method to run RISK)    
   
 In the game:   
+
 1.enter the number of player(2 to 6)     
 2.enter players'name      
-3.draft（This step cannot skip):(1)enter the territory name      
-                                (2)enter the number of troops that want to draft in this territory       
+3.draft（This step cannot skip):
+    (1)enter the territory name      
+    (2)enter the number of troops that want to draft in this territory       
          
-4.attack（This step could choose skip):(1)enter the territory you want to launch attack    
-                                       (2)enter the territory be attacked    
-                                       (3)choose troops number to attack (one/two/three/blitz/finish)    
-5.fortify(This step could choose skip):(1)enter the territory you want move troops from    
-                                       (2)enter the territory you want move troops to(choose 'back' to re-select original territory)   
-                                       (3)choose the number of troops you want to send to destination territory    
+4.attack（This step could choose skip):
+    (1)enter the territory you want to launch attack    
+    (2)enter the territory be attacked    
+    (3)choose troops number to attack (one/two/three/blitz/finish)    
+5.fortify(This step could choose skip):
+    (1)enter the territory you want move troops from    
+    (2)enter the territory you want move troops to(choose 'back' to re-select original territory)   
+    (3)choose the number of troops you want to send to destination territory    
 6.After the steps above, the program will automatically pass to next player until one of the player owns all of the territory  
 
-• Deliverables:   
+#### Deliverables:   
 readme file   
 code (source + executable in a jar file)   
 UML diagrams   
 documentation. 
 
-• Contribution:
+#### Contribution:
 UML Class Diagram:
 Sequence Diagram:
 Readme:
