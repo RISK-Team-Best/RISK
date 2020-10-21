@@ -23,16 +23,16 @@ In the game:
 
 1.enter the number of player(2 to 6)<br>     
 2.enter players'name<br>      
-3.draft（This step cannot skip):<br>
-&emsp;(1)enter the territory name<br>      
+3.draft（This step cannot skip):      
+&emsp;(1)enter the territory name             
 &emsp;(2)enter the number of troops that want to draft in this territory<br>                
-4.attack（This step could choose skip):<br>
-&emsp;(1)enter the territory you want to launch attack<br>    
-&emsp;(2)enter the territory be attacked<br>    
+4.attack（This step could choose skip):        
+&emsp;(1)enter the territory you want to launch attack          
+&emsp;(2)enter the territory be attacked           
 &emsp;(3)choose troops number to attack (one/two/three/blitz/finish)<br>    
-5.fortify(This step could choose skip):<br>
-&emsp;(1)enter the territory you want move troops from<br>    
-&emsp;(2)enter the territory you want move troops to(choose 'back' to re-select original territory)<br>   
+5.fortify(This step could choose skip):              
+&emsp;(1)enter the territory you want move troops from         
+&emsp;(2)enter the territory you want move troops to(choose 'back' to re-select original territory)          
 &emsp;(3)choose the number of troops you want to send to destination territory<br>    
 6.After the steps above, the program will automatically pass to next player until one of the player owns all of the territory<br>  
 
