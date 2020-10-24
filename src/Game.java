@@ -136,6 +136,15 @@ public class Game {
             }
             if(currentStage==ATTACK)
             {
+                for(Territory territory:currentPlayer.getTerritoryArrayList()){
+                    System.out.print(territory.getName()+" "+territory.getTroops()+"--");
+                    for(Territory neighbor:territory.getNeighbourList()){
+                        if(!neighbor.getHolder().equals(currentPlayer)) {
+                            System.out.print(neighbor.getName() + " " + neighbor.getTroops() + "  ");
+                        }
+                    }
+                    System.out.print("\n");
+                }
                 if (firstCommand.equals("attack"))
                 attack(instrction[1],instrction[2]);
 
