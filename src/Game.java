@@ -260,12 +260,30 @@ public class Game {
 
     public void attack(String attack,String defence)
 
-    {  String attackCountryName = attack;
+    {
+       String attackCountryName = attack;
        String defenceCountryName = defence;
 
 
        Territory attackCountry = this.gameMap.getTerritory(attackCountryName);
        Territory defenceCountry = this.gameMap.getTerritory(defenceCountryName);
+
+       if(!currentPlayer.checkTerritoryByString(attackCountryName)){
+           System.out.println("Please enter your own territory to start battle.");
+           return;
+       }
+       if(currentPlayer.checkTerritoryByString(defenceCountryName)){
+           System.out.println("You cannot attack yourself! Retry!");
+           return;
+       }
+       if(!attackCountry.checkNeighbor(defenceCountry)){
+           System.out.println("Sorry, the two territories are not connected.");
+           return;
+       }
+       if(attackCountry.getTroops()<=1){
+           System.out.println("You cannot choose the territory which only has one troop");
+           return;
+       }
 
         int defenceTroops;
         int attackTroops = 1;

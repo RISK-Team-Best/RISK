@@ -86,4 +86,7 @@ public class Territory {
     }
 
 
+    public boolean checkNeighbor(Territory country) {
+        return neighbourList.contains(country);
+    }
 }

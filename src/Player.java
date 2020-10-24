@@ -126,4 +126,11 @@ public class Player {
         result+="You have "+ troops + " troops available to draft";
         return result;
     }
+
+    public boolean checkTerritoryByString(String countryName) {
+        for(Territory territory:territoryArrayList){
+            if(territory.getName().equals(countryName))return true;
+        }
+        return false;
+    }
 }
