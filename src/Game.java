@@ -124,6 +124,19 @@ public class Game {
             String[] instrction = parser.getInstrction();
 
             String firstCommand = instrction[0];
+            if (firstCommand.equals("quit"))
+            {
+                System.out.println();
+                currentStage=ENDGAME;
+            }
+            if (firstCommand.equals("skip"))
+            {
+                if(currentStage!=RECRUIT)
+                {
+                    changeState();
+                }
+                else {System.out.println("you can not skip draft stage");}
+            }
             if(currentStage==RECRUIT)
             {
                 if (firstCommand.equals("draft"))
