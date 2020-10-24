@@ -110,7 +110,7 @@ public class Game {
     }
     public void play(){
         System.out.println("Welcome to RISK");
-        Scanner sc = new Scanner(System.in);
+        //Scanner sc = new Scanner(System.in);
         currentPlayer.increasetroops(currentPlayer.getTerritoryArrayList().size()/3);
 
         boolean finished = false;
@@ -118,7 +118,8 @@ public class Game {
         System.out.println(currentPlayer.printPlayerinfo());
         while (!finished){
 
-            String[] testString1  = sc.nextLine().split(" ");
+            //String[] testString1 = sc.nextLine().split(" ");
+            String[] testString1 = parser.getInstrction();
 
             String firstCommand = testString1[0];
             if(currentStage==RECRUIT)
@@ -209,7 +210,7 @@ public class Game {
             if (who.getTroops()>=howMany){
                 to.increaseTroops(howMany);
                 who.decreasetroops(howMany);
-                System.out.println("you have moved "+howMany+"to "+to.getName());
+                System.out.println("You have moved "+howMany+" to "+to.getName());
             }
             else {System.out.println("not enough troops");}
         }

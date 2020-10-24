@@ -31,6 +31,7 @@ public class Territory {
     }
 
     public HashMap<String, Territory> getNeighbour() {
+
         return neighbour;
     }
 

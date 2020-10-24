@@ -60,21 +60,21 @@ public CommandWord getCommandWord(){
     /**
      * @return true if this command was not understood.
      */
-public boolean isUnknown(){
-    return (commandWord == null);
-}
+//public boolean isUnknown(){
+    //return (commandWord == null);
+//}
     /**
      * @return true if the command has a second word.
      */
-    public boolean hasSecondWord()
-    {
-        return (secondWord != null);
-    }
-    public boolean hasThirdWord(){
-        return (thirdWord != null);
-    }
-    public boolean hasFourthWord(){
-        return (fourthWord != null);
-    }
+    //public boolean hasSecondWord()
+    //{
+        //return (secondWord != null);
+    //}
+    //public boolean hasThirdWord(){
+    //    return (thirdWord != null);
+    //}
+    //public boolean hasFourthWord(){
+      //  return (fourthWord != null);
+    //}
 }
 

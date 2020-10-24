@@ -117,13 +117,13 @@ public class Player {
     public String printPlayerinfo()
     {
         String result = "";
-        result+=name;
+        result += name + "\n";
         for (Territory t : territoryArrayList)
         {
-            result+=" ";
-            result+=t.getName()+" "+t.getTroops();
+            result += " ";
+            result+=t.getName()+" "+t.getTroops()+"\n";
         }
-        result+="you have "+ troops + "troops";
+        result+="You have "+ troops + " troops available to draft";
         return result;
     }
 }
