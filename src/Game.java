@@ -5,16 +5,17 @@ public class Game {
     private GMap gameMap;
     private ArrayList<Player> players;
     private Player currentPlayer;
+    private int currentPlayerID=0;
     //初始状态为draft
-    //private int currentStage;
-    private State currentState = State.DRAFT;
+    private int currentStage;
+    //private State currentState = State.DRAFT;
     private Parser parser;
     private Scanner scanner;
 
-    //public static final int  RECRUIT=0;
-   // public static final int  ATTACK=1;
-    //public static final int  DEFEND=2;
-    //public static final int  ENDGAME=-1;
+    public static final int  RECRUIT=0;
+    public static final int  ATTACK=1;
+    public static final int  DEFEND=2;
+    public static final int  ENDGAME=-1;
     public enum State {
         DRAFT,ATTACK,FORTIFY,SKIP,PASS,QUIT;
     }
@@ -111,13 +112,26 @@ public class Game {
         System.out.println("Welcome to RISK");
 
         boolean finished = false;
+        System.out.println(currentPlayer.printPlayerinfo());
         while (!finished){
-            Command command = parser.getCommand();
-            finished = processCommand(parser.getCommand());
+            String[] testString1  = new String[4];
+            testString1[0]="draft";
+            testString1[1]="China";
+            //testString1[0]="Ontario";
+            testString1[2]="5";
+
+            String firstCommand = testString1[0];
+            if (firstCommand.equals("draft"))
+            {
+                draft(currentPlayer,gameMap.getTerritory(testString1[1]),Integer.valueOf(testString1[2]));
+            }
+            break;
+           // Command command = parser.getCommand();
+           // finished = processCommand(parser.getCommand());
         }
         System.out.println("Thank you for playing, Bye");//quit the game
     }
-    private boolean processCommand(Command command){
+    /*private boolean processCommand(Command command){
 
         boolean wantToQuit = false;
         CommandWord commandWord = command.getCommandWord();
@@ -179,14 +193,25 @@ public class Game {
                 break;
         }
             return wantToQuit;//return value to play to quit the game
-    }
+    }*/
 
 
-    public void draft(Command command)//需要更新Player.getTroop()方法
+    public boolean draft(Player who,  Territory to, int howMany)//需要更新Player.getTroop()方法
 
     {
+        if(to.getHolder()==who){
+            if (who.getTroops()>=howMany){
+                to.increaseTroops(howMany);
+                System.out.println("you have moved "+howMany+"to "+to.getName());
+            }
+            else {System.out.println("not enough troops");}
+        }
+        else {System.out.println("not your land");}
+
+        if (who.getTroops()>0){return true;}
+        else {return false;}
         //example draft Ottawa 5
-        String countryName = command.getSecondWord();
+        /*String countryName = command.getSecondWord();
         int armyNum = Integer.parseInt(command.getThirdWord());
 
         System.out.println(currentState + "You have" + currentPlayer.getTroops()+
@@ -209,7 +234,7 @@ public class Game {
         }
         else
         {   currentState = State.DRAFT;
-            System.out.println("You have "+ currentPlayer.getTroops()+"could draft.");}
+            System.out.println("You have "+ currentPlayer.getTroops()+"could draft.");}*/
 
 
     }
@@ -374,11 +399,25 @@ public class Game {
 
     }
 
+    public void changeState()
+    {
+        if(currentStage==DEFEND)
+        {
+            currentPlayerID=(currentPlayerID+1)%players.size();
+            currentStage = (currentStage+1)%3;
+            currentPlayer = players.get(currentPlayerID);
+            System.out.println(currentPlayer.printPlayerinfo());
 
-    public Player getNextPlayer(){//get next player
+        }
+        else {currentStage = (currentStage+1)%3;}
+    }
+
+
+    /*public Player getNextPlayer(){//get next player
         return players.get((currentPlayer.getId()+1)%players.size());
 
-    }
+    }*/
+
 
 
 }

@@ -113,4 +113,17 @@ public class Player {
                 "name='" + name + '\'' +
                 '}';
     }
+
+    public String printPlayerinfo()
+    {
+        String result = "";
+        result+=name;
+        for (Territory t : territoryArrayList)
+        {
+            result+=" ";
+            result+=t.getName()+" "+t.getTroops();
+        }
+        result+="you have "+ troops + "troops";
+        return result;
+    }
 }
