@@ -110,22 +110,28 @@ public class Game {
     }
     public void play(){
         System.out.println("Welcome to RISK");
+        Scanner sc = new Scanner(System.in);
+        currentPlayer.increasetroops(currentPlayer.getTerritoryArrayList().size()/3);
 
         boolean finished = false;
+        boolean stillHaveTroops;
         System.out.println(currentPlayer.printPlayerinfo());
         while (!finished){
-            String[] testString1  = new String[4];
-            testString1[0]="draft";
-            testString1[1]="China";
-            //testString1[0]="Ontario";
-            testString1[2]="5";
+
+            String[] testString1  = sc.nextLine().split(" ");
 
             String firstCommand = testString1[0];
-            if (firstCommand.equals("draft"))
+            if(currentStage==RECRUIT)
             {
-                draft(currentPlayer,gameMap.getTerritory(testString1[1]),Integer.valueOf(testString1[2]));
+                if (firstCommand.equals("draft"))
+                {
+                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(testString1[1]),Integer.valueOf(testString1[2]));
+                    if (stillHaveTroops){}
+                    else {changeState();}
+                }
+
             }
-            break;
+
            // Command command = parser.getCommand();
            // finished = processCommand(parser.getCommand());
         }
@@ -202,6 +208,7 @@ public class Game {
         if(to.getHolder()==who){
             if (who.getTroops()>=howMany){
                 to.increaseTroops(howMany);
+                who.decreasetroops(howMany);
                 System.out.println("you have moved "+howMany+"to "+to.getName());
             }
             else {System.out.println("not enough troops");}
@@ -406,10 +413,12 @@ public class Game {
             currentPlayerID=(currentPlayerID+1)%players.size();
             currentStage = (currentStage+1)%3;
             currentPlayer = players.get(currentPlayerID);
+            currentPlayer.increasetroops(currentPlayer.getTerritoryArrayList().size()/3);
             System.out.println(currentPlayer.printPlayerinfo());
 
         }
         else {currentStage = (currentStage+1)%3;}
+        System.out.println("now" + currentPlayer.getName() + "'s turn, current stage: "+currentStage);
     }
 
 
