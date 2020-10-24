@@ -30,45 +30,81 @@ public class Game {
         gameMap = map;
         //currentPlayer = new Player();//第一个玩家
         //players = new LinkedList<>();//玩家列表设置成循环列表
-        this.currentState = State.DRAFT;
+        initial();
 
 
     }
     public void initial(){
         int initArmy;
-        if (players.size()==2){initArmy=50;}
-        else if (players.size()==3){initArmy=35;}
-        else if (players.size()==4){initArmy=30;}
-        else if (players.size()==5){initArmy=25;}
-        else if (players.size()==6){initArmy=20;}
+        int playernumber = players.size();
+        if (playernumber==2){initArmy=50;}
+        else if (playernumber==3){initArmy=35;}
+        else if (playernumber==4){initArmy=30;}
+        else if (playernumber==5){initArmy=25;}
+        else if (playernumber==6){initArmy=20;}
         else{initArmy=0;}
-
-        int totalArmy = initArmy*players.size();
-        int[] armyAssignment = new int[players.size()];
-        for (int i=0;i<armyAssignment.length;i++){armyAssignment[i]=initArmy;}
+        ArrayList<Territory> territoriescopy1 = new ArrayList<>();
+        for(Territory t : gameMap.getTerritoryArrayList()){territoriescopy1.add(t);}
         Random random = new Random();
-        for(Territory t : gameMap.getTerritoryArrayList())
+        int round = Math.floorDiv(territoriescopy1.size(),playernumber);
+        int randomresult;
+        for (Player p : players)
         {
-            while (t.getHolder()==null) {
-                int holderId = random.nextInt(players.size());
-                Player newHolder = players.get(holderId);
-                if(armyAssignment[holderId]>0){
-                t.setHolder(newHolder);
-                //newHolder.addTerritory(t);
-                newHolder.increaseOccupied(1);
+            for(int i =0;i<round;i++){
+                randomresult = random.nextInt(territoriescopy1.size());
+                Territory t = territoriescopy1.get(randomresult);
+                t.setHolder(p);
                 t.increaseTroops(1);
-                armyAssignment[holderId]--;
-                newHolder.getTerritoryList().put(t.getName(),t);
-                }
+                p.getTerritoryArrayList().add(t);
+                territoriescopy1.remove(t);
             }
-
+            p.increasetroops(initArmy-round);
         }
-        for(int i : armyAssignment){players.get(i).increasetroops(i);}
-        currentState= State.DRAFT;
+        for (int count = 0;count<territoriescopy1.size();count++){
+            Player rest = players.get(count);
+            Territory temp = territoriescopy1.get(count);
+            temp.setHolder(rest);
+            temp.increaseTroops(1);
+            rest.getTerritoryArrayList().add(temp);
+            rest.decreasetroops(1);
+        }
+        for(Player p : players)
+        {
+            ArrayList<Territory> playerHoldTerritorys=p.getTerritoryArrayList();
+            while(p.getTroops()>0)
+            {
+                Territory temp = playerHoldTerritorys.get(random.nextInt(playerHoldTerritorys.size()));
+                temp.increaseTroops(1);
+                p.decreasetroops(1);
+            }
+        }
+        /*int test=0;
+        int test2 = 0;
+        int test3 =0;
+        int test4 =0;
+        int test5 =0;
+        for (Territory t :gameMap.getTerritoryArrayList()){
+            if(t.getHolder()==players.get(0)){
+                test=test+t.getTroops();
+                System.out.println(t.getHolder().toString()+test);
+            }
+            else if (t.getHolder()==players.get(1)){
+                test2+=t.getTroops();
+                System.out.println(t.getHolder().toString()+test2);
+            }
+            else if (t.getHolder()==players.get(2)){
+                test3+=t.getTroops();
+                System.out.println(t.getHolder().toString()+test3);
+            }
+            else if (t.getHolder()==players.get(3)) {
+                test5 += t.getTroops();
+                System.out.println(t.getHolder().toString() + test5);
+            }
+            else {System.out.println("Error");}
+            test4++;
+        }
+        System.out.println(test4);*/
         play();
-
-
-
 
     }
     public void play(){
@@ -340,7 +376,7 @@ public class Game {
 
 
     public Player getNextPlayer(){//get next player
-        return players.get(currentPlayer.getId());
+        return players.get((currentPlayer.getId()+1)%players.size());
 
     }
 

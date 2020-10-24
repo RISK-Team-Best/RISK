@@ -16,7 +16,7 @@ public class MainPage {
     public void createGame()
     {
         currentGame = new Game(players,mapselect);
-        currentGame.initial();
+
 
 
     }
@@ -55,6 +55,8 @@ public class MainPage {
         MainPage mainPage = new MainPage();
         mainPage.createPlayer("Player1");
         mainPage.createPlayer("Player2");
+        mainPage.createPlayer("Player3");
+        mainPage.createPlayer("Player4");
         mainPage.chooseMap(new GMap());
         mainPage.createGame();
     }

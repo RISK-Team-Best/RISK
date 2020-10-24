@@ -7,6 +7,7 @@ public class Player {
     private int occupied;
     private int id;
     private HashMap<String,Territory> territoryList;
+    private ArrayList<Territory> territoryArrayList;
 
     /**
      *
@@ -14,7 +15,9 @@ public class Player {
      */
     public Player(String name)
     {
+        territoryList = new HashMap<>();
         this.name = name;
+        territoryArrayList = new ArrayList<>();
     }
 
     public HashMap<String, Territory> getTerritoryList() {
@@ -53,6 +56,7 @@ public class Player {
      */
     public void increaseOccupied(int num)
     {
+        occupied+=num;
 
     }
 
@@ -73,7 +77,7 @@ public class Player {
      * 直到返回值为0， 玩家该轮draft结束，进入attack
      */
     public int getTroops(){
-        return 0;
+        return troops;
     }
     /**
      *
@@ -99,6 +103,14 @@ public class Player {
     }
 
 
+    public ArrayList<Territory> getTerritoryArrayList() {
+        return territoryArrayList;
+    }
 
-
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
