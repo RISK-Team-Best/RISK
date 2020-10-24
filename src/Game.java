@@ -1,3 +1,5 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.util.*;
 
 public class Game {
@@ -119,38 +121,25 @@ public class Game {
         while (!finished){
 
             //String[] testString1 = sc.nextLine().split(" ");
-            String[] instrction = parser.getInstrction();
+            String[] testString1 = parser.getInstrction();
 
-            String firstCommand = instrction[0];
-            if(firstCommand.equals("quit")){
-                System.out.println("Game is Over");
-                currentStage=ENDGAME;
-                finished=true;
-            }
-            if(firstCommand.equals("skip")){
-                if(currentStage!=RECRUIT)
-                {changeState();}
-                else{System.out.println("you can't skip draft stage");}
-            }
+            String firstCommand = testString1[0];
             if(currentStage==RECRUIT)
             {
                 if (firstCommand.equals("draft"))
                 {
-                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(instrction[1]),Integer.valueOf(instrction[2]));
+                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(testString1[1]),Integer.valueOf(testString1[2]));
                     if (stillHaveTroops){}
                     else {changeState();}
                 }
-                System.out.println("you are in draft stage");
 
             }
-
             if(currentStage==ATTACK)
             {
                 if (firstCommand.equals("attack"))
-                {
-                    attack(currentPlayer,gameMap.getTerritory(instrction[1]),gameMap.getTerritory(instrction[2]));
-                }
-                System.out.println("you are in attack stage");
+                attack(testString1[1],testString1[2]);
+                if(firstCommand.equals("skip"))
+                    changeState();
 
             }
 
@@ -269,14 +258,14 @@ public class Game {
     }
 
 
-    public void attack(Player attacker,Territory attackCountry,Territory defenceCountry)
+    public void attack(String attack,String defence)
 
-    {  //String attackCountryName = command.getSecondWord();
-       //String defenceCountryName = command.getThirdWord();
+    {  String attackCountryName = attack;
+       String defenceCountryName = defence;
 
 
-       //Territory attackCountry = this.gameMap.getTerritory(attackCountryName);
-       //Territory defenceCountry = this.gameMap.getTerritory(defenceCountryName);
+       Territory attackCountry = this.gameMap.getTerritory(attackCountryName);
+       Territory defenceCountry = this.gameMap.getTerritory(defenceCountryName);
 
         int defenceTroops;
         int attackTroops = 1;
@@ -288,7 +277,8 @@ public class Game {
 
 
         System.out.println("How many troops do you want to attack? (one/two/three/blitz/cancel)");
-        String type = scanner.nextLine();
+        Scanner sc = new Scanner(System.in);
+        String type = sc.nextLine();
         switch (type){
             case "one": attackTroops = 1; break;
             case "two": attackTroops = 2; break;
@@ -440,7 +430,7 @@ public class Game {
 
         }
         else {currentStage = (currentStage+1)%3;}
-        System.out.println("now" + currentPlayer.getName() + "'s turn, current stage: "+currentStage);
+        System.out.println("Now " + currentPlayer.getName() + "'s turn, current stage: "+ currentStage);
     }
 
 
@@ -448,7 +438,6 @@ public class Game {
         return players.get((currentPlayer.getId()+1)%players.size());
 
     }*/
-
 
 
 
