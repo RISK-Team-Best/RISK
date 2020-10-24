@@ -5,6 +5,7 @@ public class GMap {
     private String mapName;
     private HashMap<String,Continent> continents;
     private HashMap<String,Territory> territoryHashMap;
+    private ArrayList<Territory> territoryArrayList;
 
     /**
      *
@@ -13,14 +14,29 @@ public class GMap {
     {
         continents = new HashMap<>();
         territoryHashMap = new HashMap<>();
+        territoryArrayList = new ArrayList<>();
         createMap();
 
     }
 
-    public void addTerritory(Territory territory,Continent continent)
+    public ArrayList<Territory> getTerritoryArrayList() {
+        return territoryArrayList;
+    }
+
+    public HashMap<String, Territory> getTerritoryHashMap() {
+        return territoryHashMap;
+    }
+
+    public HashMap<String, Continent> getContinents() {
+        return continents;
+    }
+
+
+    public void addTerritory(Territory territory, Continent continent)
     {
         territoryHashMap.put(territory.getName(),territory);
         continent.addTerritory(territory);
+        territoryArrayList.add(territory);
 
     }
 
@@ -352,7 +368,7 @@ public class GMap {
         linkContinents(Iceland,Greenland);
 
     }
-    public Territory getTerritory(String countryName){}
+    public Territory getTerritory(String countryName){return territoryHashMap.get(countryName);}
 
     public void linkContinents(Territory territoryA,Territory territoryB)
     {
@@ -361,6 +377,6 @@ public class GMap {
     }
 
 
-    }
+
 
 }

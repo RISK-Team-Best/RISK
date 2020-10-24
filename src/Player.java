@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Player {
     private String name;
     private int troops;
     private int occupied;
+    private int id;
     private HashMap<String,Territory> territoryList;
 
     /**
@@ -12,6 +15,18 @@ public class Player {
     public Player(String name)
     {
         this.name = name;
+    }
+
+    public HashMap<String, Territory> getTerritoryList() {
+        return territoryList;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -64,9 +79,9 @@ public class Player {
      *
      * @return Territory that the player own with the String name
      */
-    public Territory getTerritory(String name){
+    /*public Territory getTerritory(String name){
         return Territory;
-    }
+    }*/
 
     public String getName(){
         return this.name;
@@ -77,7 +92,13 @@ public class Player {
     public void addTerritory(Territory name){
 
     }
-    public boolean hasTerritory(String name){
+    public boolean hasTerritory(GMap map,String name){
+        if (map.getTerritoryHashMap().get(name).getHolder()==this){return true;}
+        else {return false;}
 
     }
+
+
+
+
 }

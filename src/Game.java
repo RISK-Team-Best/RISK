@@ -1,11 +1,9 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
     private String gameName;
     private GMap gameMap;
-    private LinkedList<Player> players;
+    private ArrayList<Player> players;
     private Player currentPlayer;
     //初始状态为draft
     //private int currentStage;
@@ -24,15 +22,53 @@ public class Game {
     /**
      *
      */
-    public  Game()
-    {   parser = new Parser();//读取用户的输入
-        currentPlayer = new Player();//第一个玩家
-        players = new LinkedList<>();//玩家列表设置成循环列表
+    public  Game(ArrayList<Player> players,GMap map)
+    {
+        this.players = players;
+        parser = new Parser();//读取用户的输入
+        currentPlayer =players.get(0);
+        gameMap = map;
+        //currentPlayer = new Player();//第一个玩家
+        //players = new LinkedList<>();//玩家列表设置成循环列表
         this.currentState = State.DRAFT;
 
 
     }
     public void initial(){
+        int initArmy;
+        if (players.size()==2){initArmy=50;}
+        else if (players.size()==3){initArmy=35;}
+        else if (players.size()==4){initArmy=30;}
+        else if (players.size()==5){initArmy=25;}
+        else if (players.size()==6){initArmy=20;}
+        else{initArmy=0;}
+
+        int totalArmy = initArmy*players.size();
+        int[] armyAssignment = new int[players.size()];
+        for (int i=0;i<armyAssignment.length;i++){armyAssignment[i]=initArmy;}
+        Random random = new Random();
+        for(Territory t : gameMap.getTerritoryArrayList())
+        {
+            while (t.getHolder()==null) {
+                int holderId = random.nextInt(players.size());
+                Player newHolder = players.get(holderId);
+                if(armyAssignment[holderId]>0){
+                t.setHolder(newHolder);
+                //newHolder.addTerritory(t);
+                newHolder.increaseOccupied(1);
+                t.increaseTroops(1);
+                armyAssignment[holderId]--;
+                newHolder.getTerritoryList().put(t.getName(),t);
+                }
+            }
+
+        }
+        for(int i : armyAssignment){players.get(i).increasetroops(i);}
+        currentState= State.DRAFT;
+        play();
+
+
+
 
     }
     public void play(){
@@ -93,7 +129,7 @@ public class Game {
 
                 if(currentState == State.PASS)
                 {
-                    currentPlayer = players.getNext();//当前玩家变成下一个玩家
+                    currentPlayer = getNextPlayer();//当前玩家变成下一个玩家
                     currentState = State.DRAFT;
                 }
                 else
@@ -109,24 +145,21 @@ public class Game {
             return wantToQuit;//return value to play to quit the game
     }
 
-    /**
-     *
-     * @param Armynum
-     * @param territory
-     */
+
     public void draft(Command command)//需要更新Player.getTroop()方法
 
     {
+        //example draft Ottawa 5
         String countryName = command.getSecondWord();
         int armyNum = Integer.parseInt(command.getThirdWord());
 
-        System.out.println(currentState + "You have" + player.getTroops()+
+        System.out.println(currentState + "You have" + currentPlayer.getTroops()+
                 " troops to add to any of your territory.");
 
 
         if (armyNum <= currentPlayer.getTroops())
         {
-            currentPlayer.getTerritory(TerritoryName).increaseTroops(armyNum);
+            gameMap.getTerritory(countryName).increaseTroops(armyNum);
             currentPlayer.decreasetroops(armyNum);//decrease the number of troop
                                                   // that available to draft
 
@@ -145,10 +178,7 @@ public class Game {
 
     }
 
-    /**
-     *
-     * @param territory
-     */
+
     public void attack(Command command)
 
     {  String attackCountryName = command.getSecondWord();
@@ -253,27 +283,25 @@ public class Game {
         defenceCountry.increaseTroops(deployTroops);
     }
 
-    /**
-     *
-     * @param territory
-     * @param Armynum
-     */
+
     public void fortify(Command command)
 
-    {    String departCountryName = command.getSecondWord();
+    {
+        HashMap<String,Territory> territoryHashMap = gameMap.getTerritoryHashMap();
+        String departCountryName = command.getSecondWord();
          String destinationCountryName = command.getThirdWord();
          int moveTroopNum = Integer.parseInt(command.getFourthWord());
 
 
-        if (currentPlayer.hasTerritory(departCountryName) || currentPlayer.hasTerritory(destinationCountryName) ) {
-            Territory departCountry = currentPlayer.getTerritory(departCountryName);
-            Territory destinationCountry = currentPlayer.getTerritory(destinationCountryName);
+        if (currentPlayer.hasTerritory(gameMap,departCountryName) || currentPlayer.hasTerritory(gameMap,destinationCountryName) ) {
+            Territory departCountry = territoryHashMap.get(departCountryName);
+            Territory destinationCountry = territoryHashMap.get(destinationCountryName);
 
         } else {
             System.out.println("Please check your input of territory's name.");
         }
 
-        while(true) {//need modify.
+        /*while(true) {//need modify.
 
             addNeighborCountries(fortifyCountry, player);
             neighborCountries.remove(fortifyCountry);
@@ -305,13 +333,14 @@ public class Game {
                 fortified.increaseArmies(troop);
                 break;
             }
-        } while (true);
+        } while (true);*/
 
 
     }
 
 
     public Player getNextPlayer(){//get next player
+        return players.get(currentPlayer.getId());
 
     }
 
