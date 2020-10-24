@@ -127,7 +127,7 @@ public class Game {
             if (firstCommand.equals("quit"))
             {
                 System.out.println();
-                currentStage=ENDGAME;
+                finished=true;
             }
             if (firstCommand.equals("skip"))
             {
