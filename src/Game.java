@@ -121,14 +121,14 @@ public class Game {
         while (!finished){
 
             //String[] testString1 = sc.nextLine().split(" ");
-            String[] testString1 = parser.getInstrction();
+            String[] instrction = parser.getInstrction();
 
-            String firstCommand = testString1[0];
+            String firstCommand = instrction[0];
             if(currentStage==RECRUIT)
             {
                 if (firstCommand.equals("draft"))
                 {
-                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(testString1[1]),Integer.valueOf(testString1[2]));
+                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(instrction[1]),Integer.valueOf(instrction[2]));
                     if (stillHaveTroops){}
                     else {changeState();}
                 }
@@ -137,11 +137,14 @@ public class Game {
             if(currentStage==ATTACK)
             {
                 if (firstCommand.equals("attack"))
-                attack(testString1[1],testString1[2]);
-                if(firstCommand.equals("skip"))
-                    changeState();
+                attack(instrction[1],instrction[2]);
 
             }
+            if(currentStage==DEFEND)
+            {
+                changeState();
+            }
+
 
            // Command command = parser.getCommand();
            // finished = processCommand(parser.getCommand());
