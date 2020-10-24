@@ -376,8 +376,9 @@ public class Game {
         do {
             System.out.println(attackCountry.getHolder().getName() + "attacked successfully! Currently you have "+attackCountry.getTroops()+ " in your original country.");
             System.out.println(" How many troops deploy to " + defenceCountry.getName());
-            deployTroops = scanner.nextInt();
-            scanner.nextLine();
+            Scanner sc = new Scanner(System.in);
+            deployTroops = sc.nextInt();
+            sc.nextLine();
             if(deployTroops > attackCountry.getTroops()){
                 System.out.println("You don't have so much troops, try it again.");
             }else if(deployTroops == attackCountry.getTroops()){
