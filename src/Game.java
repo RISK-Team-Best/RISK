@@ -119,17 +119,38 @@ public class Game {
         while (!finished){
 
             //String[] testString1 = sc.nextLine().split(" ");
-            String[] testString1 = parser.getInstrction();
+            String[] instrction = parser.getInstrction();
 
-            String firstCommand = testString1[0];
+            String firstCommand = instrction[0];
+            if(firstCommand.equals("quit")){
+                System.out.println("Game is Over");
+                currentStage=ENDGAME;
+                finished=true;
+            }
+            if(firstCommand.equals("skip")){
+                if(currentStage!=RECRUIT)
+                {changeState();}
+                else{System.out.println("you can't skip draft stage");}
+            }
             if(currentStage==RECRUIT)
             {
                 if (firstCommand.equals("draft"))
                 {
-                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(testString1[1]),Integer.valueOf(testString1[2]));
+                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(instrction[1]),Integer.valueOf(instrction[2]));
                     if (stillHaveTroops){}
                     else {changeState();}
                 }
+                System.out.println("you are in draft stage");
+
+            }
+
+            if(currentStage==ATTACK)
+            {
+                if (firstCommand.equals("attack"))
+                {
+                    attack(currentPlayer,gameMap.getTerritory(instrction[1]),gameMap.getTerritory(instrction[2]));
+                }
+                System.out.println("you are in attack stage");
 
             }
 
@@ -248,14 +269,14 @@ public class Game {
     }
 
 
-    public void attack(Command command)
+    public void attack(Player attacker,Territory attackCountry,Territory defenceCountry)
 
-    {  String attackCountryName = command.getSecondWord();
-       String defenceCountryName = command.getThirdWord();
+    {  //String attackCountryName = command.getSecondWord();
+       //String defenceCountryName = command.getThirdWord();
 
 
-       Territory attackCountry = this.gameMap.getTerritory(attackCountryName);
-       Territory defenceCountry = this.gameMap.getTerritory(defenceCountryName);
+       //Territory attackCountry = this.gameMap.getTerritory(attackCountryName);
+       //Territory defenceCountry = this.gameMap.getTerritory(defenceCountryName);
 
         int defenceTroops;
         int attackTroops = 1;
@@ -427,6 +448,7 @@ public class Game {
         return players.get((currentPlayer.getId()+1)%players.size());
 
     }*/
+
 
 
 
