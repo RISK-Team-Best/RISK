@@ -153,6 +153,11 @@ public class Game {
                 System.out.println("you are in attack stage");
 
             }
+            if(currentStage==DEFEND)
+            {
+                changeState();
+            }
+
 
            // Command command = parser.getCommand();
            // finished = processCommand(parser.getCommand());
