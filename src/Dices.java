@@ -3,7 +3,9 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- * The type Dices.
+ * 
+ * The class Dices used to perform dice rolling and return the maximum value of the dice.
+ *
  *
  * @Author: Tiantian Lin, 101095243
  */
