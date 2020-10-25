@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RISKFinal.iml" filepath="$PROJECT_DIR$/RISKFinal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RISK.iml" filepath="$PROJECT_DIR$/RISK.iml" />
     </modules>
   </component>
 </project>
