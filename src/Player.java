@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * The type Player.
+
+ /**
+ * The class Player store the information of the player's territory and calculate the troops each turn.
+ *
  *
  * @Author: Tiantian Lin, 101095243
  */
