@@ -1,5 +1,7 @@
-/**
- * The type Territory.
+
+ /**
+ * The class Territory store the information of territory's name,troops number and owner
+ *
  *
  * @Author: Jiatong Han, 101132931
  */
