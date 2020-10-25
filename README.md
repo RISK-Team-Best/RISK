@@ -1,7 +1,7 @@
 # RISK
 
 ## Team Members:
--Guanqun Dong
+-Guanqun Dong                                                          
 -Jiawei Ma  
 -Jiatong Han  
 -Tiantian Lin  
