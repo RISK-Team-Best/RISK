@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * The type Continent.
+
+/*
+ * The class Continent store the territories which in the same continent
+ *
  *
  * @Author: Guanqun Dong, 101093918
  */
