@@ -1,8 +1,9 @@
 import java.io.IOException;
 import java.util.*;
 
-/**
- * The main Game.
+/*
+ * The game class is the game mechanic of the RISK,include the draft,attack and fortify.
+ *
  *
  * @Author: Jiawei Ma, 101034173
  */
