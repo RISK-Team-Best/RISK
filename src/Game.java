@@ -9,7 +9,7 @@ public class Game {
     private GMap gameMap;
     private ArrayList<Player> players;
     private Player currentPlayer;
-    private int currentPlayerID=0;
+    private int currentPlayerID;
     //初始状态为draft
     private int currentStage;
     //private State currentState = State.DRAFT;
@@ -24,6 +24,7 @@ public class Game {
     private String command;
     private Territory territoryCommand1;
     private Territory territoryCommand2;
+    private JLabel infoLabel;
 
     public void handleButtonpressed(TerritoryButton source) {
         if (territoryCommand1==null){
@@ -40,6 +41,7 @@ public class Game {
                 boolean stillHaveTroops=draft(currentPlayer,territoryCommand1,howmany);
                 if (stillHaveTroops){}
                 else {changeState();}
+                territoryCommand1=null;
             }catch (Exception e)
             {
                 System.out.println(e);
@@ -73,6 +75,8 @@ public class Game {
 
     }
     public void initial(){
+        currentStage = ENDGAME;
+        currentPlayerID=-1;
         int initArmy;
         int playernumber = players.size();
         if (playernumber==2){initArmy=50;}
@@ -118,7 +122,8 @@ public class Game {
         }
         initGUI(gameMap);
 
-        System.out.println("Welcome to RISK");
+        infoLabel.setText("Welcome to RISK");
+        changeState();
 
     }
 
@@ -128,7 +133,8 @@ public class Game {
         JSplitPane splitPane= new JSplitPane();
         jFrame.add(splitPane);
         JPanel maparea = new JPanel();
-        splitPane.setLeftComponent(maparea);
+        JScrollPane scrollPane = new JScrollPane(maparea);
+        splitPane.setLeftComponent(scrollPane);
         splitPane.setDividerLocation(768);
         JPanel controlarea = new JPanel();
         splitPane.setRightComponent(controlarea);
@@ -145,28 +151,43 @@ public class Game {
             {
                 TerritoryButton territoryButton = territory.getTerritoryButton();
                 continent.getPanel().add(territoryButton);
-                territoryButton.setText(territory.getName()+" "+territory.getTroops());
-                Color color = getPlayerColor(territory.getHolder());
-                territoryButton.setBackground(color);
-                territoryButton.repaint();
+                territoryButton.update();
                 territoryButton.addActionListener(e -> {
                     handleButtonpressed(territoryButton);
                 });
 
             }
         }
+        //control area settings
+        infoLabel = new JLabel();
+        controlarea.add(infoLabel);
+        JButton skip = new JButton("skip");
+        controlarea.add(skip);
+        skip.addActionListener(e -> {
+            skipStage();
+        });
+
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private Color getPlayerColor(Player holder) {
-        if(holder.getId()==0){return new Color(255,100,100);}
-        else if (holder.getId()==1){return new Color(100,100,255);}
-        else if (holder.getId()==2){return new Color(100,255,255);}
-        else if (holder.getId()==3){return new Color(255,100,255);}
-        else if (holder.getId()==4){return new Color(100,255,100);}
-        else  {return new Color(255,255,100);}
+    private void disableAllButtons() {
+        //close all button before start
+        for(Territory territory:gameMap.getTerritoryArrayList())
+        {
+            territory.getTerritoryButton().setEnabled(false);
+            territory.getTerritoryButton().update();
+        }
     }
+
+    private void skipStage() {
+        if(currentStage!=RECRUIT)
+        {
+            changeState();
+        }
+        else {infoLabel.setText("you can not skip draft stage");}
+    }
+
 
     public void play(){
         //Scanner sc = new Scanner(System.in);
@@ -521,17 +542,53 @@ public class Game {
 
     public void changeState()
     {
-        if(currentStage==DEFEND)
+        disableAllButtons();
+        currentStage = (currentStage+1)%3;//change State
+        if(currentStage==RECRUIT)
         {
-            currentPlayerID=(currentPlayerID+1)%players.size();
-            currentStage = (currentStage+1)%3;
+            currentPlayerID=(currentPlayerID+1)%players.size();//change Player
             currentPlayer = players.get(currentPlayerID);
-            currentPlayer.increasetroops(currentPlayer.getTerritoryArrayList().size()/3);
-            System.out.println(currentPlayer.printPlayerinfo());
+            giveCurrentPlayerTroops();
+            infoLabel.setText(currentPlayer.printPlayerinfo());
+            enablePlayersButton();
+            infoLabel.setText("now "+currentPlayer.getName()+"'s turn, stage Recruit");
 
         }
-        else {currentStage = (currentStage+1)%3;}
-        System.out.println("Now " + currentPlayer.getName() + "'s turn, current stage: "+ currentStage);
+        else if(currentStage==ATTACK)
+        {
+            enablePlayersButtonWithTroopsBiggerthanOne();
+            infoLabel.setText("now "+currentPlayer.getName()+"'s turn, stage Attack");
+        }
+        else {
+            enablePlayersButtonWithTroopsBiggerthanOne();
+            infoLabel.setText("now "+currentPlayer.getName()+"'s turn, stage Defend");
+        }
+    }
+
+    private void enablePlayersButtonWithTroopsBiggerthanOne() {
+        for (Territory territory:currentPlayer.getTerritoryArrayList())
+        {
+            if(territory.getTroops()>1) {
+                territory.getTerritoryButton().setEnabled(true);
+                territory.getTerritoryButton().update();
+            }
+        }
+    }
+
+    private void giveCurrentPlayerTroops() {
+        int landnum = currentPlayer.getTerritoryArrayList().size();
+        int num = Math.floorDiv(landnum,3);
+        if (num <3){num =3;}
+        currentPlayer.increasetroops(num);
+        infoLabel.setText("you own "+landnum+"Territories and you got "+num+"troops");
+    }
+
+    private void enablePlayersButton() {
+        for (Territory territory:currentPlayer.getTerritoryArrayList())
+        {
+            territory.getTerritoryButton().setEnabled(true);
+            territory.getTerritoryButton().update();
+        }
     }
 
 

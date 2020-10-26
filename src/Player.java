@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -132,5 +133,25 @@ public class Player {
             if(territory.getName().equals(countryName))return true;
         }
         return false;
+    }
+
+    public static Color getPlayerColor(Player holder) {
+        if (holder==null){return new Color(255,255,255);}
+        if(holder.getId()==0){return new Color(255,100,100);}
+        else if (holder.getId()==1){return new Color(100,100,255);}
+        else if (holder.getId()==2){return new Color(100,255,255);}
+        else if (holder.getId()==3){return new Color(255,100,255);}
+        else if (holder.getId()==4){return new Color(100,255,100);}
+        else  {return new Color(255,255,100);}
+    }
+
+    public static Color getPlayerColorSelected(Player holder) {
+        if (holder==null){return new Color(255,255,255);}
+        if(holder.getId()==0){return new Color(255,0,0);}
+        else if (holder.getId()==1){return new Color(0,0,255);}
+        else if (holder.getId()==2){return new Color(0,255,255);}
+        else if (holder.getId()==3){return new Color(255,0,255);}
+        else if (holder.getId()==4){return new Color(0,255,0);}
+        else  {return new Color(255,255,0);}
     }
 }
