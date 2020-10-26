@@ -6,17 +6,16 @@ public class Continent {
     private int bonusTroops;
     private Player holder;
     private HashMap<String,Territory> territories;
+    private ArrayList<Territory> territoryArrayList;
+    private ContinentPanel panel;
 
-    /**
-     *
-     * @param name
-     * @param bonus
-     */
-    public Continent(String name,int bonus)
+
+    public Continent(String name)
     {
         this.name = name;
-        bonusTroops = bonus;
+        //bonusTroops = bonus;
         territories = new HashMap<>();
+        territoryArrayList = new ArrayList<>();
 
     }
 
@@ -47,10 +46,23 @@ public class Continent {
     public void addTerritory(Territory territory)
     {
         territories.put(territory.getName(),territory);
+        territoryArrayList.add(territory);
 
     }
 
     public String getName() {
         return name;
+    }
+
+    public ContinentPanel getPanel() {
+        return panel;
+    }
+
+    public void setPanel(ContinentPanel panel) {
+        this.panel = panel;
+    }
+
+    public ArrayList<Territory> getTerritoryArrayList() {
+        return territoryArrayList;
     }
 }

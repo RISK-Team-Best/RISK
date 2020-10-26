@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -57,7 +58,11 @@ public class MainPage {
         mainPage.createPlayer("Player2");
         mainPage.createPlayer("Player3");
         mainPage.createPlayer("Player4");
-        mainPage.chooseMap(new GMap());
+        GmapReader reader = new GmapReader();
+        GMap map = reader.loadMap(new File("mapInfo.txt"));
+        reader.loadNeibour(map,new File("neibourInfo.txt"));
+        mainPage.chooseMap(map);
+
         mainPage.createGame();
     }
 

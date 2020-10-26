@@ -1,5 +1,7 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
 
 public class Game {
@@ -13,11 +15,43 @@ public class Game {
     //private State currentState = State.DRAFT;
     private Parser parser;
     private Scanner scanner;
+    private GameController gameController;
 
     public static final int  RECRUIT=0;
     public static final int  ATTACK=1;
     public static final int  DEFEND=2;
     public static final int  ENDGAME=-1;
+    private String command;
+    private Territory territoryCommand1;
+    private Territory territoryCommand2;
+
+    public void handleButtonpressed(TerritoryButton source) {
+        if (territoryCommand1==null){
+        territoryCommand1 = source.getTerritory();
+        }else if (territoryCommand2==null)
+        {
+            territoryCommand2 = source.getTerritory();
+        }
+
+        if(currentStage==RECRUIT)
+        {
+            try {
+                int howmany = Integer.valueOf(JOptionPane.showInputDialog("how many to draft"));
+                boolean stillHaveTroops=draft(currentPlayer,territoryCommand1,howmany);
+                if (stillHaveTroops){}
+                else {changeState();}
+            }catch (Exception e)
+            {
+                System.out.println(e);
+                territoryCommand1=null;
+                //territoryCommand2=null;
+            }
+
+
+
+        }
+    }
+
     public enum State {
         DRAFT,ATTACK,FORTIFY,SKIP,PASS,QUIT;
     }
@@ -31,6 +65,7 @@ public class Game {
         parser = new Parser();//读取用户的输入
         currentPlayer =players.get(0);
         gameMap = map;
+        gameController= new GameController(this);
         //currentPlayer = new Player();//第一个玩家
         //players = new LinkedList<>();//玩家列表设置成循环列表
         initial();
@@ -81,37 +116,59 @@ public class Game {
                 p.decreasetroops(1);
             }
         }
-        /*int test=0;
-        int test2 = 0;
-        int test3 =0;
-        int test4 =0;
-        int test5 =0;
-        for (Territory t :gameMap.getTerritoryArrayList()){
-            if(t.getHolder()==players.get(0)){
-                test=test+t.getTroops();
-                System.out.println(t.getHolder().toString()+test);
-            }
-            else if (t.getHolder()==players.get(1)){
-                test2+=t.getTroops();
-                System.out.println(t.getHolder().toString()+test2);
-            }
-            else if (t.getHolder()==players.get(2)){
-                test3+=t.getTroops();
-                System.out.println(t.getHolder().toString()+test3);
-            }
-            else if (t.getHolder()==players.get(3)) {
-                test5 += t.getTroops();
-                System.out.println(t.getHolder().toString() + test5);
-            }
-            else {System.out.println("Error");}
-            test4++;
-        }
-        System.out.println(test4);*/
-        play();
+        initGUI(gameMap);
+
+        System.out.println("Welcome to RISK");
 
     }
+
+    private void initGUI(GMap gameMap) {
+        JFrame jFrame = new JFrame("RISK");
+        jFrame.setSize(1024,768);
+        JSplitPane splitPane= new JSplitPane();
+        jFrame.add(splitPane);
+        JPanel maparea = new JPanel();
+        splitPane.setLeftComponent(maparea);
+        splitPane.setDividerLocation(768);
+        JPanel controlarea = new JPanel();
+        splitPane.setRightComponent(controlarea);
+        //layouts
+        controlarea.setLayout(new BoxLayout(controlarea,BoxLayout.Y_AXIS));
+        maparea.setLayout(null);
+
+        for (Continent continent : gameMap.getContinentArrayList())
+        {
+            ContinentPanel continentPanel = continent.getPanel();
+            maparea.add(continentPanel);
+            continentPanel.setLayout(null);
+            for(Territory territory : continent.getTerritoryArrayList())
+            {
+                TerritoryButton territoryButton = territory.getTerritoryButton();
+                continent.getPanel().add(territoryButton);
+                territoryButton.setText(territory.getName()+" "+territory.getTroops());
+                Color color = getPlayerColor(territory.getHolder());
+                territoryButton.setBackground(color);
+                territoryButton.repaint();
+                territoryButton.addActionListener(e -> {
+                    handleButtonpressed(territoryButton);
+                });
+
+            }
+        }
+        jFrame.setVisible(true);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private Color getPlayerColor(Player holder) {
+        if(holder.getId()==0){return new Color(255,100,100);}
+        else if (holder.getId()==1){return new Color(100,100,255);}
+        else if (holder.getId()==2){return new Color(100,255,255);}
+        else if (holder.getId()==3){return new Color(255,100,255);}
+        else if (holder.getId()==4){return new Color(100,255,100);}
+        else  {return new Color(255,255,100);}
+    }
+
     public void play(){
-        System.out.println("Welcome to RISK");
         //Scanner sc = new Scanner(System.in);
         currentPlayer.increasetroops(currentPlayer.getTerritoryArrayList().size()/3);
 

@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,6 +9,8 @@ public class Territory {
     private HashMap<String,Territory> neighbour;
     private ArrayList<Territory> neighbourList;
     public boolean noTroopInteruptFlag; //user must clear this flag after use
+
+    private TerritoryButton territoryButton;
 
     public Territory(String name)
     {
@@ -86,7 +89,17 @@ public class Territory {
     }
 
 
+
+
     public boolean checkNeighbor(Territory country) {
         return neighbourList.contains(country);
+    }
+
+    public TerritoryButton getTerritoryButton() {
+        return territoryButton;
+    }
+
+    public void setTerritoryButton(TerritoryButton territoryButton) {
+        this.territoryButton = territoryButton;
     }
 }

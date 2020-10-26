@@ -1,0 +1,10 @@
+Continent: C1 48 36 1000 600
+Territory: T1 226 72 100 100
+Territory: T2 344 72 100 100
+Territory: T4 226 208 100 100
+Territory: T5 342 208 100 100
+Territory: T3 462 76 100 100
+Territory: T6 468 204 100 100
+Territory: T9 472 342 100 100
+Territory: T8 342 342 100 100
+Territory: T7 228 340 100 100

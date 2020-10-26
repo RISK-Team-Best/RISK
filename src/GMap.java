@@ -1,9 +1,11 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GMap {
     private String mapName;
     private HashMap<String,Continent> continents;
+    private ArrayList<Continent> continentArrayList;
     private HashMap<String,Territory> territoryHashMap;
     private ArrayList<Territory> territoryArrayList;
 
@@ -15,9 +17,10 @@ public class GMap {
         continents = new HashMap<>();
         territoryHashMap = new HashMap<>();
         territoryArrayList = new ArrayList<>();
-        createMap();
+        continentArrayList = new ArrayList<>();
 
     }
+
 
     public ArrayList<Territory> getTerritoryArrayList() {
         return territoryArrayList;
@@ -55,6 +58,7 @@ public class GMap {
     public void addContinent(Continent continent)
     {
         continents.put(continent.getName(),continent);
+        continentArrayList.add(continent);
     }
 
     /**
@@ -63,17 +67,17 @@ public class GMap {
     public void createMap()
     {
         //create Continents
-        Continent australia  = new Continent("Astralia",2);
+        Continent australia  = new Continent("Astralia");
         addContinent(australia);
-        Continent asia  = new Continent("Asia",7);
+        Continent asia  = new Continent("Asia");
         addContinent(asia);
-        Continent europe  = new Continent("Europe",5);
+        Continent europe  = new Continent("Europe");
         addContinent(europe);
-        Continent africa  = new Continent("Africa",3);
+        Continent africa  = new Continent("Africa");
         addContinent(africa);
-        Continent northAmerica  = new Continent("NorthAmerica",5);
+        Continent northAmerica  = new Continent("NorthAmerica");
         addContinent(northAmerica);
-        Continent southAmerica  = new Continent("southAmeria",2);
+        Continent southAmerica  = new Continent("southAmeria");
         addContinent(southAmerica);
 
         //create Australia
@@ -377,6 +381,7 @@ public class GMap {
     }
 
 
-
-
+    public ArrayList<Continent> getContinentArrayList() {
+        return continentArrayList;
+    }
 }
