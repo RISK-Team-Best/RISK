@@ -1,10 +1,13 @@
 package MapEditer;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
- * EditerController catches Mouse position and ask editor to  create new button
+ * EditerController catches Mouse position and ask editor to  create new Continent
+ * @author Guanqun Dong
+ * @version 1.1
  */
 public class EditerController implements MouseListener {
     private MapEditer editor;
@@ -14,7 +17,7 @@ public class EditerController implements MouseListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        editor.createNewButton();
+        editor.createNewContinent();
 
     }
 

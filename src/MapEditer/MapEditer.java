@@ -8,7 +8,7 @@ import java.io.FileWriter;
 /**
  * Class MapEditer can make custom map and generate txt file
  * @author Guanqun Dong
- * @version 1.0
+ * @version 1.1
  */
 public class MapEditer {
     private JFrame jFrame ;
@@ -17,16 +17,18 @@ public class MapEditer {
     private int height=100;
     //get location
     private EditerController controller;
+    private ContinentController continentController;
 
     private JPanel maparea;
     //enable disable button
-    private boolean removeButton=false;
-    private boolean createButton=false;
+    private boolean removeLand=false;
+    private int createLand=0;
 
     public MapEditer()
     {
         //initial Editer
         controller = new EditerController(this);
+        continentController = new ContinentController(this);
         jFrame = new JFrame("Map Editer");
         jFrame.setSize(1024,768);
         JSplitPane splitPane= new JSplitPane();
@@ -43,11 +45,29 @@ public class MapEditer {
         //map area Listener
         maparea.addMouseListener(controller);
 
-        //size 1
+        JLabel mode = new JLabel("Not Creating");
+        controlarea.add(mode);
+
+        //creatTerritory
         JButton creatTerritory = new JButton("creatTerritory");
         controlarea.add(creatTerritory);
         creatTerritory.addActionListener(e -> {
-            createButton = !createButton;
+            createLand = 1;
+            mode.setText("Territory Mode");
+        });
+
+        JButton creatContinent = new JButton("creatContinent");
+        controlarea.add(creatContinent);
+        creatContinent.addActionListener(e -> {
+            createLand = 2;
+            mode.setText("Continent Mode");
+        });
+
+        JButton notcreate = new JButton("notcreate");
+        controlarea.add(notcreate);
+        notcreate.addActionListener(e -> {
+            createLand = 0;
+            mode.setText("Not Creating");
         });
 
         //size 1
@@ -96,11 +116,14 @@ public class MapEditer {
         });
 
 
+        JLabel removelabel = new JLabel(String.valueOf(removeLand));
+        controlarea.add(removelabel);
         //remove
-        JButton remove = new JButton("remove");
+        JButton remove = new JButton("remove Land");
         controlarea.add(remove);
         remove.addActionListener(e -> {
-            removeButton=!removeButton;
+            removeLand=!removeLand;
+            removelabel.setText(String.valueOf(removeLand));
         });
 
         //generate Map
@@ -110,24 +133,30 @@ public class MapEditer {
             generate();
         });
 
-
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     /**
-     * write existing Buttons to txt file
+     * write existing Lands to txt file
      */
     private void generate() {
         try {
             FileWriter writer = new FileWriter(new File("mapInfo.txt"));
             Component[] components = maparea.getComponents();
-            for (Component c : components)
+            for (Component continent : components)
             {
-                if(c instanceof JButton)
+                if(continent instanceof JPanel)
                 {
-                    JButton jb = (JButton)c;
-                    writer.write(jb.getText()+" "+c.getX()+" "+c.getY()+" "+c.getWidth()+" "+c.getHeight()+"\n");
+                    JPanel continent2 = (JPanel) continent;
+                    writer.write("Continent: "+continent2.getName()+" "+continent2.getX()+" "+continent2.getY()+" "+continent2.getWidth()+" "+continent2.getHeight()+"\n");
+                    Component[] Territorys = continent2.getComponents();
+                    for(Component territory : Territorys)
+                    {
+                        JButton t = (JButton)territory;
+                        writer.write("Territory: "+t.getText()+" "+t.getX()+" "+t.getY()+" "+t.getWidth()+" "+t.getHeight()+"\n");
+
+                    }
                 }
 
             }
@@ -141,27 +170,57 @@ public class MapEditer {
 
 
     /**
-     * create a New Button base on mouse position
+     * create a Territory Button base on mouse position
      * if this is an existing Button and remove is enabled,remove this button
      */
-    public void createNewButton() {
-        if(createButton){
+    public void createNewTerritory(JPanel continent) {
+        if(createLand==1){
             JButton temp = new JButton();
-            Point p = maparea.getMousePosition();
+            Point p = continent.getMousePosition();
             temp.setBounds(p.x,p.y,width,height);
-            maparea.add(temp);
+            continent.add(temp);
             temp.repaint();
+            continent.repaint();
             temp.addActionListener(e ->
                     {
-                        if(removeButton){
-                            maparea.remove(temp);
-                            maparea.repaint();
+                        if(removeLand){
+                            continent.remove(temp);
+                            continent.repaint();
                         }
                         else {temp.setText(JOptionPane.showInputDialog("Give it a name"));}
                     }
             );
         }
     }
+
+    /**
+     * Create a new Continent base on mouse position
+     *
+     */
+    public void createNewContinent() {
+        if(createLand==2){
+            JPanel temp = new JPanel();
+            Point p = maparea.getMousePosition();
+            temp.setBounds(p.x,p.y,width,height);
+            temp.setLayout(null);
+            maparea.add(temp);
+            temp.repaint();
+            temp.setBackground(new Color(255,0,0));
+            temp.addMouseListener(continentController);
+        }
+    }
+
+    /**
+     * remove continent when remove is on and in Continent Mode
+     * @param e1 clicked Continent
+     */
+    public void removeContinent(JPanel e1) {
+        if(removeLand && createLand==2){
+            maparea.remove(e1);
+            maparea.repaint();
+        }
+    }
+
     public static void main(String[] args) {
         new MapEditer();
     }
