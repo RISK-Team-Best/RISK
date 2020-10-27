@@ -27,32 +27,50 @@ public class Game {
     private JLabel infoLabel;
 
     public void handleButtonpressed(TerritoryButton source) {
+        System.out.println(territoryCommand1);
         if (territoryCommand1==null){
-        territoryCommand1 = source.getTerritory();
+            territoryCommand1 = source.getTerritory();
         }else if (territoryCommand2==null)
         {
             territoryCommand2 = source.getTerritory();
         }
 
-        if(currentStage==RECRUIT)
-        {
+        if(currentStage==RECRUIT) {
             try {
                 int howmany = Integer.valueOf(JOptionPane.showInputDialog("how many to draft"));
                 boolean stillHaveTroops=draft(currentPlayer,territoryCommand1,howmany);
                 if (stillHaveTroops){}
                 else {changeState();}
                 territoryCommand1=null;
+                return;
             }catch (Exception e)
             {
                 System.out.println(e);
                 territoryCommand1=null;
+                return;
                 //territoryCommand2=null;
             }
-
-
-
         }
+
+        if(currentStage==ATTACK)
+        {
+            if (territoryCommand2==null) {
+                infoLabel.setText("Please Press the second button");
+                disableAllButtons();
+                for (Territory neighOfThis:territoryCommand1.getNeighbourList()) {
+                    if(neighOfThis.getHolder()!= currentPlayer){
+                        neighOfThis.getTerritoryButton().setEnabled(true);
+                        neighOfThis.getTerritoryButton().update();
+                    }
+                }
+            }else {
+                attack(territoryCommand1,territoryCommand2);
+            }
+        }
+        territoryCommand1=null;
+        territoryCommand2=null;
     }
+
 
     public enum State {
         DRAFT,ATTACK,FORTIFY,SKIP,PASS,QUIT;
@@ -236,8 +254,8 @@ public class Game {
                     }
                     System.out.print("\n");
                 }
-                if (firstCommand.equals("attack"))
-                attack(instrction[1],instrction[2]);
+                //  if (firstCommand.equals("attack"))
+                //attack(instrction[1],instrction[2]);
 
             }
             if(currentStage==DEFEND)
@@ -246,8 +264,8 @@ public class Game {
             }
 
 
-           // Command command = parser.getCommand();
-           // finished = processCommand(parser.getCommand());
+            // Command command = parser.getCommand();
+            // finished = processCommand(parser.getCommand());
         }
         System.out.println("Thank you for playing, Bye");//quit the game
     }
@@ -361,17 +379,14 @@ public class Game {
     }
 
 
-    public void attack(String attack,String defence)
 
+    public void attack(Territory attack,Territory defence)
     {
-       String attackCountryName = attack;
-       String defenceCountryName = defence;
 
+        Territory attackCountry = attack;
+        Territory defenceCountry = defence;
 
-       Territory attackCountry = this.gameMap.getTerritory(attackCountryName);
-       Territory defenceCountry = this.gameMap.getTerritory(defenceCountryName);
-
-       if(!currentPlayer.checkTerritoryByString(attackCountryName)){
+      /* if(!currentPlayer.checkTerritoryByString(attackCountryName)){
            System.out.println("Please enter your own territory to start battle.");
            return;
        }
@@ -387,12 +402,13 @@ public class Game {
            System.out.println("You cannot choose the territory which only has one troop");
            return;
        }
+       */
 
         int defenceTroops;
         int attackTroops = 1;
 
         if(defenceCountry.getTroops()>=2)
-             defenceTroops=2;
+            defenceTroops=2;
 
         else defenceTroops=1;
 
@@ -416,12 +432,13 @@ public class Game {
         Dice attackDice = new Dice(attackTroops);
         Dice defenceDice = new Dice(defenceTroops);
         compareDices(attackDice,defenceDice,attackCountry,defenceCountry);
-        
+
         if(defenceCountry.getTroops()==0){
             OccupiedCountry(attackCountry,defenceCountry);
         }
 
     }
+
 
     public void blitz(Territory attackCountry, Territory defenceCountry) {
 
@@ -491,8 +508,8 @@ public class Game {
     {
         HashMap<String,Territory> territoryHashMap = gameMap.getTerritoryHashMap();
         String departCountryName = command.getSecondWord();
-         String destinationCountryName = command.getThirdWord();
-         int moveTroopNum = Integer.parseInt(command.getFourthWord());
+        String destinationCountryName = command.getThirdWord();
+        int moveTroopNum = Integer.parseInt(command.getFourthWord());
 
 
         if (currentPlayer.hasTerritory(gameMap,departCountryName) || currentPlayer.hasTerritory(gameMap,destinationCountryName) ) {
@@ -600,3 +617,4 @@ public class Game {
 
 
 }
+
