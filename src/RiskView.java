@@ -22,8 +22,8 @@ public class RiskView extends JFrame {
 
     private JComboBox troopsBox = new JComboBox();
 
-    private JButton functionButton = new JButton();
-    private JButton skipButton = new JButton();
+    //private JButton functionButton = new JButton();
+    private JButton skipButton = new JButton("Skip");
 
     private JScrollPane startingTerritoryScrollPane;
     private JScrollPane destinationTerritoryScrollPane;
@@ -34,6 +34,11 @@ public class RiskView extends JFrame {
     private JMenuItem newGameItem = new JMenuItem("New");
     private JMenu fileMenu = new JMenu("File");
     private JMenuBar menuBar = new JMenuBar();
+
+    private JButton attack = new JButton("Attack");
+    private JButton draft = new JButton("Draft");
+    private JButton fortify = new JButton("Fortify");
+    private JButton deploy = new JButton("Deploy");
 
     private RiskModel model;
     private int numberPlayer = 0;
@@ -76,7 +81,12 @@ public class RiskView extends JFrame {
 
         operationPanel.setLayout(new BoxLayout(operationPanel,BoxLayout.Y_AXIS));
         operationPanel.add(startingTerritoryScrollPane);
-        operationPanel.add(functionButton);
+
+        operationPanel.add(draft);
+        operationPanel.add(attack);
+        operationPanel.add(deploy);
+        operationPanel.add(fortify);
+
         operationPanel.add(destinationTerritoryScrollPane);
         operationPanel.add(troopsBox);
         operationPanel.add(skipButton);
