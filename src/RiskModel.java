@@ -41,7 +41,7 @@ public class RiskModel {
         for(Territory territory:allCountries)allCountriesJList.addElement(territory.getName());
         for(Continent continent:allContinents)allContinentsJList.addElement(continent.getName());
 
-        initialGame();
+        //initialGame();
 //        System.out.println("Alright! Let's start battling!");
 //        processGaming();
     }
@@ -585,7 +585,12 @@ public class RiskModel {
         }
 
     }
-
+    public void setPlayerNum(int num){
+        this.numberPlayers = num;
+    }
+    public int getPlayerNum(){
+        return this.numberPlayers;
+    }
     public ArrayList<Continent> getAllContinents() {
         return allContinents;
     }
@@ -597,6 +602,7 @@ public class RiskModel {
      * @throws IOException the io exception
      */
     public static void main(String[] args) throws IOException {
+
         RiskModel model = new RiskModel();
         model.updateContinentListInfo();
         for(Continent continent: model.allContinents){

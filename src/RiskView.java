@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.text.html.ImageView;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Hashtable;
 
@@ -91,8 +92,12 @@ public class RiskView extends JFrame {
         mainPanel.add(operationPanel,BorderLayout.CENTER);
         mainPanel.add(continentInfoPanel,BorderLayout.EAST);
 
+
         this.add(menuBar);
+        menuBar.setSize(50, 28);
+        menuBar.setLocation(0,0);
         this.add(mainPanel);
+        //mainPanel.setLocation(0,-1000);
         //mainPanel.add(menuBar);
 
 
@@ -100,7 +105,7 @@ public class RiskView extends JFrame {
 
 
         this.setLocation(200,50);
-        this.setSize(720,360);
+        this.setSize(1000,4000);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
@@ -120,7 +125,12 @@ public class RiskView extends JFrame {
         }
         return numberPlayer;
     }
+    public void popGetName(){
 
+    }
+    public void addActionListener(ActionListener e){
+        newGameItem.addActionListener(e);
+    }
     public static void main(String[] args) throws IOException {
         new RiskView();
     }
