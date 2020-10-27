@@ -11,7 +11,7 @@ public class Game {
     private Player currentPlayer;
     private int currentPlayerID;
     private int currentStage;
-    boolean stillHaveTroops;
+    boolean stillHaveTroops=true;
     private GameController gameController;//reserved
     private GameView view;
     private boolean unFinishedDeploy = false;
@@ -67,18 +67,11 @@ public class Game {
         }
 
         if(currentStage==RECRUIT) {
-            try {
-                int howmany = Integer.valueOf(JOptionPane.showInputDialog("how many to draft"));//need to change to mouse control later
-                stillHaveTroops=draft(currentPlayer,territoryCommand1,howmany);
-                if (stillHaveTroops){}//do nothing
-                else {changeState();}
-                territoryCommand1=null;//clear first command for next draft
+
+                //int howmany = Integer.valueOf(JOptionPane.showInputDialog("how many to draft"));//need to change to mouse control later
+                draft(territoryCommand1);
                 return;
-            }catch (Exception e)
-            {
-                System.out.println(e);
-                return;
-            }
+
         }
 
         if(currentStage==ATTACK)
@@ -189,26 +182,35 @@ public class Game {
     }
 
     public void skipStage() {
-        if(currentStage!=RECRUIT)
+        if(currentStage==RECRUIT && currentPlayer.getUnAssignedTroops()>0)
         {
-            changeState();
+            view.getInfoLabel().setText("you can not skip draft stage");
         }
-        else {view.getInfoLabel().setText("you can not skip draft stage");}
+        else {changeState();}
     }
 
-    public boolean draft(Player who,  Territory to, int howMany)
+    public void draft(Territory to)
 
     {
-        if (who.getUnAssignedTroops()>=howMany){
-            to.increaseTroops(howMany);
-            who.decreaseUnassignedTroops(howMany);
-            view.getInfoLabel().setText("You have moved "+howMany+" to "+to.getName());
-        }
-        else {System.out.println("not enough troops");}
-
-
-        if (who.getUnAssignedTroops()>0){return true;}
-        else {return false;}
+        MoveSlider ms = new MoveSlider(1,currentPlayer.getUnAssignedTroops(),this,view);
+        ms.getConfirm().addActionListener(e ->
+        {
+            to.increaseTroops(ms.getValue());
+            currentPlayer.decreaseUnassignedTroops(ms.getValue());
+            unFinishedDeploy = false;
+            view.setEnabled(true);
+            ms.dispose();
+            to.getTerritoryButton().update();
+            if (currentPlayer.getUnAssignedTroops()>0){stillHaveTroops=true;}
+            else {
+                stillHaveTroops=false;
+                changeState();
+                territoryCommand1=null;
+            }
+        });
+        view.setEnabled(false);
+        unFinishedDeploy = true;
+        territoryCommand1=null;
     }
 
 
@@ -312,28 +314,17 @@ public class Game {
             enablePlayersButtonCanAttack();
             return;
         }
-        JFrame temp = new JFrame();
-        //slider setting
-        JSlider deploy = new JSlider(JSlider.HORIZONTAL,3,attackCountry.getTroops()-1,attackCountry.getTroops()-1);
-        deploy.setMajorTickSpacing(1);
-        deploy.setPaintLabels(true);
-        temp.add(deploy);
-        //confirm Button
-        JButton confirm = new JButton("OK");
-        temp.add(confirm);
-        confirm.addActionListener(e ->
+        MoveSlider ms = new MoveSlider(3,attackCountry.getTroops()-1,this,view);
+        ms.getConfirm().addActionListener(e ->
         {
-            attackCountry.decreaseTroops(deploy.getValue());
-            defenceCountry.increaseTroops(deploy.getValue());
+            attackCountry.decreaseTroops(ms.getValue());
+            defenceCountry.increaseTroops(ms.getValue());
             unFinishedDeploy = false;
             view.setEnabled(true);
-            temp.dispose();
+            ms.dispose();
             disableAllButtons();
             enablePlayersButtonCanAttack();
         });
-        temp.setLayout(new FlowLayout());
-        temp.pack();
-        temp.setVisible(true);
         view.setEnabled(false);
         unFinishedDeploy = true;
     }
@@ -397,8 +388,10 @@ public class Game {
         currentStage = (currentStage+1)%3;//change State
         if(currentStage==RECRUIT)
         {
-            currentPlayerID=(currentPlayerID+1)%players.size();//change Player
-            currentPlayer = players.get(currentPlayerID);
+            do {
+                currentPlayerID=(currentPlayerID+1)%players.size();//change Player
+                currentPlayer = players.get(currentPlayerID);
+            }while (currentPlayer.getTerritoryLinkedList().size()==0);
             giveCurrentPlayerTroops();
             view.getInfoLabel().setText(currentPlayer.printPlayerinfo());
             enablePlayersButton();
@@ -459,6 +452,10 @@ public class Game {
             territory.getTerritoryButton().setEnabled(true);
             territory.getTerritoryButton().update();
         }
+    }
+
+    public void setUnFinishedDeploy(boolean unFinishedDeploy) {
+        this.unFinishedDeploy = unFinishedDeploy;
     }
 
 }
