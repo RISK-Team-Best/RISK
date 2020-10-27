@@ -1,3 +1,5 @@
+import javafx.geometry.Orientation;
+
 import javax.swing.*;
 import java.util.*;
 
@@ -10,6 +12,8 @@ public class Game {
     private int currentStage;
     boolean stillHaveTroops;
     private GameController gameController;//reserved
+    private GameView view;
+    private boolean unFinishedDeploy = false;
 
     //game constants
     public static final int  RECRUIT=0;
@@ -18,14 +22,12 @@ public class Game {
     public static final int  ENDGAME=-1;
     public static final int  TROOP_FOR_2_PEOPLE=50;
     public static final int  TROOP_FOR_3_PEOPLE=35;
-    public static final int  TROOP_FOR_4_PEOPLE=30;
+    public static final int  TROOP_FOR_4_PEOPLE=3;
     public static final int  TROOP_FOR_5_PEOPLE=25;
     public static final int  TROOP_FOR_6_PEOPLE=20;
     //For Button pressed
     private Territory territoryCommand1; //the territory for the fist Button pressed
     private Territory territoryCommand2; //the territory for the second Button pressed
-    // the information output Label
-    private JLabel infoLabel;
 
     /**
      * Constructor for new Game
@@ -37,8 +39,14 @@ public class Game {
         this.players = players;
         gameMap = map;
         gameController= new GameController(this);//reserved
+        view = new GameView(this,gameController);
         initial();
     }
+
+    public GMap getGameMap() {
+        return gameMap;
+    }
+
 
     /**
      * if any Territory Button is pressed
@@ -75,7 +83,7 @@ public class Game {
         if(currentStage==ATTACK)
         {
             if (territoryCommand2==null) { //if the attack country is chosen but target not chosen
-                infoLabel.setText("Please Press the second button");
+                view.getInfoLabel().setText("Please Press the second button");
                 disableAllButtons();
                 enableEnemyTerritoryButton(territoryCommand1);
                 return;
@@ -86,8 +94,9 @@ public class Game {
                 territoryCommand1=null;
                 territoryCommand2=null;
                 //refresh availble attack country
+                if(unFinishedDeploy){return;}
                 disableAllButtons();
-                enablePlayersButtonWithTroopsBiggerthanOne();
+                enablePlayersButtonCanAttack();
                 return;
             }
         }
@@ -152,54 +161,11 @@ public class Game {
                 p.decreaseUnassignedTroops(1);
             }
         }
-        initGUI(gameMap);
-
-        infoLabel.setText("Welcome to RISK");
         changeState();
 
     }
 
-    private void initGUI(GMap gameMap) {
-        JFrame jFrame = new JFrame("RISK");
-        jFrame.setSize(1024,768);
-        JSplitPane splitPane= new JSplitPane();
-        jFrame.add(splitPane);
-        JPanel mapArea = new JPanel();
-        JScrollPane scrollPane = new JScrollPane(mapArea);
-        splitPane.setLeftComponent(scrollPane);
-        splitPane.setDividerLocation(768);
-        JPanel controlArea = new JPanel();
-        splitPane.setRightComponent(controlArea);
-        //layouts
-        controlArea.setLayout(new BoxLayout(controlArea,BoxLayout.Y_AXIS));
-        mapArea.setLayout(null);
 
-        for (Continent continent : gameMap.getContinentArrayList())
-        {
-            ContinentPanel continentPanel = continent.getPanel();
-            mapArea.add(continentPanel);
-            continentPanel.setLayout(null);
-            for(Territory territory : continent.getTerritoryArrayList())
-            {
-                TerritoryButton territoryButton = territory.getTerritoryButton();
-                continent.getPanel().add(territoryButton);
-                territoryButton.update();
-                territoryButton.addActionListener(e -> {
-                    handleButtonPressed(territoryButton);
-                });
-
-            }
-        }
-        //control area settings
-        infoLabel = new JLabel();
-        controlArea.add(infoLabel);
-        JButton skip = new JButton("skip");
-        controlArea.add(skip);
-        skip.addActionListener(gameController);
-
-        jFrame.setVisible(true);
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
 
     private void disableAllButtons() {
         //close all button before start
@@ -226,7 +192,7 @@ public class Game {
         {
             changeState();
         }
-        else {infoLabel.setText("you can not skip draft stage");}
+        else {view.getInfoLabel().setText("you can not skip draft stage");}
     }
 
     public boolean draft(Player who,  Territory to, int howMany)
@@ -235,40 +201,13 @@ public class Game {
         if (who.getUnAssignedTroops()>=howMany){
             to.increaseTroops(howMany);
             who.decreaseUnassignedTroops(howMany);
-            infoLabel.setText("You have moved "+howMany+" to "+to.getName());
+            view.getInfoLabel().setText("You have moved "+howMany+" to "+to.getName());
         }
         else {System.out.println("not enough troops");}
 
 
         if (who.getUnAssignedTroops()>0){return true;}
         else {return false;}
-        //example draft Ottawa 5
-        /*String countryName = command.getSecondWord();
-        int armyNum = Integer.parseInt(command.getThirdWord());
-
-        System.out.println(currentState + "You have" + currentPlayer.getTroops()+
-                " troops to add to any of your territory.");
-
-
-        if (armyNum <= currentPlayer.getTroops())
-        {
-            gameMap.getTerritory(countryName).increaseTroops(armyNum);
-            currentPlayer.decreasetroops(armyNum);//decrease the number of troop
-                                                  // that available to draft
-
-        }
-
-        else
-            System.out.println("You don't have enough troops");
-
-        if(currentPlayer.getTroops() == 0){//保证所有available troop在draft步骤中使用完才能进入下一个阶段
-            currentState = State.ATTACK;
-        }
-        else
-        {   currentState = State.DRAFT;
-            System.out.println("You have "+ currentPlayer.getTroops()+"could draft.");}*/
-
-
     }
 
 
@@ -276,26 +215,7 @@ public class Game {
     public void attack(Territory attackCountry,Territory defenceCountry)
     {
         blitz(attackCountry,defenceCountry);
-
-
-      /* if(!currentPlayer.checkTerritoryByString(attackCountryName)){
-           System.out.println("Please enter your own territory to start battle.");
-           return;
-       }
-       if(currentPlayer.checkTerritoryByString(defenceCountryName)){
-           System.out.println("You cannot attack yourself! Retry!");
-           return;
-       }
-       if(!attackCountry.checkNeighbor(defenceCountry)){
-           System.out.println("Sorry, the two territories are not connected.");
-           return;
-       }
-       if(attackCountry.getTroops()<=1){
-           System.out.println("You cannot choose the territory which only has one troop");
-           return;
-       }
-
-
+        /*
         int defenceTroops;
         int attackTroops = 1;
 
@@ -333,11 +253,11 @@ public class Game {
 
 
     public void blitz(Territory attackCountry, Territory defenceCountry) {
-
+        int attack;
+        int defence;
         while((attackCountry.getTroops()>1)&&(defenceCountry.getTroops()>0)) {
-
-            int attack = attackCountry.getTroops();
-            int defence = defenceCountry.getTroops();
+            attack = attackCountry.getTroops()-1;
+            defence = defenceCountry.getTroops();
             if(attack>3)
                 attack=3;
             if(defence>2)
@@ -372,26 +292,54 @@ public class Game {
     }
 
     public void OccupiedCountry(Territory attackCountry, Territory defenceCountry) {
-        int deployTroops;
-        do {
-            System.out.println(attackCountry.getHolder().getName() + "attacked successfully! Currently you have "+attackCountry.getTroops()+ " in your original country.");
-            System.out.println(" How many troops deploy to " + defenceCountry.getName());
-            Scanner sc = new Scanner(System.in);
-            deployTroops = sc.nextInt();
-            sc.nextLine();
-            if(deployTroops > attackCountry.getTroops()){
-                System.out.println("You don't have so much troops, try it again.");
-            }else if(deployTroops == attackCountry.getTroops()){
-                System.out.println("You have to leave at least one troop in your original country.");
-            }else{
-                break;
-            }
-        }while(true);
-        attackCountry.decreaseTroops(deployTroops);
         defenceCountry.getHolder().removeTerritory(defenceCountry);
         defenceCountry.setHolder(attackCountry.getHolder());
         attackCountry.getHolder().addTerritory(defenceCountry);
-        defenceCountry.increaseTroops(deployTroops);
+        defenceCountry.getTerritoryButton().update();
+            System.out.println(attackCountry.getHolder().getName() + "attacked successfully! Currently you have "+attackCountry.getTroops()+ " in your original country.");
+            System.out.println(" How many troops deploy to " + defenceCountry.getName());
+            if(attackCountry.getTroops()<4){
+                System.out.println(attackCountry.getTroops());
+                System.out.println(defenceCountry.getTroops());
+                attackCountry.decreaseTroops(attackCountry.getTroops()-1);
+                defenceCountry.increaseTroops(attackCountry.getTroops()-1);
+                System.out.println(attackCountry.getTroops());
+                System.out.println(defenceCountry.getTroops());
+                unFinishedDeploy=false;
+                disableAllButtons();
+                enablePlayersButtonCanAttack();
+                return;
+            }
+
+            JFrame temp = new JFrame();
+            //slider setting
+            JSlider deploy = new JSlider(JSlider.HORIZONTAL,3,attackCountry.getTroops()-1,attackCountry.getTroops()-1);
+            deploy.setMajorTickSpacing(1);
+            deploy.setPaintLabels(true);
+            temp.add(deploy);
+            //confirm Button
+            JButton confirm = new JButton("OK");
+            temp.add(confirm);
+            confirm.addActionListener(e ->
+            {
+                attackCountry.decreaseTroops(deploy.getValue());
+                defenceCountry.increaseTroops(deploy.getValue());
+                unFinishedDeploy = false;
+                view.setEnabled(true);
+                temp.dispose();
+                disableAllButtons();
+                enablePlayersButtonCanAttack();
+            });
+
+
+            temp.setSize(300,100);
+            temp.setVisible(true);
+            view.setEnabled(false);
+        unFinishedDeploy = true;
+
+
+
+
     }
 
 
@@ -458,19 +406,19 @@ public class Game {
             currentPlayerID=(currentPlayerID+1)%players.size();//change Player
             currentPlayer = players.get(currentPlayerID);
             giveCurrentPlayerTroops();
-            infoLabel.setText(currentPlayer.printPlayerinfo());
+            view.getInfoLabel().setText(currentPlayer.printPlayerinfo());
             enablePlayersButton();
-            infoLabel.setText("now "+currentPlayer.getName()+"'s turn, stage Recruit");
+            view.getInfoLabel().setText("now "+currentPlayer.getName()+"'s turn, stage Recruit");
 
         }
         else if(currentStage==ATTACK)
         {
             enablePlayersButtonWithTroopsBiggerthanOne();
-            infoLabel.setText("now "+currentPlayer.getName()+"'s turn, stage Attack");
+            view.getInfoLabel().setText("now "+currentPlayer.getName()+"'s turn, stage Attack");
         }
         else {
             enablePlayersButtonWithTroopsBiggerthanOne();
-            infoLabel.setText("now "+currentPlayer.getName()+"'s turn, stage Defend");
+            view.getInfoLabel().setText("now "+currentPlayer.getName()+"'s turn, stage Defend");
         }
     }
 
@@ -484,12 +432,31 @@ public class Game {
         }
     }
 
+    private void enablePlayersButtonCanAttack() {
+        for (Territory territory:currentPlayer.getTerritoryLinkedList())
+        {
+            if((territory.getTroops()>1) && (!allSelfcountrySurronding(territory))) {
+                territory.getTerritoryButton().setEnabled(true);
+                territory.getTerritoryButton().update();
+            }
+        }
+    }
+
+    public boolean  allSelfcountrySurronding(Territory territory)
+    {
+        for(Territory neibour: territory.getNeighbourList())
+        {
+            if(neibour.getHolder()!=territory.getHolder()){return false;}
+        }
+        return  true;
+    }
+
     private void giveCurrentPlayerTroops() {
         int landnum = currentPlayer.getTerritoryLinkedList().size();
         int num = Math.floorDiv(landnum,3);
         if (num <3){num =3;}
         currentPlayer.increaseUnassignedTroops(num);
-        infoLabel.setText("you own "+landnum+"Territories and you got "+num+"troops");
+        view.getInfoLabel().setText("you own "+landnum+"Territories and you got "+num+"troops");
     }
 
     private void enablePlayersButton() {
@@ -499,14 +466,6 @@ public class Game {
             territory.getTerritoryButton().update();
         }
     }
-
-
-    /*public Player getNextPlayer(){//get next player
-        return players.get((currentPlayer.getId()+1)%players.size());
-
-    }*/
-
-
 
 }
 
