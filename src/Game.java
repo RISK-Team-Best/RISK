@@ -1,6 +1,7 @@
 import javafx.geometry.Orientation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
 
 public class Game {
@@ -296,50 +297,45 @@ public class Game {
         defenceCountry.setHolder(attackCountry.getHolder());
         attackCountry.getHolder().addTerritory(defenceCountry);
         defenceCountry.getTerritoryButton().update();
-            System.out.println(attackCountry.getHolder().getName() + "attacked successfully! Currently you have "+attackCountry.getTroops()+ " in your original country.");
-            System.out.println(" How many troops deploy to " + defenceCountry.getName());
-            if(attackCountry.getTroops()<4){
-                System.out.println(attackCountry.getTroops());
-                System.out.println(defenceCountry.getTroops());
-                attackCountry.decreaseTroops(attackCountry.getTroops()-1);
-                defenceCountry.increaseTroops(attackCountry.getTroops()-1);
-                System.out.println(attackCountry.getTroops());
-                System.out.println(defenceCountry.getTroops());
-                unFinishedDeploy=false;
-                disableAllButtons();
-                enablePlayersButtonCanAttack();
-                return;
-            }
-
-            JFrame temp = new JFrame();
-            //slider setting
-            JSlider deploy = new JSlider(JSlider.HORIZONTAL,3,attackCountry.getTroops()-1,attackCountry.getTroops()-1);
-            deploy.setMajorTickSpacing(1);
-            deploy.setPaintLabels(true);
-            temp.add(deploy);
-            //confirm Button
-            JButton confirm = new JButton("OK");
-            temp.add(confirm);
-            confirm.addActionListener(e ->
-            {
-                attackCountry.decreaseTroops(deploy.getValue());
-                defenceCountry.increaseTroops(deploy.getValue());
-                unFinishedDeploy = false;
-                view.setEnabled(true);
-                temp.dispose();
-                disableAllButtons();
-                enablePlayersButtonCanAttack();
-            });
-
-
-            temp.setSize(300,100);
-            temp.setVisible(true);
-            view.setEnabled(false);
+        System.out.println(attackCountry.getHolder().getName() + "attacked successfully! Currently you have "+attackCountry.getTroops()+ " in your original country.");
+        System.out.println(" How many troops deploy to " + defenceCountry.getName());
+        if(attackCountry.getTroops()<5){
+            System.out.println(attackCountry.getTroops());
+            System.out.println(defenceCountry.getTroops());
+            int move = attackCountry.getTroops()-1;
+            attackCountry.decreaseTroops(move);
+            defenceCountry.increaseTroops(move);
+            System.out.println(attackCountry.getTroops());
+            System.out.println(defenceCountry.getTroops());
+            unFinishedDeploy=false;
+            disableAllButtons();
+            enablePlayersButtonCanAttack();
+            return;
+        }
+        JFrame temp = new JFrame();
+        //slider setting
+        JSlider deploy = new JSlider(JSlider.HORIZONTAL,3,attackCountry.getTroops()-1,attackCountry.getTroops()-1);
+        deploy.setMajorTickSpacing(1);
+        deploy.setPaintLabels(true);
+        temp.add(deploy);
+        //confirm Button
+        JButton confirm = new JButton("OK");
+        temp.add(confirm);
+        confirm.addActionListener(e ->
+        {
+            attackCountry.decreaseTroops(deploy.getValue());
+            defenceCountry.increaseTroops(deploy.getValue());
+            unFinishedDeploy = false;
+            view.setEnabled(true);
+            temp.dispose();
+            disableAllButtons();
+            enablePlayersButtonCanAttack();
+        });
+        temp.setLayout(new FlowLayout());
+        temp.pack();
+        temp.setVisible(true);
+        view.setEnabled(false);
         unFinishedDeploy = true;
-
-
-
-
     }
 
 
@@ -393,8 +389,6 @@ public class Game {
                 break;
             }
         } while (true);*/
-
-
     }
 
     public void changeState()
