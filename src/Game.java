@@ -1,108 +1,122 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import javax.swing.*;
-import java.awt.*;
 import java.util.*;
 
 public class Game {
-    private String gameName;
+    private String gameName;//reserved for save and load game
     private GMap gameMap;
     private ArrayList<Player> players;
     private Player currentPlayer;
     private int currentPlayerID;
-    //初始状态为draft
     private int currentStage;
-    //private State currentState = State.DRAFT;
-    private Parser parser;
-    private Scanner scanner;
-    private GameController gameController;
+    boolean stillHaveTroops;
+    private GameController gameController;//reserved
 
+    //game constants
     public static final int  RECRUIT=0;
     public static final int  ATTACK=1;
     public static final int  DEFEND=2;
     public static final int  ENDGAME=-1;
-    private String command;
-    private Territory territoryCommand1;
-    private Territory territoryCommand2;
+    public static final int  TROOP_FOR_2_PEOPLE=50;
+    public static final int  TROOP_FOR_3_PEOPLE=35;
+    public static final int  TROOP_FOR_4_PEOPLE=30;
+    public static final int  TROOP_FOR_5_PEOPLE=25;
+    public static final int  TROOP_FOR_6_PEOPLE=20;
+    //For Button pressed
+    private Territory territoryCommand1; //the territory for the fist Button pressed
+    private Territory territoryCommand2; //the territory for the second Button pressed
+    // the information output Label
     private JLabel infoLabel;
 
-    public void handleButtonpressed(TerritoryButton source) {
-        System.out.println(territoryCommand1);
+    /**
+     * Constructor for new Game
+     * @param players All players set from Mainpage
+     * @param map Map chosen form Mainpage
+     */
+    public  Game(ArrayList<Player> players,GMap map)
+    {
+        this.players = players;
+        gameMap = map;
+        gameController= new GameController(this);//reserved
+        initial();
+    }
+
+    /**
+     * if any Territory Button is pressed
+     * @param source the source Territory Button
+     */
+    public void handleButtonPressed(TerritoryButton source) {
         if (territoryCommand1==null){
             territoryCommand1 = source.getTerritory();
+            System.out.println("debug first territory"+territoryCommand1);//debug first territory
         }else if (territoryCommand2==null)
         {
             territoryCommand2 = source.getTerritory();
+            System.out.println("debug second territory"+territoryCommand1);//debug second territory
+        }
+        else{
+            System.out.println("debug forget to clear territorycommand");
         }
 
         if(currentStage==RECRUIT) {
             try {
-                int howmany = Integer.valueOf(JOptionPane.showInputDialog("how many to draft"));
-                boolean stillHaveTroops=draft(currentPlayer,territoryCommand1,howmany);
-                if (stillHaveTroops){}
+                int howmany = Integer.valueOf(JOptionPane.showInputDialog("how many to draft"));//need to change to mouse control later
+                stillHaveTroops=draft(currentPlayer,territoryCommand1,howmany);
+                if (stillHaveTroops){}//do nothing
                 else {changeState();}
-                territoryCommand1=null;
+                territoryCommand1=null;//clear first command for next draft
                 return;
             }catch (Exception e)
             {
                 System.out.println(e);
-                territoryCommand1=null;
                 return;
-                //territoryCommand2=null;
             }
         }
 
         if(currentStage==ATTACK)
         {
-            if (territoryCommand2==null) {
+            if (territoryCommand2==null) { //if the attack country is chosen but target not chosen
                 infoLabel.setText("Please Press the second button");
                 disableAllButtons();
-                for (Territory neighOfThis:territoryCommand1.getNeighbourList()) {
-                    if(neighOfThis.getHolder()!= currentPlayer){
-                        neighOfThis.getTerritoryButton().setEnabled(true);
-                        neighOfThis.getTerritoryButton().update();
-                    }
-                }
-            }else {
+                enableEnemyTerritoryButton(territoryCommand1);
+                return;
+            }
+            else {
                 attack(territoryCommand1,territoryCommand2);
+                //clear both command for next attack
+                territoryCommand1=null;
+                territoryCommand2=null;
+                //refresh availble attack country
+                disableAllButtons();
+                enablePlayersButtonWithTroopsBiggerthanOne();
+                return;
             }
         }
-        territoryCommand1=null;
-        territoryCommand2=null;
-    }
-
-
-    public enum State {
-        DRAFT,ATTACK,FORTIFY,SKIP,PASS,QUIT;
-    }
-
-    /**
-     *
-     */
-    public  Game(ArrayList<Player> players,GMap map)
-    {
-        this.players = players;
-        parser = new Parser();//读取用户的输入
-        currentPlayer =players.get(0);
-        gameMap = map;
-        gameController= new GameController(this);
-        //currentPlayer = new Player();//第一个玩家
-        //players = new LinkedList<>();//玩家列表设置成循环列表
-        initial();
-
 
     }
+
+    private void enableEnemyTerritoryButton(Territory attackFrom) {
+        for (Territory neighOfThis:attackFrom.getNeighbourList()) {
+            if(neighOfThis.getHolder()!= currentPlayer){
+                neighOfThis.getTerritoryButton().setEnabled(true);
+                neighOfThis.getTerritoryButton().update();
+            }
+        }
+    }
+
     public void initial(){
         currentStage = ENDGAME;
         currentPlayerID=-1;
         int initArmy;
         int playernumber = players.size();
-        if (playernumber==2){initArmy=50;}
-        else if (playernumber==3){initArmy=35;}
-        else if (playernumber==4){initArmy=30;}
-        else if (playernumber==5){initArmy=25;}
-        else if (playernumber==6){initArmy=20;}
-        else{initArmy=0;}
+        if (playernumber==2){initArmy=TROOP_FOR_2_PEOPLE;}
+        else if (playernumber==3){initArmy=TROOP_FOR_3_PEOPLE;}
+        else if (playernumber==4){initArmy=TROOP_FOR_4_PEOPLE;}
+        else if (playernumber==5){initArmy=TROOP_FOR_5_PEOPLE;}
+        else if (playernumber==6){initArmy=TROOP_FOR_6_PEOPLE;}
+        else{
+            initArmy=0;
+            System.out.println("Unsupported number");
+        }
         ArrayList<Territory> territoriescopy1 = new ArrayList<>();
         for(Territory t : gameMap.getTerritoryArrayList()){territoriescopy1.add(t);}
         Random random = new Random();
@@ -115,27 +129,27 @@ public class Game {
                 Territory t = territoriescopy1.get(randomresult);
                 t.setHolder(p);
                 t.increaseTroops(1);
-                p.getTerritoryArrayList().add(t);
+                p.getTerritoryLinkedList().add(t);
                 territoriescopy1.remove(t);
             }
-            p.increasetroops(initArmy-round);
+            p.increaseUnassignedTroops(initArmy-round);
         }
         for (int count = 0;count<territoriescopy1.size();count++){
             Player rest = players.get(count);
             Territory temp = territoriescopy1.get(count);
             temp.setHolder(rest);
             temp.increaseTroops(1);
-            rest.getTerritoryArrayList().add(temp);
-            rest.decreasetroops(1);
+            rest.getTerritoryLinkedList().add(temp);
+            rest.decreaseUnassignedTroops(1);
         }
         for(Player p : players)
         {
-            ArrayList<Territory> playerHoldTerritorys=p.getTerritoryArrayList();
-            while(p.getTroops()>0)
+            LinkedList<Territory> playerHoldTerritorys=p.getTerritoryLinkedList();
+            while(p.getUnAssignedTroops()>0)
             {
                 Territory temp = playerHoldTerritorys.get(random.nextInt(playerHoldTerritorys.size()));
                 temp.increaseTroops(1);
-                p.decreasetroops(1);
+                p.decreaseUnassignedTroops(1);
             }
         }
         initGUI(gameMap);
@@ -150,20 +164,20 @@ public class Game {
         jFrame.setSize(1024,768);
         JSplitPane splitPane= new JSplitPane();
         jFrame.add(splitPane);
-        JPanel maparea = new JPanel();
-        JScrollPane scrollPane = new JScrollPane(maparea);
+        JPanel mapArea = new JPanel();
+        JScrollPane scrollPane = new JScrollPane(mapArea);
         splitPane.setLeftComponent(scrollPane);
         splitPane.setDividerLocation(768);
-        JPanel controlarea = new JPanel();
-        splitPane.setRightComponent(controlarea);
+        JPanel controlArea = new JPanel();
+        splitPane.setRightComponent(controlArea);
         //layouts
-        controlarea.setLayout(new BoxLayout(controlarea,BoxLayout.Y_AXIS));
-        maparea.setLayout(null);
+        controlArea.setLayout(new BoxLayout(controlArea,BoxLayout.Y_AXIS));
+        mapArea.setLayout(null);
 
         for (Continent continent : gameMap.getContinentArrayList())
         {
             ContinentPanel continentPanel = continent.getPanel();
-            maparea.add(continentPanel);
+            mapArea.add(continentPanel);
             continentPanel.setLayout(null);
             for(Territory territory : continent.getTerritoryArrayList())
             {
@@ -171,19 +185,17 @@ public class Game {
                 continent.getPanel().add(territoryButton);
                 territoryButton.update();
                 territoryButton.addActionListener(e -> {
-                    handleButtonpressed(territoryButton);
+                    handleButtonPressed(territoryButton);
                 });
 
             }
         }
         //control area settings
         infoLabel = new JLabel();
-        controlarea.add(infoLabel);
+        controlArea.add(infoLabel);
         JButton skip = new JButton("skip");
-        controlarea.add(skip);
-        skip.addActionListener(e -> {
-            skipStage();
-        });
+        controlArea.add(skip);
+        skip.addActionListener(gameController);
 
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -198,7 +210,18 @@ public class Game {
         }
     }
 
-    private void skipStage() {
+    /**
+     * for intermediate step
+     */
+    private void disableAllButtonsWithoutUpdate() {
+        //close all button before start
+        for(Territory territory:gameMap.getTerritoryArrayList())
+        {
+            territory.getTerritoryButton().setEnabled(false);
+        }
+    }
+
+    public void skipStage() {
         if(currentStage!=RECRUIT)
         {
             changeState();
@@ -206,148 +229,18 @@ public class Game {
         else {infoLabel.setText("you can not skip draft stage");}
     }
 
-
-    public void play(){
-        //Scanner sc = new Scanner(System.in);
-        currentPlayer.increasetroops(currentPlayer.getTerritoryArrayList().size()/3);
-
-        boolean finished = false;
-        boolean stillHaveTroops;
-        System.out.println(currentPlayer.printPlayerinfo());
-        while (!finished){
-
-            //String[] testString1 = sc.nextLine().split(" ");
-            String[] instrction = parser.getInstrction();
-
-            String firstCommand = instrction[0];
-            if (firstCommand.equals("quit"))
-            {
-                System.out.println();
-                finished=true;
-            }
-            if (firstCommand.equals("skip"))
-            {
-                if(currentStage!=RECRUIT)
-                {
-                    changeState();
-                }
-                else {System.out.println("you can not skip draft stage");}
-            }
-            if(currentStage==RECRUIT)
-            {
-                if (firstCommand.equals("draft"))
-                {
-                    stillHaveTroops=draft(currentPlayer,gameMap.getTerritory(instrction[1]),Integer.valueOf(instrction[2]));
-                    if (stillHaveTroops){}
-                    else {changeState();}
-                }
-
-            }
-            if(currentStage==ATTACK)
-            {
-                for(Territory territory:currentPlayer.getTerritoryArrayList()){
-                    System.out.print(territory.getName()+" "+territory.getTroops()+"--");
-                    for(Territory neighbor:territory.getNeighbourList()){
-                        if(!neighbor.getHolder().equals(currentPlayer)) {
-                            System.out.print(neighbor.getName() + " " + neighbor.getTroops() + "  ");
-                        }
-                    }
-                    System.out.print("\n");
-                }
-                //  if (firstCommand.equals("attack"))
-                //attack(instrction[1],instrction[2]);
-
-            }
-            if(currentStage==DEFEND)
-            {
-                changeState();
-            }
-
-
-            // Command command = parser.getCommand();
-            // finished = processCommand(parser.getCommand());
-        }
-        System.out.println("Thank you for playing, Bye");//quit the game
-    }
-    /*private boolean processCommand(Command command){
-
-        boolean wantToQuit = false;
-        CommandWord commandWord = command.getCommandWord();
-
-        switch(commandWord){
-            case SKIP:
-
-                if(currentState == State.ATTACK)
-                    currentState = State.FORTIFY;
-                if(currentState == State.FORTIFY)
-                    currentState = State.PASS;
-                if(currentState == State.DRAFT)
-                    System.out.println("Please finish current state");
-                break;
-
-            case DRAFT:
-
-                if(currentState == State.DRAFT)//只有当前状态和玩家输入的command一致才能进入draft
-                                               //初始化默认状态为draft，所以当玩家输入command draft
-                                               //的时候 才能进行draft（）
-                    draft(command);
-                else
-                    System.out.println("Please finish current state");
-
-                break;
-
-
-            case ATTACK:
-
-                if(currentState == State.ATTACK)
-                attack(command);
-                else
-                    System.out.println("Please finish current state");
-                break;
-
-            case FORTIFY:
-
-                if(currentState == State.FORTIFY)
-                fortify(command);
-                else
-                    System.out.println("Please finish current state");
-                break;
-
-            case PASS:
-
-                if(currentState == State.PASS)
-                {
-                    currentPlayer = getNextPlayer();//当前玩家变成下一个玩家
-                    currentState = State.DRAFT;
-                }
-                else
-                    System.out.println("Please finish current state");
-
-
-            case QUIT:
-                wantToQuit = true;
-                break;
-            case UNKNOWN:
-                break;
-        }
-            return wantToQuit;//return value to play to quit the game
-    }*/
-
-
-    public boolean draft(Player who,  Territory to, int howMany)//需要更新Player.getTroop()方法
+    public boolean draft(Player who,  Territory to, int howMany)
 
     {
-        if(to.getHolder()==who){
-            if (who.getTroops()>=howMany){
-                to.increaseTroops(howMany);
-                who.decreasetroops(howMany);
-                System.out.println("You have moved "+howMany+" to "+to.getName());
-            }
-            else {System.out.println("not enough troops");}
+        if (who.getUnAssignedTroops()>=howMany){
+            to.increaseTroops(howMany);
+            who.decreaseUnassignedTroops(howMany);
+            infoLabel.setText("You have moved "+howMany+" to "+to.getName());
         }
-        else {System.out.println("not your land");}
+        else {System.out.println("not enough troops");}
 
-        if (who.getTroops()>0){return true;}
+
+        if (who.getUnAssignedTroops()>0){return true;}
         else {return false;}
         //example draft Ottawa 5
         /*String countryName = command.getSecondWord();
@@ -380,11 +273,10 @@ public class Game {
 
 
 
-    public void attack(Territory attack,Territory defence)
+    public void attack(Territory attackCountry,Territory defenceCountry)
     {
+        blitz(attackCountry,defenceCountry);
 
-        Territory attackCountry = attack;
-        Territory defenceCountry = defence;
 
       /* if(!currentPlayer.checkTerritoryByString(attackCountryName)){
            System.out.println("Please enter your own territory to start battle.");
@@ -402,7 +294,7 @@ public class Game {
            System.out.println("You cannot choose the territory which only has one troop");
            return;
        }
-       */
+
 
         int defenceTroops;
         int attackTroops = 1;
@@ -435,7 +327,7 @@ public class Game {
 
         if(defenceCountry.getTroops()==0){
             OccupiedCountry(attackCountry,defenceCountry);
-        }
+        }*/
 
     }
 
@@ -583,7 +475,7 @@ public class Game {
     }
 
     private void enablePlayersButtonWithTroopsBiggerthanOne() {
-        for (Territory territory:currentPlayer.getTerritoryArrayList())
+        for (Territory territory:currentPlayer.getTerritoryLinkedList())
         {
             if(territory.getTroops()>1) {
                 territory.getTerritoryButton().setEnabled(true);
@@ -593,15 +485,15 @@ public class Game {
     }
 
     private void giveCurrentPlayerTroops() {
-        int landnum = currentPlayer.getTerritoryArrayList().size();
+        int landnum = currentPlayer.getTerritoryLinkedList().size();
         int num = Math.floorDiv(landnum,3);
         if (num <3){num =3;}
-        currentPlayer.increasetroops(num);
+        currentPlayer.increaseUnassignedTroops(num);
         infoLabel.setText("you own "+landnum+"Territories and you got "+num+"troops");
     }
 
     private void enablePlayersButton() {
-        for (Territory territory:currentPlayer.getTerritoryArrayList())
+        for (Territory territory:currentPlayer.getTerritoryLinkedList())
         {
             territory.getTerritoryButton().setEnabled(true);
             territory.getTerritoryButton().update();
