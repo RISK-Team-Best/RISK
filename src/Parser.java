@@ -61,20 +61,6 @@ public class Parser {
         //this.instruction = reader.nextLine().split(" ");
        // return instruction;
     }
-    public static void main(String[] args){
-         Parser parser = new Parser();
-         Command command = parser.getCommand();
-         System.out.println(command.getCommandWord());
-         System.out.println(command.getSecondWord());
-         System.out.println(command.getThirdWord());
-         System.out.println(command.getFourthWord());
 
 
-        //Command command1 = new Command(CommandWord.ATTACK,"a","b","3");
-        //System.out.print(command1.getCommandWord());
-
-    }
-    //public void showcommand() {
-       // commands.Look();
-    //}
 }
