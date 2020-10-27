@@ -36,6 +36,7 @@ public class RiskView extends JFrame {
     private JMenuBar menuBar = new JMenuBar();
 
     private RiskModel model;
+    private int numberPlayer = 0;
 
     public RiskView() throws IOException {
         super("Risk Game");
@@ -114,7 +115,7 @@ public class RiskView extends JFrame {
 
 
 
-    public static int getNumberPlayerDialog(){
+    public int getNumberPlayerDialog(){
         int numberPlayer = 0;
         while(numberPlayer==0) {
             String input = JOptionPane.showInputDialog( "Please enter the number of players.(2-6)");
@@ -123,10 +124,16 @@ public class RiskView extends JFrame {
                 numberPlayer = Integer.parseInt(input);
             }
         }
+        this.numberPlayer = numberPlayer;
         return numberPlayer;
     }
-    public void popGetName(){
-
+    public String[] popGetName(){
+        String[] playerNameList = new String[6];
+        for(int i=0 ;i<this.numberPlayer;i++){
+            String name = JOptionPane.showInputDialog("Please enter Player "+ (i+1)+ " name");
+            playerNameList[i] = name;
+        }
+         return playerNameList;
     }
     public void addActionListener(ActionListener e){
         newGameItem.addActionListener(e);

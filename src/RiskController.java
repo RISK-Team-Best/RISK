@@ -25,6 +25,10 @@ public class RiskController {
                 int playerNum = view.getNumberPlayerDialog();
                 model.setPlayerNum(playerNum);
                 System.out.println(model.getPlayerNum());
+                String[] playerNameList = view.popGetName();
+                model.addPlayersName(playerNameList);
+                System.out.println(model.getPlayerName());
+
             }
 
         }

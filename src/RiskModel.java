@@ -67,8 +67,8 @@ public class RiskModel {
             } while (Error);
         }while(!(numberPlayers>1 && numberPlayers<7));
 
-        numberPlayers = RiskView.getNumberPlayerDialog();
-        addPlayers(numberPlayers);
+        //numberPlayers = RiskView.getNumberPlayerDialog();
+        //addPlayers(numberPlayers);
         System.out.println("Awesome, we have "+ numberPlayers +" players, each player will have "+ setTroopsInitially()+" troops.");
         assignCountriesRandomly();
         for(Player player:players){
@@ -113,6 +113,14 @@ public class RiskModel {
         for(int i = 0; i < numberPlayers; i++){
             System.out.println("Please enter Player "+ (i+1) + " name:");
             players.add(new Player(scanner.nextLine()));
+        }
+    }
+    public void addPlayersName(String [] playerNameList){
+        players.clear();
+        for(int i = 0; i < numberPlayers; i++){
+            //System.out.println("Please enter Player "+ (i+1) + " name:");
+            //players.add(new Player(scanner.nextLine()));
+            players.add(new Player(playerNameList[i]));
         }
     }
 
@@ -590,6 +598,13 @@ public class RiskModel {
     }
     public int getPlayerNum(){
         return this.numberPlayers;
+    }
+    public String getPlayerName(){
+        String str = "";
+        for(Player player: this.players){
+            str += player.getName();
+        }
+        return str;
     }
     public ArrayList<Continent> getAllContinents() {
         return allContinents;
