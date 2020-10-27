@@ -61,6 +61,11 @@ public class Player {
         return new ArrayList<>(territories.values());
     }
 
+    public ArrayList<String> getTerritoriesString(){
+        ArrayList<String> territoriesString = new ArrayList<>(territories.keySet());
+        return territoriesString;
+    }
+
     /**
      * Gets all continents of this player.
      *
@@ -165,7 +170,7 @@ public class Player {
         if(!continents.isEmpty()){
             System.out.println("And the continents: ");
             for(Continent continent:getContinents()){
-                System.out.print(continent.getName()+", ");
+                System.out.println(continent.getName()+", ");
             }
         }
     }
@@ -190,7 +195,7 @@ public class Player {
             System.out.println("Player " + this.getName()+" has continents: ");
             for(Continent continent:this.getContinents()){
                 this.increaseTroop(continent.getBonusTroops());
-                System.out.println(continent.getName()+", add "+continent.getBonusTroops()+" troops.8");
+                System.out.println(continent.getName()+", add "+continent.getBonusTroops()+" troops.");
             }
         }
     }

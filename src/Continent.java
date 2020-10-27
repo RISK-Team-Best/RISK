@@ -57,4 +57,14 @@ public class Continent {
         return memberString;
     }
 
+    public Territory getMemberTerritory(Territory territory){
+        for(Territory territory1:members){
+            if(territory.getName().equals(territory1.getName()))return territory1;
+        }
+        return null;
+    }
+
+    public ArrayList<Territory> getMembers() {
+        return members;
+    }
 }

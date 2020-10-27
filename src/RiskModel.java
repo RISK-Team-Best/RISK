@@ -41,7 +41,7 @@ public class RiskModel {
         for(Territory territory:allCountries)allCountriesJList.addElement(territory.getName());
         for(Continent continent:allContinents)allContinentsJList.addElement(continent.getName());
 
-//        initialGame();
+        initialGame();
 //        System.out.println("Alright! Let's start battling!");
 //        processGaming();
     }
@@ -50,22 +50,22 @@ public class RiskModel {
      * Initialize the game include add number of players, add troops to players depending on player numbers,
      * assign randomly territories with randomly troops to each player.
      */
-    public void initialGame(int numberPlayers) throws IOException {
-//        do{
-//            boolean Error;
-//            do {
-//                try {
-//                    System.out.println("Please enter the number of players (2-6 players): ");
-//                    numberPlayers = scanner.nextInt();
-//                    scanner.nextLine();
-//                    Error = false;
-//                } catch (Exception e) {
-//                    Error = true;
-//                    System.out.println("Please enter an legal positive integer to present the number of players!");
-//                    scanner.next();
-//                }
-//            } while (Error);
-//        }while(!(numberPlayers>1 && numberPlayers<7));
+    public void initialGame() throws IOException {
+        do{
+            boolean Error;
+            do {
+                try {
+                    System.out.println("Please enter the number of players (2-6 players): ");
+                    numberPlayers = scanner.nextInt();
+                    scanner.nextLine();
+                    Error = false;
+                } catch (Exception e) {
+                    Error = true;
+                    System.out.println("Please enter an legal positive integer to present the number of players!");
+                    scanner.next();
+                }
+            } while (Error);
+        }while(!(numberPlayers>1 && numberPlayers<7));
 
         numberPlayers = RiskView.getNumberPlayerDialog();
         addPlayers(numberPlayers);
@@ -187,12 +187,12 @@ public class RiskModel {
      */
     public void checkContinent(Player player){
         for (Continent continent : allContinents) {
-            if (player.getTerritories().containsAll(continent.memberString())) {
+            if (player.getTerritoriesString().containsAll(continent.memberString())) {
                 player.addContinent(continent);
             }
         }
         for (Continent continent : player.getContinents()) {
-            if (!player.getTerritories().containsAll(continent.memberString())) {
+            if (!player.getTerritoriesString().containsAll(continent.memberString())) {
                 player.removeContinent(continent);
             }
         }
@@ -213,7 +213,8 @@ public class RiskModel {
         Random random = new Random();
         int leftTroops = player.getTroops();
         for(int i = 0; i < leftTroops;i++){
-            player.getTerritories().get(random.nextInt(player.getTerritories().size())).increaseTroops(1);
+            Territory tempTerritory = player.getTerritories().get(random.nextInt(player.getTerritories().size()));
+            tempTerritory.increaseTroops(1);
             player.decreaseTroops(1);
         }
     }
@@ -571,8 +572,23 @@ public class RiskModel {
         }
     }
 
+    public void updateContinentListInfo(){
+        for(Continent continent:allContinents){
+            for(Player player:players){
+                for(Territory territory:player.getTerritories()){
+                    if(continent.memberString().contains(territory.getName())){
+                        continent.getMemberTerritory(territory).setHolder(territory.getHolder());
+                        continent.getMemberTerritory(territory).setTroops(territory.getTroops());
+                    }
+                }
+            }
+        }
 
+    }
 
+    public ArrayList<Continent> getAllContinents() {
+        return allContinents;
+    }
 
     /**
      * The entry point of application.
@@ -581,6 +597,15 @@ public class RiskModel {
      * @throws IOException the io exception
      */
     public static void main(String[] args) throws IOException {
-        new RiskModel();
+        RiskModel model = new RiskModel();
+        model.updateContinentListInfo();
+        for(Continent continent: model.allContinents){
+            System.out.println(continent.getName()+":");
+            System.out.println(continent.getName()+":");
+            for(Territory territory:continent.getMembers()){
+                System.out.println(territory.getName()+" "+territory.getHolder().getName()+" "+territory.getTroops());
+            }
+            System.out.println("");
+        }
     }
 }
