@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.text.html.ImageView;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Hashtable;
 
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
@@ -27,17 +28,25 @@ public class RiskView extends JFrame {
     private JScrollPane destinationTerritoryScrollPane;
     private JScrollPane printInfoScrollPane;
 
+    private JMenuItem saveItem = new JMenuItem("Save");
+    private JMenuItem loadItem = new JMenuItem("Load");
+    private JMenuItem newGameItem = new JMenuItem("New");
+    private JMenu fileMenu = new JMenu("File");
+    private JMenuBar menuBar = new JMenuBar();
+
     private RiskModel model;
 
     public RiskView() throws IOException {
         super("Risk Game");
         this.add(mainPanel);
 
+
+
         model = new RiskModel();
 
 //        statusLabel.setText("It's my turn.");
 
-        getNumberPlayerDialog();
+        //getNumberPlayerDialog();
 
         printInfoScrollPane = new JScrollPane(printInfoArea);
         printInfoArea.setEditable(false);
@@ -70,11 +79,25 @@ public class RiskView extends JFrame {
         operationPanel.add(troopsBox);
         operationPanel.add(skipButton);
 
+
+        fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
+        fileMenu.add(newGameItem);
+        menuBar.add(fileMenu);
+
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(statusLabel,BorderLayout.NORTH);
         mainPanel.add(combinedMapPrintInfoPanel,BorderLayout.WEST);
         mainPanel.add(operationPanel,BorderLayout.CENTER);
         mainPanel.add(continentInfoPanel,BorderLayout.EAST);
+
+        this.add(menuBar);
+        this.add(mainPanel);
+        //mainPanel.add(menuBar);
+
+
+
+
 
         this.setLocation(200,50);
         this.setSize(720,360);
