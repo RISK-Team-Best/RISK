@@ -186,7 +186,11 @@ public class Game {
         {
             view.getInfoLabel().setText("you can not skip draft stage");
         }
-        else {changeState();}
+        else {
+            changeState();
+            territoryCommand1=null;
+            territoryCommand2=null;
+        }
     }
 
     public void draft(Territory to)
