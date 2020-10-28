@@ -3,10 +3,10 @@ import java.awt.*;
 
 public class TerritoryButton extends JButton {
     private Territory territory;
-    public TerritoryButton(String name,String xAxis,String yAxis,String width,String height)
+    public TerritoryButton(String name,int xAxis,int yAxis,int width,int height)
     {
         setText(name);
-        setBounds(Integer.valueOf(xAxis),Integer.valueOf(yAxis),Integer.valueOf(width),Integer.valueOf(height));
+        setBounds(xAxis,yAxis,width,height);
         repaint();
     }
 

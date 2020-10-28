@@ -1,0 +1,42 @@
+Alaska,54,158
+Alberta,126,200
+Central America,136,318
+Eastern United States,188,274
+Greenland,288,126
+Northwest Territory,134,156
+Ontario,180,210
+Quebec,234,212
+Western United States,130,256
+Argentina,214,490
+Brazil,260,406
+Peru,210,430
+Venezuela,200,360
+Great Britain,332,244
+Iceland,350,182
+Northern Europe,408,254
+Scandinavia,416,176
+Southern Europe,426,298
+Ukraine,492,204
+Western Europe,350,314
+Congo,442,456
+East Africa,476,419
+Egypt,444,373
+Madagascar,516,519
+North Africa,378,395
+South Africa,442,515
+Afghanistan,554,271
+China,648,295
+India,588,337
+Irkutsk,668,199
+Japan,756,249
+Kamchatka,748,137
+Middle East,512,331
+Mongolia,672,245
+Siam,664,353
+Siberia,612,173
+Ural,570,205
+Yakutsk,680,137
+Eastern Australia,748,467
+Indonesia,654,421
+New Guinea,732,407
+Western Australia,686,489

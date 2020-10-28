@@ -58,9 +58,11 @@ public class MainPage {
         mainPage.createPlayer("Player2");
         mainPage.createPlayer("Player3");
         mainPage.createPlayer("Player4");
-        GmapReader reader = new GmapReader();
-        GMap map = reader.loadMap(new File("mapInfo.txt"));
-        reader.loadNeibour(map,new File("neibourInfo.txt"));
+        //GmapReader reader = new GmapReader();
+        //GMap map = reader.loadMap(new File("mapInfo.txt"));
+        //reader.loadNeibour(map,new File("neibourInfo.txt"));
+        MapLoaderV2 ml2 = new MapLoaderV2();
+        GMap map = ml2.BuildMap();
         mainPage.chooseMap(map);
 
         mainPage.createGame();

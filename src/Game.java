@@ -23,7 +23,7 @@ public class Game {
     public static final int  ENDGAME=-1;
     public static final int  TROOP_FOR_2_PEOPLE=50;
     public static final int  TROOP_FOR_3_PEOPLE=35;
-    public static final int  TROOP_FOR_4_PEOPLE=3;
+    public static final int  TROOP_FOR_4_PEOPLE=30;
     public static final int  TROOP_FOR_5_PEOPLE=25;
     public static final int  TROOP_FOR_6_PEOPLE=20;
     //For Button pressed

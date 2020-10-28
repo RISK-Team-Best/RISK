@@ -37,7 +37,7 @@ public class GMap {
 
     public void addTerritory(Territory territory, Continent continent)
     {
-        territoryHashMap.put(territory.getName(),territory);
+        //territoryHashMap.put(territory.getName(),territory);
         continent.addTerritory(territory);
         territoryArrayList.add(territory);
 

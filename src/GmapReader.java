@@ -20,7 +20,7 @@ public class GmapReader {
                 }
                 else {
                     Territory territory = new Territory(instruction[1]);
-                    TerritoryButton territoryButton = new TerritoryButton(instruction[1],instruction[2],instruction[3],instruction[4],instruction[5]);
+                    TerritoryButton territoryButton = new TerritoryButton(instruction[1],Integer.valueOf(instruction[2]),Integer.valueOf(instruction[3]),Integer.valueOf(instruction[4]),Integer.valueOf(instruction[5]));
                     territory.setTerritoryButton(territoryButton);
                     territoryButton.setTerritory(territory);
                     result.addTerritory(territory,c);

@@ -5,26 +5,27 @@ public class GameView extends JFrame {
     private JSplitPane splitPane;
     private JLabel infoLabel;
     private GameController controller;
-    private JPanel mapArea;
+    private JLabel mapArea;
     public GameView(Game model,GameController controller)
     {
         super("RISK");
         this.model = model;
         this.controller = controller;
-        setSize(1024,768);
+        setSize(1100,700);
         splitPane= new JSplitPane();
         add(splitPane);
-        mapArea = new JPanel();
+        mapArea = new JLabel();
+        mapArea.setIcon(new ImageIcon(getClass().getClassLoader().getResource("RiskMap2.png")));
         JScrollPane scrollPane = new JScrollPane(mapArea);
         splitPane.setLeftComponent(scrollPane);
-        splitPane.setDividerLocation(768);
+        splitPane.setDividerLocation(870);
         JPanel controlArea = new JPanel();
         splitPane.setRightComponent(controlArea);
         //layouts
         controlArea.setLayout(new BoxLayout(controlArea,BoxLayout.Y_AXIS));
         mapArea.setLayout(null);
 
-        for (Continent continent : model.getGameMap().getContinentArrayList())
+        /*for (Continent continent : model.getGameMap().getContinentArrayList())
         {
             ContinentPanel continentPanel = continent.getPanel();
             mapArea.add(continentPanel);
@@ -39,6 +40,15 @@ public class GameView extends JFrame {
                 });
 
             }
+        }*/
+        for(Territory territory : model.getGameMap().getTerritoryArrayList())
+        {
+            TerritoryButton territoryButton = territory.getTerritoryButton();
+            mapArea.add(territoryButton);
+            territoryButton.update();
+            territoryButton.addActionListener(e -> {
+                model.handleButtonPressed(territoryButton);
+            });
         }
         //control area settings
         infoLabel = new JLabel();
@@ -60,7 +70,7 @@ public class GameView extends JFrame {
         return splitPane;
     }
 
-    public JPanel getMapArea() {
+    public JLabel getMapArea() {
         return mapArea;
     }
 }

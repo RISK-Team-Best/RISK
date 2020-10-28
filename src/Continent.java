@@ -65,4 +65,8 @@ public class Continent {
     public ArrayList<Territory> getTerritoryArrayList() {
         return territoryArrayList;
     }
+
+    public void setBonusTroops(int bonusTroops) {
+        this.bonusTroops = bonusTroops;
+    }
 }
