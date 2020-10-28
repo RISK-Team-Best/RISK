@@ -11,11 +11,17 @@ public class RiskController {
         this.model = new RiskModel();
         this.view = new RiskView();
 
-        view.addNewGameMenuListener(new ItemListener());
+        view.addNewGameMenuListener(new NewGameMenuListener() );
+        view.addDraftButtonListener(new DraftButtonListener());
+        view.addAttackButtonListener(new AttackButtonListener());
+        view.addDeployButtonListener(new DeployButtonListener());
+        view.addFortifyButtonListener(new FortifyButtonListener());
+        view.addSkipButtonListener(new SkipButtonListener());
+        view.addConfirmButtonListener(new ConfirmButtonListener());
 
     }
 
-    private class ItemListener implements ActionListener {
+    /*private class ItemListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -33,9 +39,77 @@ public class RiskController {
                 model.initialGame();
                 view.setContinentsLabel(model.getMapInfoThroughContinent());
             }
+            JMenuItem draftItem = (JMenuItem) e.getSource();
+            else if (draftItem.getText().equals("Draft")){
+
+            }
+            else if
+            else{}
+
+        }
+    }*/
+    public class NewGameMenuListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+                int playerNum = view.getNumberPlayerDialog();
+                model.setPlayerNum(playerNum);
+                System.out.println(model.getPlayerNum());
+                String[] playerNameList = view.popGetName();
+                model.addPlayersName(playerNameList);
+                System.out.println(model.getPlayerName());
+                model.initialGame();
+                view.setContinentsLabel(model.getMapInfoThroughContinent());
+            }
+
+        }
+
+    public class DraftButtonListener implements ActionListener{
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        }
+
+    public class AttackButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
         }
     }
+    public class FortifyButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+    public class DeployButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+    public class SkipButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+    public class ConfirmButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+
     public static void main(String[] args)  throws IOException{
         new RiskController();
     }

@@ -108,8 +108,7 @@ public class RiskView extends JFrame {
         this.setJMenuBar(menuBar);
         menuBar.setSize(50, 28);
         this.add(mainPanel);
-        //mainPanel.setLocation(0,-1000);
-        //mainPanel.add(menuBar);
+
 
 
         this.setLocation(50,50);
@@ -150,5 +149,23 @@ public class RiskView extends JFrame {
 
     public void addNewGameMenuListener(ActionListener e){
         newGameItem.addActionListener(e);
+    }
+    public void addDraftButtonListener(ActionListener e){
+        draft.addActionListener(e);
+    }
+    public void addAttackButtonListener(ActionListener e){
+        attack.addActionListener(e);
+    }
+    public void addFortifyButtonListener(ActionListener e){
+        fortify.addActionListener(e);
+    }
+    public void addDeployButtonListener(ActionListener e){
+        deploy.addActionListener(e);
+    }
+    public void addSkipButtonListener(ActionListener e){
+        skipButton.addActionListener(e);
+    }
+    public void addConfirmButtonListener(ActionListener e){
+        skipButton.addActionListener(e);
     }
 }

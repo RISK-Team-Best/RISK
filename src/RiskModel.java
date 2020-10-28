@@ -119,8 +119,6 @@ public class RiskModel {
     public void addPlayersName(String [] playerNameList){
         players.clear();
         for(int i = 0; i < numberPlayers; i++){
-            //System.out.println("Please enter Player "+ (i+1) + " name:");
-            //players.add(new Player(scanner.nextLine()));
             players.add(new Player(playerNameList[i]));
         }
     }
@@ -131,6 +129,7 @@ public class RiskModel {
      * @return the initial troops assigned to each player.
      */
     public int setTroopsInitially(){
+
         switch (numberPlayers) {
             case 2 -> {
                 for (Player player : players) {
