@@ -21,47 +21,20 @@ public class RiskController {
 
     }
 
-    /*private class ItemListener implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-            JMenuItem menuItem = (JMenuItem) e.getSource();
-            if (menuItem.getText().equals("New")) {
-                System.out.println("Create a new game");
-
-                int playerNum = view.getNumberPlayerDialog();
-                model.setPlayerNum(playerNum);
-                System.out.println(model.getPlayerNum());
-                String[] playerNameList = view.popGetName();
-                model.addPlayersName(playerNameList);
-                System.out.println(model.getPlayerName());
-                model.initialGame();
-                view.setContinentsLabel(model.getMapInfoThroughContinent());
-            }
-            JMenuItem draftItem = (JMenuItem) e.getSource();
-            else if (draftItem.getText().equals("Draft")){
-
-            }
-            else if
-            else{}
-
-        }
-    }*/
     public class NewGameMenuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-                int playerNum = view.getNumberPlayerDialog();
-                model.setPlayerNum(playerNum);
-                System.out.println(model.getPlayerNum());
-                String[] playerNameList = view.popGetName();
-                model.addPlayersName(playerNameList);
-                System.out.println(model.getPlayerName());
+
+                model.setPlayerNum(view.getNumberPlayerDialog());
+                model.addPlayersName(view.popGetName());
                 model.initialGame();
                 view.setContinentsLabel(model.getMapInfoThroughContinent());
                 //model.processGaming();
+                view.getJButton("Draft").setEnabled(true);
+                view.getJButton("Confirm").setEnabled(true);
                 view.setStatusLabel("Now it's "+model.getCurrentPlayer().getName() +"'s turn, please click \"Draft\" button to start DRAFT stage.");
             }
 
@@ -100,6 +73,26 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (model.getCurrentStage()== Stage.ATTACK){
+                view.getJButton("Attack").setEnabled(false);
+                view.getJButton("Deploy").setEnabled(false);
+                view.getJButton("Draft").setEnabled(false);
+                view.getJButton("Fortify").setEnabled(true);
+            }
+
+
+            if(model.getCurrentStage() == Stage.FORTIFY){
+                view.getJButton("Fortify").setEnabled(false);
+                view.getJButton("Attack").setEnabled(false);
+                view.getJButton("Deploy").setEnabled(false);
+                view.getJButton("Skip").setEnabled(false);
+                view.getJButton("Draft").setEnabled(true);
+
+            }
+
+
+
+
 
         }
     }

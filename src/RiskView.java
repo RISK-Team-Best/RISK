@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
@@ -41,6 +42,8 @@ public class RiskView extends JFrame {
     private JButton draft = new JButton("Draft");
     private JButton fortify = new JButton("Fortify");
     private JButton deploy = new JButton("Deploy");
+
+    private ArrayList<JButton> JButtonList = new ArrayList<JButton>();
 
     private int numberPlayer = 0;
 
@@ -105,12 +108,24 @@ public class RiskView extends JFrame {
         mainPanel.add(operationPanel,BorderLayout.CENTER);
         mainPanel.add(continentInfoPane,BorderLayout.EAST);
 
+         attack.setEnabled(false);
+         draft.setEnabled(false);
+         fortify.setEnabled(false);
+         deploy.setEnabled(false);
+         skipButton.setEnabled(false);
+         confirmButton.setEnabled(false);
 
         statusLabel.setText("To start a new game: File -> New.");
         this.setJMenuBar(menuBar);
         menuBar.setSize(50, 28);
         this.add(mainPanel);
 
+        this.JButtonList.add(draft);
+        this.JButtonList.add(attack);
+        this.JButtonList.add(fortify);
+        this.JButtonList.add(deploy);
+        this.JButtonList.add(skipButton);
+        this.JButtonList.add(confirmButton);
 
 
         this.setLocation(50,50);
@@ -148,10 +163,18 @@ public class RiskView extends JFrame {
     public void setContinentsLabel(String string){
         continentsLabel.setText(string);
     }
+    public JButton getJButton(String buttonText) {
 
+        for (JButton button : JButtonList){
+            if (button.getText() == buttonText)
+                return button;
+        }
+        return null;
+    }
     public void setStatusLabel(String str){
         statusLabel.setText(str);
     }
+
 
     public void addNewGameMenuListener(ActionListener e){
         newGameItem.addActionListener(e);
