@@ -11,6 +11,7 @@ public class RiskModel {
     private final ArrayList<Player> players;
     private final ArrayList<Territory> allCountries;
     private final ArrayList<Continent> allContinents;
+    private final HashMap<Integer,Integer> initialTroopHashMap;
 
     private final LinkedHashSet<Territory> neighborCountries;
 
@@ -19,8 +20,18 @@ public class RiskModel {
 
     private final Board board;
 
-    public static DefaultListModel<String> allCountriesJList;
-    public static DefaultListModel<String> allContinentsJList;
+    public static DefaultListModel<String> originTerritoryJList;
+    public static DefaultListModel<String> targetTerritoryJList;
+
+    private Player currentPlayer;
+
+    private Stage currentStage;
+
+    private final int TWO_PLAYERS_TROOPS = 50;
+    private final int THREE_PLAYERS_TROOPS = 35;
+    private final int FOUR_PLAYERS_TROOPS = 30;
+    private final int FIVE_PLAYERS_TROOPS = 25;
+    private final int SIX_PLAYERS_TROOPS = 20;
 
     /**
      * Instantiates a new Game.
@@ -30,16 +41,16 @@ public class RiskModel {
     public RiskModel() throws IOException {
         players = new ArrayList<>();
         board = new Board();
+        initialTroopHashMap = new HashMap<>();
+        setInitialTroopHashMap();
         allCountries =board.getAllCountries();
         allContinents = board.getAllContinents();
         scanner = new Scanner(System.in);
         neighborCountries = new LinkedHashSet<>();
 
-        allCountriesJList = new DefaultListModel<>();
-        allContinentsJList = new DefaultListModel<>();
+        originTerritoryJList = new DefaultListModel<>();
+        targetTerritoryJList = new DefaultListModel<>();
 
-        for(Territory territory:allCountries)allCountriesJList.addElement(territory.getName());
-        for(Continent continent:allContinents)allContinentsJList.addElement(continent.getName());
 
         //initialGame();
 //        System.out.println("Alright! Let's start battling!");
@@ -51,25 +62,6 @@ public class RiskModel {
      * assign randomly territories with randomly troops to each player.
      */
     public void initialGame(){
-        /*do{
-            boolean Error;
-            do {
-                try {
-                    System.out.println("Please enter the number of players (2-6 players): ");
-                    numberPlayers = scanner.nextInt();
-                    scanner.nextLine();
-                    Error = false;
-                } catch (Exception e) {
-                    Error = true;
-                    System.out.println("Please enter an legal positive integer to present the number of players!");
-                    scanner.next();
-                }
-            } while (Error);
-        }while(!(numberPlayers>1 && numberPlayers<7));*/
-
-        //numberPlayers = RiskView.getNumberPlayerDialog();
-        //addPlayers(numberPlayers);
-        /*System.out.println("Awesome, we have "+ numberPlayers +" players, each player will have "+ setTroopsInitially()+" troops.");*/
         assignCountriesRandomly();
         setTroopsInitially();
         for(Player player:players){
@@ -78,6 +70,7 @@ public class RiskModel {
             player.printPlayerInfo();
             player.addContinentBonus();
         }
+        currentPlayer = players.get(0);
     }
 
     /**
@@ -87,7 +80,8 @@ public class RiskModel {
     public void processGaming(){
         while (players.size()!=1){
             for(Player player:players){
-                System.out.println("\nIt's "+player.getName()+"'s turn:");
+                currentPlayer = player;
+                //System.out.println("\nIt's "+player.getName()+"'s turn:");
                 draft(player);
                 attack(player);
                 checkWinner();
@@ -128,7 +122,7 @@ public class RiskModel {
      *
      * @return the initial troops assigned to each player.
      */
-    public int setTroopsInitially(){
+    /*public int setTroopsInitially(){
 
         switch (numberPlayers) {
             case 2 -> {
@@ -163,6 +157,21 @@ public class RiskModel {
             }
         }
         return initialTroops;
+    }*/
+
+    public void setInitialTroopHashMap(){
+        initialTroopHashMap.put(2,TWO_PLAYERS_TROOPS);
+        initialTroopHashMap.put(3,THREE_PLAYERS_TROOPS);
+        initialTroopHashMap.put(4,FOUR_PLAYERS_TROOPS);
+        initialTroopHashMap.put(5,FIVE_PLAYERS_TROOPS);
+        initialTroopHashMap.put(6,SIX_PLAYERS_TROOPS);
+    }
+
+    public void setTroopsInitially(){
+        int troops = initialTroopHashMap.get(numberPlayers);
+        for(Player player:players){
+            player.setTroops(troops);
+        }
     }
 
     /**
@@ -235,6 +244,7 @@ public class RiskModel {
      * @param player the player process draft stage
      */
     public void draft(Player player){
+        currentStage = Stage.DRAFT;
         String territory;
         int troops = 0;
         player.gainTroopsFromTerritory();
@@ -273,6 +283,7 @@ public class RiskModel {
      * @param player the player in attack stage
      */
     public void attack(Player player){
+        currentStage = Stage.ATTACK;
         System.out.println("\nIt's ATTACK stage, you have these territory can attack:");
         printAttackableInfo(player);
         attackStage(player);
@@ -448,6 +459,7 @@ public class RiskModel {
      * @param defenceCountry the defence country
      */
     public void deployTroops(Territory attackCountry, Territory defenceCountry){
+        currentStage = Stage.DEPLOY;
         int deployTroops;
         do {
             System.out.println(attackCountry.getHolder().getName() + " wins the battle! Currently you have "+attackCountry.getTroops()+ " in your original country.");
@@ -479,6 +491,7 @@ public class RiskModel {
      * @param player the player
      */
     public void fortify(Player player){
+        currentStage = Stage.FORTIFY;
         String fortifyCountryString;
         Territory fortifyCountry;
         Territory fortified;
@@ -610,6 +623,9 @@ public class RiskModel {
         return allContinents;
     }
 
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
 
     public String getMapInfoThroughContinent(){
         updateContinentListInfo();
@@ -624,6 +640,11 @@ public class RiskModel {
         str+="</html>";
         return  str;
     }
+
+    public Stage getCurrentStage() {
+        return currentStage;
+    }
+
     /**
      * The entry point of application.
      *

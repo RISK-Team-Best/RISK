@@ -79,6 +79,7 @@ public class RiskView extends JFrame {
         originTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
         targetTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
         troopsLabel.setAlignmentX(BOTTOM_ALIGNMENT);
+        statusLabel.setFont(new Font("Arial",1,12));
 
         operationPanel.setLayout(new BoxLayout(operationPanel,BoxLayout.Y_AXIS));
         operationPanel.add(buttonPanel);
@@ -105,6 +106,7 @@ public class RiskView extends JFrame {
         mainPanel.add(continentInfoPane,BorderLayout.EAST);
 
 
+        statusLabel.setText("To start a new game: File -> New.");
         this.setJMenuBar(menuBar);
         menuBar.setSize(50, 28);
         this.add(mainPanel);
@@ -145,6 +147,10 @@ public class RiskView extends JFrame {
 
     public void setContinentsLabel(String string){
         continentsLabel.setText(string);
+    }
+
+    public void setStatusLabel(String str){
+        statusLabel.setText(str);
     }
 
     public void addNewGameMenuListener(ActionListener e){

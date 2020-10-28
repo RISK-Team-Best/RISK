@@ -61,6 +61,8 @@ public class RiskController {
                 System.out.println(model.getPlayerName());
                 model.initialGame();
                 view.setContinentsLabel(model.getMapInfoThroughContinent());
+                //model.processGaming();
+                view.setStatusLabel("Now it's "+model.getCurrentPlayer().getName() +"'s turn, please click \"Draft\" button to start DRAFT stage.");
             }
 
         }
