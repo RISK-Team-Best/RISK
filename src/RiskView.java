@@ -8,13 +8,14 @@ import java.util.Hashtable;
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
     private JLabel continentsLabel = new JLabel();
+    private JLabel originTerritoryLabel = new JLabel("Origin Territory:",SwingConstants.LEFT);
+    private JLabel targetTerritoryLabel = new JLabel("Target Territory:",SwingConstants.LEFT);
 
     private JPanel mainPanel = new JPanel();
     private JPanel graphMapPanel = new JPanel();
     private JPanel operationPanel = new JPanel();
-    private JPanel combinedMapPrintInfoPanel = new JPanel();
-
-    private JTextArea printInfoArea = new JTextArea();
+    private JPanel buttonPanel = new JPanel();
+    private JPanel decideButtonPanel = new JPanel();
 
     private JList startingTerritory = new JList();
     private JList destinationTerritory = new JList();
@@ -23,10 +24,10 @@ public class RiskView extends JFrame {
 
     //private JButton functionButton = new JButton();
     private JButton skipButton = new JButton("Skip");
+    private JButton confirmButton = new JButton("Confirm");
 
     private JScrollPane startingTerritoryScrollPane;
     private JScrollPane destinationTerritoryScrollPane;
-    private JScrollPane printInfoScrollPane;
     private JScrollPane continentInfoPane;
 
     private JMenuItem saveItem = new JMenuItem("Save");
@@ -40,28 +41,17 @@ public class RiskView extends JFrame {
     private JButton fortify = new JButton("Fortify");
     private JButton deploy = new JButton("Deploy");
 
-    private RiskModel model;
     private int numberPlayer = 0;
 
-    public RiskView() throws IOException {
+    public RiskView(){
         super("Risk Game");
-
-        model = new RiskModel();
 
 //        statusLabel.setText("It's my turn.");
 
-        //getNumberPlayerDialog();
-
-        printInfoScrollPane = new JScrollPane(printInfoArea);
-        printInfoArea.setEditable(false);
-//        printInfoArea.append("Welcome to Risk Game!");
-
-        startingTerritory.setModel(model.allCountriesJList);
         startingTerritory.setLayoutOrientation(JList.VERTICAL);
         startingTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         startingTerritoryScrollPane = new JScrollPane(startingTerritory);
 
-        destinationTerritory.setModel(model.allContinentsJList);
         destinationTerritory.setLayoutOrientation(JList.VERTICAL);
         destinationTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         destinationTerritoryScrollPane = new JScrollPane(destinationTerritory);
@@ -75,21 +65,25 @@ public class RiskView extends JFrame {
         continentInfoPane.setPreferredSize(new Dimension(200,600));
         continentsLabel.setFont(new Font("Arial",0,12));
 
-        combinedMapPrintInfoPanel.setLayout(new BorderLayout());
-        combinedMapPrintInfoPanel.add(printInfoScrollPane,BorderLayout.WEST);
-        combinedMapPrintInfoPanel.add(graphMapPanel,BorderLayout.EAST);
+        buttonPanel.setLayout(new GridLayout(2,2));
+        buttonPanel.add(draft);
+        buttonPanel.add(attack);
+        buttonPanel.add(deploy);
+        buttonPanel.add(fortify);
+
+        decideButtonPanel.setLayout(new GridLayout(1,2));
+        decideButtonPanel.add(confirmButton);
+        decideButtonPanel.add(skipButton);
 
         operationPanel.setLayout(new BoxLayout(operationPanel,BoxLayout.Y_AXIS));
+        operationPanel.add(buttonPanel);
+        operationPanel.add(originTerritoryLabel);
         operationPanel.add(startingTerritoryScrollPane);
-
-        operationPanel.add(draft);
-        operationPanel.add(attack);
-        operationPanel.add(deploy);
-        operationPanel.add(fortify);
-
+        operationPanel.add(targetTerritoryLabel);
         operationPanel.add(destinationTerritoryScrollPane);
         operationPanel.add(troopsBox);
-        operationPanel.add(skipButton);
+
+        operationPanel.add(decideButtonPanel);
         operationPanel.setPreferredSize(new Dimension(150,600));
 
 
@@ -100,7 +94,7 @@ public class RiskView extends JFrame {
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(statusLabel,BorderLayout.NORTH);
-        mainPanel.add(combinedMapPrintInfoPanel,BorderLayout.WEST);
+        mainPanel.add(graphMapPanel,BorderLayout.WEST);
         mainPanel.add(operationPanel,BorderLayout.CENTER);
         mainPanel.add(continentInfoPane,BorderLayout.EAST);
 
