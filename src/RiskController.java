@@ -10,7 +10,8 @@ public class RiskController {
     public RiskController() throws IOException{
         this.model = new RiskModel();
         this.view = new RiskView();
-        view.addActionListener(new ItemListener());
+
+        view.addNewGameMenuListener(new ItemListener());
 
     }
 
@@ -22,13 +23,15 @@ public class RiskController {
             JMenuItem menuItem = (JMenuItem) e.getSource();
             if (menuItem.getText().equals("New")) {
                 System.out.println("Create a new game");
+
                 int playerNum = view.getNumberPlayerDialog();
                 model.setPlayerNum(playerNum);
                 System.out.println(model.getPlayerNum());
                 String[] playerNameList = view.popGetName();
                 model.addPlayersName(playerNameList);
                 System.out.println(model.getPlayerName());
-
+                model.initialGame();
+                view.setContinentsLabel(model.getMapInfoThroughContinent());
             }
 
         }

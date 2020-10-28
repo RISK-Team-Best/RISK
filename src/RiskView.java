@@ -13,7 +13,6 @@ public class RiskView extends JFrame {
     private JPanel graphMapPanel = new JPanel();
     private JPanel operationPanel = new JPanel();
     private JPanel combinedMapPrintInfoPanel = new JPanel();
-    private JPanel continentInfoPanel = new JPanel();
 
     private JTextArea printInfoArea = new JTextArea();
 
@@ -28,6 +27,7 @@ public class RiskView extends JFrame {
     private JScrollPane startingTerritoryScrollPane;
     private JScrollPane destinationTerritoryScrollPane;
     private JScrollPane printInfoScrollPane;
+    private JScrollPane continentInfoPane;
 
     private JMenuItem saveItem = new JMenuItem("Save");
     private JMenuItem loadItem = new JMenuItem("Load");
@@ -45,9 +45,6 @@ public class RiskView extends JFrame {
 
     public RiskView() throws IOException {
         super("Risk Game");
-        this.add(mainPanel);
-
-
 
         model = new RiskModel();
 
@@ -73,7 +70,10 @@ public class RiskView extends JFrame {
         label.setIcon(new ImageIcon("src/RiskMap.jpg"));
         graphMapPanel.add(label);
 
-        continentInfoPanel.add(continentsLabel);
+        continentInfoPane = new JScrollPane(continentsLabel);
+        //continentInfoPane.add(continentsLabel);
+        continentInfoPane.setPreferredSize(new Dimension(200,600));
+        continentsLabel.setFont(new Font("Arial",0,12));
 
         combinedMapPrintInfoPanel.setLayout(new BorderLayout());
         combinedMapPrintInfoPanel.add(printInfoScrollPane,BorderLayout.WEST);
@@ -90,6 +90,7 @@ public class RiskView extends JFrame {
         operationPanel.add(destinationTerritoryScrollPane);
         operationPanel.add(troopsBox);
         operationPanel.add(skipButton);
+        operationPanel.setPreferredSize(new Dimension(150,600));
 
 
         fileMenu.add(saveItem);
@@ -101,10 +102,10 @@ public class RiskView extends JFrame {
         mainPanel.add(statusLabel,BorderLayout.NORTH);
         mainPanel.add(combinedMapPrintInfoPanel,BorderLayout.WEST);
         mainPanel.add(operationPanel,BorderLayout.CENTER);
-        mainPanel.add(continentInfoPanel,BorderLayout.EAST);
+        mainPanel.add(continentInfoPane,BorderLayout.EAST);
 
 
-        this.add(menuBar);
+        this.setJMenuBar(menuBar);
         menuBar.setSize(50, 28);
         menuBar.setLocation(0,0);
         this.add(mainPanel);
@@ -112,17 +113,13 @@ public class RiskView extends JFrame {
         //mainPanel.add(menuBar);
 
 
-
-
-
-        this.setLocation(200,50);
+        this.setLocation(50,50);
         this.setSize(1000,4000);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
         this.setVisible(true);
     }
-
 
 
     public int getNumberPlayerDialog(){
@@ -137,6 +134,8 @@ public class RiskView extends JFrame {
         this.numberPlayer = numberPlayer;
         return numberPlayer;
     }
+
+
     public String[] popGetName(){
         String[] playerNameList = new String[6];
         for(int i=0 ;i<this.numberPlayer;i++){
@@ -145,10 +144,12 @@ public class RiskView extends JFrame {
         }
          return playerNameList;
     }
-    public void addActionListener(ActionListener e){
-        newGameItem.addActionListener(e);
+
+    public void setContinentsLabel(String string){
+        continentsLabel.setText(string);
     }
-    public static void main(String[] args) throws IOException {
-        new RiskView();
+
+    public void addNewGameMenuListener(ActionListener e){
+        newGameItem.addActionListener(e);
     }
 }

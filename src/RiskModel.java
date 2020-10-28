@@ -50,8 +50,8 @@ public class RiskModel {
      * Initialize the game include add number of players, add troops to players depending on player numbers,
      * assign randomly territories with randomly troops to each player.
      */
-    public void initialGame() throws IOException {
-        do{
+    public void initialGame(){
+        /*do{
             boolean Error;
             do {
                 try {
@@ -65,12 +65,13 @@ public class RiskModel {
                     scanner.next();
                 }
             } while (Error);
-        }while(!(numberPlayers>1 && numberPlayers<7));
+        }while(!(numberPlayers>1 && numberPlayers<7));*/
 
         //numberPlayers = RiskView.getNumberPlayerDialog();
         //addPlayers(numberPlayers);
-        System.out.println("Awesome, we have "+ numberPlayers +" players, each player will have "+ setTroopsInitially()+" troops.");
+        /*System.out.println("Awesome, we have "+ numberPlayers +" players, each player will have "+ setTroopsInitially()+" troops.");*/
         assignCountriesRandomly();
+        setTroopsInitially();
         for(Player player:players){
             checkContinent(player);
             assignTroops(player);
@@ -106,15 +107,15 @@ public class RiskModel {
     /**
      * Add players.
      *
-     * @param numberPlayers get the number players from user and add them one by one
+     *  numberPlayers get the number players from user and add them one by one
      */
-    public void addPlayers(int numberPlayers){
-        players.clear();
-        for(int i = 0; i < numberPlayers; i++){
-            System.out.println("Please enter Player "+ (i+1) + " name:");
-            players.add(new Player(scanner.nextLine()));
-        }
-    }
+//    public void addPlayers(int numberPlayers){
+//        players.clear();
+//        for(int i = 0; i < numberPlayers; i++){
+//            System.out.println("Please enter Player "+ (i+1) + " name:");
+//            players.add(new Player(scanner.nextLine()));
+//        }
+//    }
     public void addPlayersName(String [] playerNameList){
         players.clear();
         for(int i = 0; i < numberPlayers; i++){
@@ -610,6 +611,20 @@ public class RiskModel {
         return allContinents;
     }
 
+
+    public String getMapInfoThroughContinent(){
+        updateContinentListInfo();
+        String str = "<html> TERRITORY-HOLDER-TROOPS<br><br>";
+        for(Continent continent: allContinents){
+            str+=continent.getName()+":<br>";
+            for(Territory territory:continent.getMembers()){
+                str+=territory.getName()+"-"+territory.getHolder().getName()+"-"+territory.getTroops()+" <br>";
+            }
+            str+="<br>";
+        }
+        str+="</html>";
+        return  str;
+    }
     /**
      * The entry point of application.
      *
@@ -619,14 +634,6 @@ public class RiskModel {
     public static void main(String[] args) throws IOException {
 
         RiskModel model = new RiskModel();
-        model.updateContinentListInfo();
-        for(Continent continent: model.allContinents){
-            System.out.println(continent.getName()+":");
-            System.out.println(continent.getName()+":");
-            for(Territory territory:continent.getMembers()){
-                System.out.println(territory.getName()+" "+territory.getHolder().getName()+" "+territory.getTroops());
-            }
-            System.out.println("");
-        }
+
     }
 }
