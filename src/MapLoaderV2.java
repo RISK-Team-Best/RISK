@@ -1,20 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 public class MapLoaderV2 {
-    private File mapFile;
-    private File neighbourFile;
-    private File continentFile;
+    private InputStreamReader mapFile;
+    private InputStreamReader neighbourFile;
+    private InputStreamReader continentFile;
+    private BufferedReader bf;
     //private ImageIcon mapIcon;
     private static final int buttonSize = 30;
     public MapLoaderV2()
     {
-        mapFile = new File(getClass().getClassLoader().getResource("TerritoryLocation.txt").getFile());
-        neighbourFile = new File(getClass().getClassLoader().getResource("Neighbour.txt").getFile());
-        continentFile = new File(getClass().getClassLoader().getResource("Continent.txt").getFile());
+        //mapFile = new File(getClass().getClassLoader().getResource("TerritoryLocation.txt").getFile());
+        mapFile = new InputStreamReader(getClass().getResourceAsStream("TerritoryLocation.txt"));
+        neighbourFile = new InputStreamReader(getClass().getResourceAsStream("Neighbour.txt"));
+        continentFile = new InputStreamReader(getClass().getResourceAsStream("Continent.txt"));
         //mapIcon = new ImageIcon(getClass().getClassLoader().getResource("RiskMap2.png"));
     }
 
@@ -22,7 +22,7 @@ public class MapLoaderV2 {
     {
         GMap result = new GMap();
         try {//load all territories
-            BufferedReader bf = new BufferedReader(new FileReader(mapFile));
+            bf = new BufferedReader(mapFile);
             String line;
             while ((line = bf.readLine()) != null)
             {
@@ -38,7 +38,7 @@ public class MapLoaderV2 {
             }
 
             //load all continents
-            bf = new BufferedReader(new FileReader(continentFile));
+            bf = new BufferedReader(continentFile);
             String line2;
             while ((line2 = bf.readLine()) != null)
             {
@@ -53,7 +53,7 @@ public class MapLoaderV2 {
             }
 
             //linked all neighbour
-            bf = new BufferedReader(new FileReader(neighbourFile));
+            bf = new BufferedReader(neighbourFile);
             String line3;
             while ((line3 = bf.readLine()) != null) {
                 String[] instruction = line3.split(",");

@@ -4,6 +4,7 @@
     <root id="archive" name="RISK.jar">
       <element id="module-output" name="RISK" />
       <element id="module-source" name="RISK" />
+      <element id="dir-copy" path="$PROJECT_DIR$/res" />
     </root>
   </artifact>
 </component>
