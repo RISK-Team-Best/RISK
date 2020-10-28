@@ -8,8 +8,9 @@ import java.util.Hashtable;
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
     private JLabel continentsLabel = new JLabel();
-    private JLabel originTerritoryLabel = new JLabel("Origin Territory:",SwingConstants.LEFT);
-    private JLabel targetTerritoryLabel = new JLabel("Target Territory:",SwingConstants.LEFT);
+    private JLabel originTerritoryLabel = new JLabel("Origin Territory:");
+    private JLabel targetTerritoryLabel = new JLabel("Target Territory:");
+    private JLabel troopsLabel = new JLabel("Troops:");
 
     private JPanel mainPanel = new JPanel();
     private JPanel graphMapPanel = new JPanel();
@@ -75,16 +76,21 @@ public class RiskView extends JFrame {
         decideButtonPanel.add(confirmButton);
         decideButtonPanel.add(skipButton);
 
+        originTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
+        targetTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
+        troopsLabel.setAlignmentX(BOTTOM_ALIGNMENT);
+
         operationPanel.setLayout(new BoxLayout(operationPanel,BoxLayout.Y_AXIS));
         operationPanel.add(buttonPanel);
         operationPanel.add(originTerritoryLabel);
         operationPanel.add(startingTerritoryScrollPane);
         operationPanel.add(targetTerritoryLabel);
         operationPanel.add(destinationTerritoryScrollPane);
+        operationPanel.add(troopsLabel);
         operationPanel.add(troopsBox);
 
         operationPanel.add(decideButtonPanel);
-        operationPanel.setPreferredSize(new Dimension(150,600));
+        operationPanel.setPreferredSize(new Dimension(200,600));
 
 
         fileMenu.add(saveItem);
@@ -101,7 +107,6 @@ public class RiskView extends JFrame {
 
         this.setJMenuBar(menuBar);
         menuBar.setSize(50, 28);
-        menuBar.setLocation(0,0);
         this.add(mainPanel);
         //mainPanel.setLocation(0,-1000);
         //mainPanel.add(menuBar);
