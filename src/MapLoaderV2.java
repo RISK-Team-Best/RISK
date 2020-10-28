@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,9 +29,10 @@ public class MapLoaderV2 {
                 String[] instruction = line.split(",");
                 Territory t = new Territory(instruction[0]);
                 TerritoryButton territoryButton = new TerritoryButton
-                        (instruction[0],Integer.valueOf(instruction[1])-buttonSize/2,
-                                Integer.valueOf(instruction[2])-buttonSize/2,buttonSize,buttonSize);
+                        (instruction[0],Integer.valueOf(instruction[1])-buttonSize,
+                                Integer.valueOf(instruction[2])-buttonSize/2,buttonSize*2,buttonSize);
                 t.setTerritoryButton(territoryButton);
+                territoryButton.setFont(new Font("Arial", Font.BOLD, 20));
                 territoryButton.setTerritory(t);
                 result.getTerritoryHashMap().put(t.getName(),t);
             }

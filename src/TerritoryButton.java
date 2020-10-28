@@ -24,14 +24,16 @@ public class TerritoryButton extends JButton {
         if(isEnabled())
         {
             Color color = Player.getPlayerColorSelected(holder);
-            setText(territory.getName()+" "+territory.getTroops());
+            //setText(territory.getName()+" "+territory.getTroops());
+            setText(String.valueOf(territory.getTroops()));
             setBackground(color);
             repaint();
         }
         else
         {
             Color color = Player.getPlayerColor(holder);
-            setText(territory.getName()+" "+territory.getTroops());
+            //setText(territory.getName()+" "+territory.getTroops());
+            setText(String.valueOf(territory.getTroops()));
             setBackground(color);
             repaint();
         }
