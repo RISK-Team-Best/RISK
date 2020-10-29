@@ -175,6 +175,28 @@ public class RiskView extends JFrame {
         statusLabel.setText(str);
     }
 
+    public void setTroopsBox(int troops){
+        troopsBox.removeAllItems();
+        for(int i=1; i<=troops; i++){
+            troopsBox.addItem(i);
+        }
+    }
+
+    public void setStartingTerritory(DefaultListModel<String> listModel){
+        startingTerritory.setModel(listModel);
+    }
+
+    public String getStartingTerritory() {
+        return (String)startingTerritory.getSelectedValue();
+    }
+
+    public String getDestinationTerritory() {
+        return (String) destinationTerritory.getSelectedValue();
+    }
+
+    public int getSelectedTroops(){
+        return (int)troopsBox.getSelectedItem();
+    }
 
     public void addNewGameMenuListener(ActionListener e){
         newGameItem.addActionListener(e);
@@ -195,6 +217,6 @@ public class RiskView extends JFrame {
         skipButton.addActionListener(e);
     }
     public void addConfirmButtonListener(ActionListener e){
-        skipButton.addActionListener(e);
+        confirmButton.addActionListener(e);
     }
 }

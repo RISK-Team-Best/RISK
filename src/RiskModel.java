@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * The main Game.
  */
-public class RiskModel {
+public class   RiskModel {
     private final Scanner scanner;
 
     private final ArrayList<Player> players;
@@ -24,8 +24,6 @@ public class RiskModel {
     public static DefaultListModel<String> targetTerritoryJList;
 
     private Player currentPlayer;
-
-    private Stage currentStage;
 
     private final int TWO_PLAYERS_TROOPS = 50;
     private final int THREE_PLAYERS_TROOPS = 35;
@@ -82,7 +80,7 @@ public class RiskModel {
             for(Player player:players){
                 currentPlayer = player;
                 //System.out.println("\nIt's "+player.getName()+"'s turn:");
-                draft(player);
+//                draft(player);
                 attack(player);
                 checkWinner();
                 fortify(player);
@@ -98,66 +96,12 @@ public class RiskModel {
         }
     }
 
-    /**
-     * Add players.
-     *
-     *  numberPlayers get the number players from user and add them one by one
-     */
-//    public void addPlayers(int numberPlayers){
-//        players.clear();
-//        for(int i = 0; i < numberPlayers; i++){
-//            System.out.println("Please enter Player "+ (i+1) + " name:");
-//            players.add(new Player(scanner.nextLine()));
-//        }
-//    }
     public void addPlayersName(String [] playerNameList){
         players.clear();
         for(int i = 0; i < numberPlayers; i++){
             players.add(new Player(playerNameList[i]));
         }
     }
-
-    /**
-     * Set troops initially to each player recording the number of players in this game.
-     *
-     * @return the initial troops assigned to each player.
-     */
-    /*public int setTroopsInitially(){
-
-        switch (numberPlayers) {
-            case 2 -> {
-                for (Player player : players) {
-                    player.setTroops(50);
-                }
-                initialTroops = 50;
-            }
-            case 3 -> {
-                for (Player player : players) {
-                    player.setTroops(35);
-                }
-                initialTroops = 35;
-            }
-            case 4 -> {
-                for (Player player : players) {
-                    player.setTroops(30);
-                }
-                initialTroops = 30;
-            }
-            case 5 -> {
-                for (Player player : players) {
-                    player.setTroops(25);
-                }
-                initialTroops = 25;
-            }
-            case 6 -> {
-                for (Player player : players) {
-                    player.setTroops(20);
-                }
-                initialTroops = 20;
-            }
-        }
-        return initialTroops;
-    }*/
 
     public void setInitialTroopHashMap(){
         initialTroopHashMap.put(2,TWO_PLAYERS_TROOPS);
@@ -243,13 +187,9 @@ public class RiskModel {
      *
      * @param player the player process draft stage
      */
-    public void draft(Player player){
-        currentStage = Stage.DRAFT;
-        String territory;
-        int troops = 0;
-        player.gainTroopsFromTerritory();
-        System.out.println("It's DRAFT stage, you have "+ player.getTroops()+" troops to add to any of your territory.");
-        player.printPlayerInfo();
+
+    public void draft(Player player,String territory, int troops){
+        /*String territory;
         while(player.getTroops()!=0) {
             do {
                 System.out.println("Please enter the territory name that you want to add troops to.");
@@ -266,15 +206,11 @@ public class RiskModel {
                     System.out.println("Please enter valid input!");
                     scanner.next();
                 }
-            }while(troops<1);
-            if(troops <= player.getTroops()) {
-                player.getTerritoryByString(territory).increaseTroops(troops);
-                player.decreaseTroops(troops);
-            }else{
-                System.out.println("Sorry,,, you don't have so much territories...");
-            }
-        }
+            }while(troops<1);*/
+        player.getTerritoryByString(territory).increaseTroops(troops);
+        player.decreaseTroops(troops);
     }
+
 
     /**
      * Attack turn.
@@ -283,7 +219,6 @@ public class RiskModel {
      * @param player the player in attack stage
      */
     public void attack(Player player){
-        currentStage = Stage.ATTACK;
         System.out.println("\nIt's ATTACK stage, you have these territory can attack:");
         printAttackableInfo(player);
         attackStage(player);
@@ -459,7 +394,6 @@ public class RiskModel {
      * @param defenceCountry the defence country
      */
     public void deployTroops(Territory attackCountry, Territory defenceCountry){
-        currentStage = Stage.DEPLOY;
         int deployTroops;
         do {
             System.out.println(attackCountry.getHolder().getName() + " wins the battle! Currently you have "+attackCountry.getTroops()+ " in your original country.");
@@ -491,7 +425,6 @@ public class RiskModel {
      * @param player the player
      */
     public void fortify(Player player){
-        currentStage = Stage.FORTIFY;
         String fortifyCountryString;
         Territory fortifyCountry;
         Territory fortified;
@@ -641,9 +574,7 @@ public class RiskModel {
         return  str;
     }
 
-    public Stage getCurrentStage() {
-        return currentStage;
-    }
+
 
     /**
      * The entry point of application.

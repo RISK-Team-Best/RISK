@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +15,8 @@ public class Player {
     private HashMap<String,Territory> territories;
     private HashMap<String,Continent> continents;
 
+    private static DefaultListModel<String> territoriesName;
+
     /**
      * Instantiates a new Player.
      *
@@ -23,6 +26,7 @@ public class Player {
         this.name = name;
         territories = new HashMap<>();
         continents = new HashMap<>();
+        territoriesName = new DefaultListModel<>();
     }
 
     /**
@@ -78,10 +82,10 @@ public class Player {
     /**
      * Add territory which belongs to this player.
      *
-     * @param territorytry the territorytry
+     * @param territory the territory
      */
-    public void addTerritory(Territory territorytry){
-        territories.put(territorytry.getName(),territorytry);
+    public void addTerritory(Territory territory){
+        territories.put(territory.getName(),territory);
     }
 
     /**
@@ -210,6 +214,11 @@ public class Player {
             if(territory.getTroops()!=1)return true;
         }
         return false;
+    }
+
+    public DefaultListModel<String> getDraftTerritoriesName(){
+        territoriesName.addAll(territories.keySet());
+        return territoriesName;
     }
 
 }
