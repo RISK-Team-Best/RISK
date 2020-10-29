@@ -184,10 +184,16 @@ public class RiskView extends JFrame {
 
     public void setStartingTerritory(DefaultListModel<String> listModel){
         startingTerritory.setModel(listModel);
+        startingTerritory.setSelectedIndex(0);
     }
 
     public String getStartingTerritory() {
         return (String)startingTerritory.getSelectedValue();
+    }
+
+    public void setDestinationTerritory(DefaultListModel<String> listModel){
+        destinationTerritory.setModel(listModel);
+        destinationTerritory.setSelectedIndex(0);
     }
 
     public String getDestinationTerritory() {

@@ -115,19 +115,23 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(currentStage==Stage.DRAFT){
-                String territory = view.getStartingTerritory();
-                int troops = view.getSelectedTroops();
-                model.draft(currentPlayer, territory, troops);
-                view.setContinentsLabel(model.getMapInfoThroughContinent());
-                view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
-                view.setTroopsBox(currentPlayer.getTroops());
-                if(currentPlayer.getTroops()==0){
-                    view.getJButton("Confirm").setEnabled(false);
-                    view.getJButton("Attack").setEnabled(true);
-                    view.setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
-                }
+                draftProcess();
             }
 
+        }
+    }
+
+    private void draftProcess(){
+        String territory = view.getStartingTerritory();
+        int troops = view.getSelectedTroops();
+        model.draft(currentPlayer, territory, troops);
+        view.setContinentsLabel(model.getMapInfoThroughContinent());
+        view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
+        view.setTroopsBox(currentPlayer.getTroops());
+        if(currentPlayer.getTroops()==0){
+            view.getJButton("Confirm").setEnabled(false);
+            view.getJButton("Attack").setEnabled(true);
+            view.setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
         }
     }
 
