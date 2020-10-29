@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +35,15 @@ public class Board {
      * @throws IOException the io exception that cannot read URL and file
      */
     public void readCountryFile() throws IOException {
-        URL countryFile = new URL("http://m.uploadedit.com/busd/1603223939868.txt");
+        //URL countryFile = new URL("http://m.uploadedit.com/busd/1603223939868.txt");
         countryHashMap = new HashMap<>();
-        Scanner scanner = new Scanner(countryFile.openStream());
-        while(scanner.hasNext()){
-            String str = scanner.nextLine();
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("country.txt")));
+        String line;
+        while((line = scanner.readLine())!=null){
+            String str = line;
             countryHashMap.put(str,new Territory(str));
         }
+        scanner.close();
     }
 
     /**
@@ -49,16 +53,17 @@ public class Board {
      */
     public void readContinentFile() throws IOException {
         continentHashMap = new HashMap<>();
-        URL continentFile = new URL("http://m.uploadedit.com/busd/1603223981907.txt");
-        Scanner scanner = new Scanner(continentFile.openStream());
-        while(scanner.hasNext()){
-            String[] array = scanner.nextLine().split(",");
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("Continent.txt")));
+        String line;
+        while((line = scanner.readLine())!=null){
+            String[] array = line.split(",");
             ArrayList<Territory> tempCountries = new ArrayList<>();
             for(int i = 2; i< array.length;i++){
                 tempCountries.add(new Territory(array[i]));
             }
             continentHashMap.put(array[0],new Continent(array[0],Integer.parseInt(array[1]),tempCountries));
         }
+        scanner.close();
     }
 
     /**
@@ -68,16 +73,19 @@ public class Board {
      */
     public void readNeighborFile() throws IOException {
         neighbors = new HashMap<>();
-        URL neighborFile = new URL("http://m.uploadedit.com/busd/1603224004897.txt");
-        Scanner scanner = new Scanner(neighborFile.openStream());
-        while(scanner.hasNext()){
-            String[] array = scanner.nextLine().split(",");
+        //URL neighborFile = new URL("http://m.uploadedit.com/busd/1603224004897.txt");
+        //Scanner scanner = new Scanner(neighborFile.openStream());
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("Neibour.txt")));
+        String line;
+        while((line = scanner.readLine())!=null){
+            String[] array = line.split(",");
             ArrayList<Territory> neighborCountries =new ArrayList<>();
             for(int i=1; i< array.length;i++){
                 neighborCountries.add(new Territory(array[i]));
             }
             neighbors.put(array[0],neighborCountries);
         }
+        scanner.close();
     }
 
     /**
@@ -106,6 +114,12 @@ public class Board {
      */
     public ArrayList<Territory> getAllNeighbors(String countryName){
         return neighbors.get(countryName);
+    }
+
+    public static void main(String[] args) {
+        try{
+            Board b = new Board();
+        }catch (Exception e){}
     }
 
 }

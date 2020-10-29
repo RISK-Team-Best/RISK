@@ -1,0 +1,9 @@
+Map Editor 1.1 has 3 Mode
+Territory Mode: Must create Territory on Continent.
+if removeLand is true, remove Territory
+Continent Mode: click On left part to creat a continent
+if removeLand is true, remove Continent
+Nocreate Mode: disable all creation
+
+Double click on Continent gives it a name from input
+clike on Territory when removeLand is False to name it.
