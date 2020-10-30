@@ -54,11 +54,14 @@ public class RiskController {
             public void actionPerformed(ActionEvent e) {
                 view.getJButton("Draft").setEnabled(false);
                 currentPlayer = model.getCurrentPlayer();
+                //System.out.println(currentPlayer.getName()+currentPlayer.getTerritories()); test
                 model.getCurrentPlayer().gainTroopsFromTerritory();
                 view.setStartingTerritory(currentPlayer.getDraftTerritoriesName());
                 model.checkContinent(currentPlayer);
                 view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
                 view.setTroopsBox(currentPlayer.getTroops());
+                //view.getJButton("Skip").setEnabled(true);
+                //currentStage = Stage.ATTACK;
             }
         }
 
@@ -66,6 +69,8 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+             Player player = model.getCurrentPlayer();
+
 
         }
     }
@@ -73,6 +78,16 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            currentStage = Stage.FORTIFY;
+            view.getJButton("Fortify").setEnabled(false);
+            view.getJButton("Confirm").setEnabled(true);
+            currentPlayer = model.getCurrentPlayer();
+            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the Territory you want send troops from.");
+            view.setStartingTerritory(model.checkFortifyTerritory(currentPlayer));
+            String startCountry = view.getStartingTerritory();
+            view.setDestinationTerritory(model.checkFortifiableTerritory(startCountry,currentPlayer));
+            view.setTroopsBox(currentPlayer.getTerritoryByString(startCountry).getTroops()-1);
+
 
         }
     }
@@ -108,6 +123,8 @@ public class RiskController {
 
 
 
+
+
         }
     }
     public class ConfirmButtonListener implements ActionListener{
@@ -116,6 +133,10 @@ public class RiskController {
         public void actionPerformed(ActionEvent e) {
             if(currentStage==Stage.DRAFT){
                 draftProcess();
+
+            }
+            if(currentStage==Stage.FORTIFY){
+                fortifyProcess();
             }
 
         }
@@ -131,8 +152,26 @@ public class RiskController {
         if(currentPlayer.getTroops()==0){
             view.getJButton("Confirm").setEnabled(false);
             view.getJButton("Attack").setEnabled(true);
+            view.getJButton("Skip").setEnabled(true);
             view.setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
+            currentStage = Stage.ATTACK;
         }
+    }
+    private void fortifyProcess(){
+
+        String startCountry = view.getStartingTerritory();
+        String destinationCountry = view.getDestinationTerritory();
+        int troops = view.getSelectedTroops();
+        model.fortify(startCountry,destinationCountry,currentPlayer,troops);
+        view.setContinentsLabel(model.getMapInfoThroughContinent());
+        currentPlayer = model.getNextPlayer();
+        model.setCurrentPlayer(currentPlayer);
+        view.getJButton("Draft").setEnabled(true);
+        view.getJButton("Confirm").setEnabled(true);
+        view.getJButton("Skip").setEnabled(false);
+        view.getJButton("Attack").setEnabled(false);
+        currentStage = Stage.DRAFT;
+        view.setStatusLabel(currentPlayer.getName()+ "'s turn, " + currentStage.getName() + " stage, please click \"Draft\" button to start DRAFT stage.");
     }
 
 

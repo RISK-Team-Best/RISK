@@ -14,6 +14,7 @@ public class Player {
     private int troops;
     private HashMap<String,Territory> territories;
     private HashMap<String,Continent> continents;
+    private int id;
 
     private static DefaultListModel<String> territoriesName;
 
@@ -219,6 +220,12 @@ public class Player {
     public DefaultListModel<String> getDraftTerritoriesName(){
         territoriesName.addAll(territories.keySet());
         return territoriesName;
+    }
+    public void setID(int i){
+        this.id = i;
+    }
+    public int getID(){
+        return this.id;
     }
 
 }

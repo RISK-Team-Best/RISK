@@ -175,6 +175,7 @@ public class RiskView extends JFrame {
         statusLabel.setText(str);
     }
 
+
     public void setTroopsBox(int troops){
         troopsBox.removeAllItems();
         for(int i=1; i<=troops; i++){
