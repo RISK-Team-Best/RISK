@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.html.ImageView;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -19,10 +20,10 @@ public class RiskView extends JFrame {
     private JPanel buttonPanel = new JPanel();
     private JPanel decideButtonPanel = new JPanel();
 
-    private JList startingTerritory = new JList();
-    private JList destinationTerritory = new JList();
+    private JList<String> startingTerritory = new JList<>();
+    private JList<String> destinationTerritory = new JList<>();
 
-    private JComboBox troopsBox = new JComboBox();
+    private JComboBox<Integer> troopsBox = new JComboBox<>();
 
     //private JButton functionButton = new JButton();
     private JButton skipButton = new JButton("Skip");
@@ -189,7 +190,7 @@ public class RiskView extends JFrame {
     }
 
     public String getStartingTerritory() {
-        return (String)startingTerritory.getSelectedValue();
+        return startingTerritory.getSelectedValue();
     }
 
     public void setDestinationTerritory(DefaultListModel<String> listModel){
@@ -198,32 +199,36 @@ public class RiskView extends JFrame {
     }
 
     public String getDestinationTerritory() {
-        return (String) destinationTerritory.getSelectedValue();
+        return destinationTerritory.getSelectedValue();
     }
 
     public int getSelectedTroops(){
-        return (int)troopsBox.getSelectedItem();
+        return (int) troopsBox.getSelectedItem();
     }
 
-    public void addNewGameMenuListener(ActionListener e){
-        newGameItem.addActionListener(e);
+    public void addNewGameMenuListener(ActionListener newGameListener){
+        newGameItem.addActionListener(newGameListener);
     }
-    public void addDraftButtonListener(ActionListener e){
-        draft.addActionListener(e);
+    public void addDraftButtonListener(ActionListener draftButtonListener){
+        draft.addActionListener(draftButtonListener);
     }
-    public void addAttackButtonListener(ActionListener e){
-        attack.addActionListener(e);
+    public void addAttackButtonListener(ActionListener attackButtonListener){
+        attack.addActionListener(attackButtonListener);
     }
-    public void addFortifyButtonListener(ActionListener e){
-        fortify.addActionListener(e);
+    public void addFortifyButtonListener(ActionListener fortifyButtonListener){
+        fortify.addActionListener(fortifyButtonListener);
     }
-    public void addDeployButtonListener(ActionListener e){
-        deploy.addActionListener(e);
+    public void addDeployButtonListener(ActionListener deployButtonListener){
+        deploy.addActionListener(deployButtonListener);
     }
-    public void addSkipButtonListener(ActionListener e){
-        skipButton.addActionListener(e);
+    public void addSkipButtonListener(ActionListener skipButtonListener){
+        skipButton.addActionListener(skipButtonListener);
     }
-    public void addConfirmButtonListener(ActionListener e){
-        confirmButton.addActionListener(e);
+    public void addConfirmButtonListener(ActionListener confirmButtonListener){
+        confirmButton.addActionListener(confirmButtonListener);
+    }
+
+    public void addStartingTerritoryListListener(ListSelectionListener listSelectionListener){
+        startingTerritory.addListSelectionListener(listSelectionListener);
     }
 }

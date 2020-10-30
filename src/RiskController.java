@@ -24,7 +24,7 @@ public class RiskController {
         view.addFortifyButtonListener(new FortifyButtonListener());
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
-
+        view.addStartingTerritoryListListener(new StartingTerritoryListener());
     }
 
 
@@ -39,9 +39,7 @@ public class RiskController {
                 model.initialGame();
                 currentStage = Stage.DRAFT;
                 view.setContinentsLabel(model.getMapInfoThroughContinent());
-                //model.processGaming();
                 view.getJButton("Draft").setEnabled(true);
-//                view.getJButton("Confirm").setEnabled(true);
                 view.setStatusLabel("Now it's "+model.getCurrentPlayer().getName() +"'s turn, please click \"Draft\" button to start DRAFT stage.");
                 view.getJButton("Confirm").setEnabled(true);
             }
@@ -57,7 +55,6 @@ public class RiskController {
                 //System.out.println(currentPlayer.getName()+currentPlayer.getTerritories()); test
                 model.getCurrentPlayer().gainTroopsFromTerritory();
                 view.setStartingTerritory(currentPlayer.getDraftTerritoriesName());
-                model.checkContinent(currentPlayer);
                 view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
                 view.setTroopsBox(currentPlayer.getTroops());
                 //view.getJButton("Skip").setEnabled(true);
@@ -74,6 +71,8 @@ public class RiskController {
 
         }
     }
+
+
     public class FortifyButtonListener implements ActionListener{
 
         @Override
@@ -95,9 +94,24 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            currentStage=Stage.ATTACK;
+            view.getJButton("Attack").setEnabled(false);
+            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Select territory from Origin Territory list and pick target territory in Target Territory list");
+            view.setStartingTerritory(model.setAttackTerritories(currentPlayer));
         }
     }
+
+    public class StartingTerritoryListener implements ListSelectionListener{
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if(currentStage==Stage.ATTACK) {
+                view.setDestinationTerritory(model.setDefenceTerritories(currentPlayer, view.getStartingTerritory()));
+                view.setTroopsBox(currentPlayer.getTerritoryByString(view.getStartingTerritory()).getTroops()-1);
+            }
+        }
+    }
+
     public class SkipButtonListener implements ActionListener{
 
         @Override
@@ -127,6 +141,8 @@ public class RiskController {
 
         }
     }
+
+
     public class ConfirmButtonListener implements ActionListener{
 
         @Override
@@ -141,6 +157,8 @@ public class RiskController {
 
         }
     }
+
+
 
     private void draftProcess(){
         String territory = view.getStartingTerritory();

@@ -73,7 +73,6 @@ public class   RiskModel {
             checkContinent(player);
             assignTroops(player);
             player.printPlayerInfo();
-            player.addContinentBonus();
         }
         for(int i = 0;i<this.numberPlayers;i++){
             players.get(i).setID(i);
@@ -102,7 +101,6 @@ public class   RiskModel {
                 checkContinent(player);
                 player.gainTroopsFromTerritory();
                 player.printPlayerInfo();
-                player.addContinentBonus();
             }
         }
     }
@@ -300,6 +298,29 @@ public class   RiskModel {
             System.out.println();
         }
     }
+
+    public DefaultListModel<String> setAttackTerritories(Player player){
+        originTerritoryJList.clear();
+        for(Territory territory:player.getTerritories()){
+            if(territory.getTroops()>1)originTerritoryJList.addElement(territory.getName());
+        }
+        return originTerritoryJList;
+    }
+
+    public DefaultListModel<String> setDefenceTerritories(Player player,String territoryName){
+        if(territoryName!= null) {
+            targetTerritoryJList.clear();
+            for (Territory neighbor : board.getAllNeighbors(territoryName)) {
+                for (Player player1 : players) {
+                    if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
+                        targetTerritoryJList.addElement(neighbor.getName());
+                    }
+                }
+            }
+        }
+        return targetTerritoryJList;
+    }
+
 
     /**
      * Battle.
@@ -592,13 +613,13 @@ public class   RiskModel {
     public int getPlayerNum(){
         return this.numberPlayers;
     }
-    public String getPlayerName(){
-        String str = "";
-        for(Player player: this.players){
-            str += player.getName();
-        }
-        return str;
-    }
+//    public String getPlayerName(){
+//        String str = "";
+//        for(Player player: this.players){
+//            str += player.getName();
+//        }
+//        return str;
+//    }
     public ArrayList<Continent> getAllContinents() {
         return allContinents;
     }
@@ -627,7 +648,12 @@ public class   RiskModel {
         return  str;
     }
 
-
+    public Territory getTerritoryByString(String territoryName){
+        for(Territory territory:allCountries){
+            if(territory.getName().equals(territoryName))return territory;
+        }
+        return null;
+    }
 
     /**
      * The entry point of application.
