@@ -90,4 +90,9 @@ public class Territory {
      * @return the string description
      */
     public String shortDescription(){return getName()+"("+getTroops()+" troops)";}
+
+    @Override
+     public String toString(){
+        return this.getName();
+    }
 }

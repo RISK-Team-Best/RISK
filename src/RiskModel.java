@@ -20,11 +20,11 @@ public class   RiskModel {
 
     private final Board board;
 
-    public static DefaultListModel<String> originTerritoryJList;
-    public static DefaultListModel<String> targetTerritoryJList;
-    public static DefaultListModel<String> destinationTerritoryJList;
-    public static DefaultListModel<String> checkFortifyTerritoryJList;
-    public static DefaultListModel<String> checkFortiableTerritoryJList;
+    public static DefaultListModel<Territory> originTerritoryJList;
+    public static DefaultListModel<Territory> targetTerritoryJList;
+    public static DefaultListModel<Territory> destinationTerritoryJList;
+    public static DefaultListModel<Territory> checkFortifyTerritoryJList;
+    public static DefaultListModel<Territory> checkFortiableTerritoryJList;
 
 
     private Player currentPlayer;
@@ -299,21 +299,21 @@ public class   RiskModel {
         }
     }
 
-    public DefaultListModel<String> setAttackTerritories(Player player){
+    public DefaultListModel<Territory> setAttackTerritories(Player player){
         originTerritoryJList.clear();
         for(Territory territory:player.getTerritories()){
-            if(territory.getTroops()>1)originTerritoryJList.addElement(territory.getName());
+            if(territory.getTroops()>1)originTerritoryJList.addElement(territory);
         }
         return originTerritoryJList;
     }
 
-    public DefaultListModel<String> setDefenceTerritories(Player player,String territoryName){
-        if(territoryName!= null) {
+    public DefaultListModel<Territory> setDefenceTerritories(Player player,Territory territory){
+        if(territory!= null) {
             targetTerritoryJList.clear();
-            for (Territory neighbor : board.getAllNeighbors(territoryName)) {
+            for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
                 for (Player player1 : players) {
                     if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
-                        targetTerritoryJList.addElement(neighbor.getName());
+                        targetTerritoryJList.addElement(neighbor);
                     }
                 }
             }
@@ -461,98 +461,30 @@ public class   RiskModel {
      *
      * @param player the player
      */
-    public DefaultListModel checkFortifyTerritory(Player player) {
+    public DefaultListModel<Territory> setFortifyTerritory(Player player) {
 
         for (Territory country : player.getTerritories()) {
             if (country.getTroops() > 1) {
-                this.checkFortifyTerritoryJList.addElement(country.getName());
+                this.checkFortifyTerritoryJList.addElement(country);
             }
         }
         return checkFortifyTerritoryJList;
     }
-    public DefaultListModel  checkFortifiableTerritory(String fortifyCountryString, Player player){
-        Territory fortifyCountry;
+    public DefaultListModel<Territory> setFortifiableTerritory(Territory fortifyCountry, Player player){
         neighborCountries.clear();
-        fortifyCountry = player.getTerritoryByString(fortifyCountryString);
+        checkFortiableTerritoryJList.clear();
         neighborCountries.add(fortifyCountry);
         addNeighborCountries(fortifyCountry, player);
         neighborCountries.remove(fortifyCountry);
         for (Territory country : neighborCountries) {
-
-            checkFortiableTerritoryJList.addElement(country.getName());
+            checkFortiableTerritoryJList.addElement(country);
         }
         return checkFortiableTerritoryJList;
     }
-    public void fortify(String fortifyCountryString, String fortifiedCountryString, Player player,int troop) {
-        //String fortifyCountryString = fortifyCountryString;
-        Territory fortifyCountry;
-        Territory fortifiedCountry;
-        //neighborCountries.clear();
-        //System.out.println("\nIt's FORTIFY stage, you have these territories can fortify:");
-        //for(Territory country: player.getTerritories()) {
-        //if(country.getTroops()>1)
-        //{
-        //this.originTerritoryJList.addElement(country.getName());
-        // }//System.out.println(country.shortDescription()+" ");
-        //}
-        //outerloop:
-        //while(true) {
-        // do {
-        // System.out.println("Which territory you want to fortify? (Type skip to skip this turn.)");
-        //fortifyCountryString = scanner.nextLine();
-        //if(fortifyCountryString.equals("skip")) return;
-        //else if (player.checkTerritoryByString(fortifyCountryString)) {
-        //fortifyCountry = player.getTerritoryByString(fortifyCountryString);
-        //break;
-        // } else {
-        //System.out.println("Please check your input of territory's name.");
-        // }
-        //} while (true);
-        fortifyCountry = player.getTerritoryByString(fortifyCountryString);
-        fortifiedCountry = player.getTerritoryByString(fortifiedCountryString);
-        //neighborCountries.add(fortifyCountry);
-        //addNeighborCountries(fortifyCountry, player);
-        //neighborCountries.remove(fortifyCountry);
-        //System.out.println("You have these territories connect to " + fortifyCountry.getName());
-        //for (Territory country : neighborCountries) {
-            //System.out.println(country.shortDescription() + " ");
-        //}
-        //do {
-            //System.out.println("\nWhich territory do you want to be fortified?(Type \"back\" to re-select fortify country.");
-            //String fortifiedString = scanner.nextLine();
-            //if (fortifiedString.equals("back")) break;
-           // else if (fortifiedString.equals(fortifyCountryString)) {
-                //System.out.println("The fortify and be fortified country cannot be the same, re-select fortify country please.");
-                //break;
-            //} else if (player.checkTerritoryByString(fortifiedString)) {
-               // fortifiedCountry = player.getTerritoryByString(fortifiedString);
-                //break outerloop;
-           // } else System.out.println("Please check your input of territory's name.");
-       // } while (true);
-
-
-
-    //int troop;
-      // do
-
-   // {
-        //do {
-           // System.out.println("How many troops do you want to fortify?");
-            //troop = scanner.nextInt();
-           // if (troop < 1) System.out.println("Please input valid number");
-           // scanner.nextLine();
-        //} while (troop < 1);
-        //if (troop > fortifyCountry.getTroops())
-            //System.out.println("You don't have so much troops in this country..");
-        //else if (troop > (fortifyCountry.getTroops() - 1))
-            //System.out.println("Please leave at least one troop to defence");
-        //else {
-            fortifyCountry.decreaseTroops(troop);
-            fortifiedCountry.increaseTroops(troop);
-            //currentPlayer = this.getNextPlayer();
-           // break;
-       // }
-   // } while(true);
+    public void fortify(Territory fortifyCountry, Territory fortifiedCountry,int troop) {
+        fortifyCountry.decreaseTroops(troop);
+        fortifiedCountry.increaseTroops(troop);
+        //currentPlayer = this.getNextPlayer();
 }
 
 
@@ -613,13 +545,6 @@ public class   RiskModel {
     public int getPlayerNum(){
         return this.numberPlayers;
     }
-//    public String getPlayerName(){
-//        String str = "";
-//        for(Player player: this.players){
-//            str += player.getName();
-//        }
-//        return str;
-//    }
     public ArrayList<Continent> getAllContinents() {
         return allContinents;
     }

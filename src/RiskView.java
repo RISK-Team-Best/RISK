@@ -20,10 +20,10 @@ public class RiskView extends JFrame {
     private JPanel buttonPanel = new JPanel();
     private JPanel decideButtonPanel = new JPanel();
 
-    private JList<String> startingTerritory = new JList<>();
-    private JList<String> destinationTerritory = new JList<>();
+    private JList<Territory> startingTerritory = new JList<>();
+    private JList<Territory> destinationTerritory = new JList<>();
 
-    private JComboBox<Integer> troopsBox = new JComboBox<>();
+    private JComboBox troopsBox = new JComboBox();
 
     //private JButton functionButton = new JButton();
     private JButton skipButton = new JButton("Skip");
@@ -184,21 +184,21 @@ public class RiskView extends JFrame {
         }
     }
 
-    public void setStartingTerritory(DefaultListModel<String> listModel){
+    public void setStartingTerritory(DefaultListModel<Territory> listModel){
         startingTerritory.setModel(listModel);
         startingTerritory.setSelectedIndex(0);
     }
 
-    public String getStartingTerritory() {
+    public Territory getStartingTerritory() {
         return startingTerritory.getSelectedValue();
     }
 
-    public void setDestinationTerritory(DefaultListModel<String> listModel){
+    public void setDestinationTerritory(DefaultListModel<Territory> listModel){
         destinationTerritory.setModel(listModel);
         destinationTerritory.setSelectedIndex(0);
     }
 
-    public String getDestinationTerritory() {
+    public Territory getDestinationTerritory() {
         return destinationTerritory.getSelectedValue();
     }
 

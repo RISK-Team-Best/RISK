@@ -16,7 +16,7 @@ public class Player {
     private HashMap<String,Continent> continents;
     private int id;
 
-    private static DefaultListModel<String> territoriesName;
+    private static DefaultListModel<Territory> territoryDefaultList;
 
     /**
      * Instantiates a new Player.
@@ -27,7 +27,7 @@ public class Player {
         this.name = name;
         territories = new HashMap<>();
         continents = new HashMap<>();
-        territoriesName = new DefaultListModel<>();
+        territoryDefaultList = new DefaultListModel<>();
     }
 
     /**
@@ -217,9 +217,9 @@ public class Player {
         return false;
     }
 
-    public DefaultListModel<String> getDraftTerritoriesName(){
-        territoriesName.addAll(territories.keySet());
-        return territoriesName;
+    public DefaultListModel<Territory> getTerritoriesList(){
+        territoryDefaultList.addAll(territories.values());
+        return territoryDefaultList;
     }
     public void setID(int i){
         this.id = i;

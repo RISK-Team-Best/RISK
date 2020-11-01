@@ -4,7 +4,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class RiskController {
     private RiskModel model;
@@ -54,7 +53,7 @@ public class RiskController {
                 currentPlayer = model.getCurrentPlayer();
                 //System.out.println(currentPlayer.getName()+currentPlayer.getTerritories()); test
                 model.getCurrentPlayer().gainTroopsFromTerritory();
-                view.setStartingTerritory(currentPlayer.getDraftTerritoriesName());
+                view.setStartingTerritory(currentPlayer.getTerritoriesList());
                 view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
                 view.setTroopsBox(currentPlayer.getTroops());
                 //view.getJButton("Skip").setEnabled(true);
@@ -66,9 +65,11 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-             Player player = model.getCurrentPlayer();
-
-
+            //Player player = model.getCurrentPlayer();
+            view.getJButton("Attack").setEnabled(false);
+            view.setStartingTerritory(model.setAttackTerritories(currentPlayer));
+            currentStage=Stage.ATTACK;
+            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Select territory from Origin Territory list and pick target territory in Target Territory list");
         }
     }
 
@@ -77,15 +78,14 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            currentStage = Stage.FORTIFY;
+            currentStage = null;
             view.getJButton("Fortify").setEnabled(false);
             view.getJButton("Confirm").setEnabled(true);
-            currentPlayer = model.getCurrentPlayer();
+            view.setStartingTerritory(model.setFortifyTerritory(currentPlayer));
+            currentStage = Stage.FORTIFY;
             view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the Territory you want send troops from.");
-            view.setStartingTerritory(model.checkFortifyTerritory(currentPlayer));
-            String startCountry = view.getStartingTerritory();
-            view.setDestinationTerritory(model.checkFortifiableTerritory(startCountry,currentPlayer));
-            view.setTroopsBox(currentPlayer.getTerritoryByString(startCountry).getTroops()-1);
+            view.setDestinationTerritory(model.setFortifiableTerritory(view.getStartingTerritory(),currentPlayer));
+            view.setTroopsBox(view.getStartingTerritory().getTroops()-1);
 
 
         }
@@ -107,7 +107,11 @@ public class RiskController {
         public void valueChanged(ListSelectionEvent e) {
             if(currentStage==Stage.ATTACK) {
                 view.setDestinationTerritory(model.setDefenceTerritories(currentPlayer, view.getStartingTerritory()));
-                view.setTroopsBox(currentPlayer.getTerritoryByString(view.getStartingTerritory()).getTroops()-1);
+                view.setTroopsBox(view.getStartingTerritory().getTroops());
+            }
+            if(currentStage == Stage.FORTIFY){
+                view.setDestinationTerritory(model.setFortifiableTerritory(view.getStartingTerritory(),currentPlayer));
+                view.setTroopsBox(view.getStartingTerritory().getTroops()-1);
             }
         }
     }
@@ -153,6 +157,7 @@ public class RiskController {
             }
             if(currentStage==Stage.FORTIFY){
                 fortifyProcess();
+                //only process once, then transfer to another player.
             }
 
         }
@@ -161,7 +166,7 @@ public class RiskController {
 
 
     private void draftProcess(){
-        String territory = view.getStartingTerritory();
+        String territory = view.getStartingTerritory().getName();
         int troops = view.getSelectedTroops();
         model.draft(currentPlayer, territory, troops);
         view.setContinentsLabel(model.getMapInfoThroughContinent());
@@ -172,15 +177,17 @@ public class RiskController {
             view.getJButton("Attack").setEnabled(true);
             view.getJButton("Skip").setEnabled(true);
             view.setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
-            currentStage = Stage.ATTACK;
         }
     }
     private void fortifyProcess(){
-
-        String startCountry = view.getStartingTerritory();
-        String destinationCountry = view.getDestinationTerritory();
+        Territory startCountry = view.getStartingTerritory();
+        Territory destinationCountry = view.getDestinationTerritory();
         int troops = view.getSelectedTroops();
-        model.fortify(startCountry,destinationCountry,currentPlayer,troops);
+        if(destinationCountry==null) {
+            JOptionPane.showMessageDialog(null, startCountry.getName()+" doesn't have any neighbors under your control!", "Warning", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        model.fortify(startCountry,destinationCountry,troops);
         view.setContinentsLabel(model.getMapInfoThroughContinent());
         currentPlayer = model.getNextPlayer();
         model.setCurrentPlayer(currentPlayer);
