@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.html.ImageView;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Hashtable;
 import java.util.ArrayList;
 
 public class RiskView extends JFrame {
@@ -25,10 +22,6 @@ public class RiskView extends JFrame {
 
     private JComboBox troopsBox = new JComboBox();
 
-    //private JButton functionButton = new JButton();
-    private JButton skipButton = new JButton("Skip");
-    private JButton confirmButton = new JButton("Confirm");
-
     private JScrollPane startingTerritoryScrollPane;
     private JScrollPane destinationTerritoryScrollPane;
     private JScrollPane continentInfoPane;
@@ -43,15 +36,15 @@ public class RiskView extends JFrame {
     private JButton draft = new JButton("Draft");
     private JButton fortify = new JButton("Fortify");
     private JButton deploy = new JButton("Deploy");
+    private JButton skipButton = new JButton("Skip");
+    private JButton confirmButton = new JButton("Confirm");
 
-    private ArrayList<JButton> JButtonList = new ArrayList<JButton>();
+    private ArrayList<JButton> JButtonList = new ArrayList<>();
 
     private int numberPlayer = 0;
 
     public RiskView(){
         super("Risk Game");
-
-//        statusLabel.setText("It's my turn.");
 
         startingTerritory.setLayoutOrientation(JList.VERTICAL);
         startingTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

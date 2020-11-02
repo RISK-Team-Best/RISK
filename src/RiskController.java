@@ -65,7 +65,6 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //Player player = model.getCurrentPlayer();
             view.getJButton("Attack").setEnabled(false);
             view.setStartingTerritory(model.setAttackTerritories(currentPlayer));
             currentStage=Stage.ATTACK;

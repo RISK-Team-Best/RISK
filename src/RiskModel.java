@@ -19,6 +19,7 @@ public class   RiskModel {
     private int initialTroops;
 
     private final Board board;
+    private Board tempBoard;
 
     public static DefaultListModel<Territory> originTerritoryJList;
     public static DefaultListModel<Territory> targetTerritoryJList;
@@ -43,9 +44,10 @@ public class   RiskModel {
     public RiskModel() throws IOException {
         players = new ArrayList<>();
         board = new Board();
+        tempBoard = new Board();
         initialTroopHashMap = new HashMap<>();
         setInitialTroopHashMap();
-        allCountries = board.getAllCountries();
+        allCountries = new ArrayList<>();
         allContinents = board.getAllContinents();
         scanner = new Scanner(System.in);
         neighborCountries = new LinkedHashSet<>();
@@ -130,22 +132,25 @@ public class   RiskModel {
     /**
      * Assign countries randomly.
      */
-    public void assignCountriesRandomly() {
-        int averageStates = allCountries.size() / numberPlayers;
-        int extraStates = allCountries.size() % numberPlayers;
-        ArrayList<Territory> tempAllCountries = allCountries;
+    public void assignCountriesRandomly(){
+        ArrayList<Territory> tempAllCountries = tempBoard.getAllCountries();
+        int averageStates = tempAllCountries.size() / numberPlayers;
+        int extraStates = tempAllCountries.size() % numberPlayers;
         Random random = new Random();
         for (Player player : players) {
             for (int i = 0; i < averageStates; i++) {
                 Territory tempCountry = tempAllCountries.get(random.nextInt(tempAllCountries.size()));
-                player.addTerritory(tempCountry);
                 tempCountry.setHolder(player);
+                player.addTerritory(tempCountry);
+                allCountries.add(tempCountry);
                 tempAllCountries.remove(tempCountry);
             }
         }
         for (int i = 0; i < extraStates; i++) {
             Territory tempCountry = tempAllCountries.get(random.nextInt(tempAllCountries.size()));
+            tempCountry.setHolder(players.get(i));
             players.get(i).addTerritory(tempCountry);
+            allCountries.add(tempCountry);
             tempAllCountries.remove(tempCountry);
         }
     }
@@ -198,24 +203,6 @@ public class   RiskModel {
      */
 
     public void draft(Player player, String territory, int troops) {
-        /*String territory;
-        while(player.getTroops()!=0) {
-            do {
-                System.out.println("Please enter the territory name that you want to add troops to.");
-                territory = scanner.nextLine();
-                if(!player.checkTerritoryByString(territory)) System.out.println("Please enter your own territory's name...");
-            }while(!player.checkTerritoryByString(territory));
-            do {
-                try {
-                    System.out.println("Please enter the number of troops you want to send.");
-                    troops = scanner.nextInt();
-                    if(troops<1)System.out.println("Please enter valid input!");
-                    scanner.nextLine();
-                } catch (Exception e) {
-                    System.out.println("Please enter valid input!");
-                    scanner.next();
-                }
-            }while(troops<1);*/
         player.getTerritoryByString(territory).increaseTroops(troops);
         player.decreaseTroops(troops);
     }
@@ -311,9 +298,12 @@ public class   RiskModel {
         if(territory!= null) {
             targetTerritoryJList.clear();
             for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
-                for (Player player1 : players) {
-                    if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
-                        targetTerritoryJList.addElement(neighbor);
+                //对于攻击国的所有邻国
+                for(Territory territory1:allCountries) {
+                    //所有国家轮一遍以拿到目的地国家们的reference。！！！allCountries为空
+                    if(territory1.getName().equals(neighbor.getName())&&(!territory1.getHolder().equals(player))) {
+                        //如果邻国和轮着的这个国家的名一样，且这个国家的holder不是这个player，那就加上。
+                        targetTerritoryJList.addElement(territory1);
                     }
                 }
             }
