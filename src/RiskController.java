@@ -104,7 +104,7 @@ public class RiskController {
 
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            if(currentStage==Stage.ATTACK) {
+            if(currentStage == Stage.ATTACK) {
                 view.setDestinationTerritory(model.setDefenceTerritories(currentPlayer, view.getStartingTerritory()));
                 view.setTroopsBox(view.getStartingTerritory().getTroops());
             }
