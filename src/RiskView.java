@@ -201,6 +201,9 @@ public class RiskView extends JFrame {
     public Territory getDestinationTerritory() {
         return destinationTerritory.getSelectedValue();
     }
+    public void clearDestinationTerritory() {
+        destinationTerritory.setModel(null);
+    }
 
     public int getSelectedTroops(){
         return (int) troopsBox.getSelectedItem();
@@ -231,4 +234,9 @@ public class RiskView extends JFrame {
     public void addStartingTerritoryListListener(ListSelectionListener listSelectionListener){
         startingTerritory.addListSelectionListener(listSelectionListener);
     }
+    public void addJListSelectListener(ListSelectionListener e){
+        startingTerritory.addListSelectionListener(e);
+    }
+
+
 }
