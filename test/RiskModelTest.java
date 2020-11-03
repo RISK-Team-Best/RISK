@@ -41,7 +41,6 @@ public class RiskModelTest {
 
     }
 
-
     @Test
     public void testProcessGaming() {
     }
@@ -77,8 +76,8 @@ public class RiskModelTest {
         player1.gainTroopsFromTerritory();
         int originalPlayerTroops = player1.getTroops();
         riskModel.draft(player1,country1Name,moveTroop);
-        assertEquals((originalTroops + moveTroop),country1.getTroops());
-        assertEquals((originalPlayerTroops - moveTroop),player1.getTroops());
+        assertEquals((originalTroops + moveTroop),country1.getTroops());//the territory get the troops
+        assertEquals((originalPlayerTroops - moveTroop),player1.getTroops());//the player decrease the troops
 
     }
 
