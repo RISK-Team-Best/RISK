@@ -13,6 +13,8 @@ For the simple version of RISK, we skip the initial phase where players take tur
 ### Milestone 1:  
 A text-based playable version of the game, the players could use console to play the game. The console can print out the state of the map,for example:The outcome of an attack, whose turn it is to play, the elimination of a player, etc.     
 
+### Milestone 2:        
+
 #### Instruction:    
 Use cmd  to run this program: java -jar RISK.jar      
 (Please note that this project is designed and compiled in JDK 14, if encounter Java version issue, please install JDK14)    
@@ -38,9 +40,11 @@ In the game:
 
 #### Deliverables:   
 readme file         
-code (source + executable in a jar file)       
+source code                 
+test code               
 UML diagrams: Class Diagram, Sequence Diagram           
-documentation.     
+documentation           
+
 
 #### Contribution:          
 Guanqun Dong:Board.class,Continent.class.        
@@ -50,6 +54,11 @@ Tiantian Lin:UML Class Diagram, Dices.java,Player.java.
 
 
 
+### Design Decisions:    
+### Data Structure:    
+### Known Issue:   
+### Changes:   
+### Roadmap Ahead:    
 
 
 

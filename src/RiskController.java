@@ -29,7 +29,7 @@ public class RiskController {
     }
 
 
-    public class NewGameMenuListener implements ActionListener {
+     class NewGameMenuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -47,7 +47,7 @@ public class RiskController {
 
         }
 
-    public class DraftButtonListener implements ActionListener{
+    class DraftButtonListener implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
