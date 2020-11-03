@@ -23,10 +23,10 @@ public class   RiskModel {
 
     public static DefaultListModel<Territory> originTerritoryJList;
     public static DefaultListModel<Territory> targetTerritoryJList;
-    public static DefaultListModel<Territory> destinationTerritoryJList;
     public static DefaultListModel<Territory> checkFortifyTerritoryJList;
     public static DefaultListModel<Territory> checkFortiableTerritoryJList;
 
+    private String battleStatusString;
 
     private Player currentPlayer;
 
@@ -54,7 +54,6 @@ public class   RiskModel {
 
         originTerritoryJList = new DefaultListModel<>();
         targetTerritoryJList = new DefaultListModel<>();
-        destinationTerritoryJList = new DefaultListModel<>();
         checkFortifyTerritoryJList = new DefaultListModel<>();
         checkFortiableTerritoryJList = new DefaultListModel<>();
 
@@ -93,7 +92,7 @@ public class   RiskModel {
                 currentPlayer = player;
                 //System.out.println("\nIt's "+player.getName()+"'s turn:");
 //                draft(player);
-                attack(player);
+//                attack(player);
                 checkWinner();
                 //fortify(player);
                 checkContinent(player);
@@ -214,11 +213,11 @@ public class   RiskModel {
      *
      * @param player the player in attack stage
      */
-    public void attack(Player player) {
-        System.out.println("\nIt's ATTACK stage, you have these territory can attack:");
-        printAttackableInfo(player);
-        attackStage(player);
-    }
+//    public void attack(Player player) {
+//        System.out.println("\nIt's ATTACK stage, you have these territory can attack:");
+//        printAttackableInfo(player);
+//        attackStage(player);
+//    }
 
     /**
      * Attack stage.
@@ -226,70 +225,70 @@ public class   RiskModel {
      *
      * @param player the player in attack stage
      */
-    public void attackStage(Player player) {
-        String attackCountryString;
-        String defenceCountryString;
-        Territory attackCountry;
-        Territory defenceCountry;
-        Outterloop:
-        do {
-            while (true) {
-                System.out.println("Please enter your territory that you want to launch an offense. (Enter \"skip\" to skip this stag)");
-                attackCountryString = scanner.nextLine();
-                if (attackCountryString.equals("skip")) break Outterloop;
-                else if (!player.checkTerritoryByString(attackCountryString)) {
-                    System.out.println("Please enter your own territory's name...");
-                    continue;
-                } else if (player.getTerritoryByString(attackCountryString).getTroops() == 1)
-                    System.out.println("You have to leave at least one troop to guard this city!");
-                attackCountry = player.getTerritoryByString(attackCountryString);
-                for (Territory neighbor : board.getAllNeighbors(attackCountry.getName())) {
-                    for (Player player1 : players) {
-                        if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
-                            System.out.println(player1.getTerritoryByString(neighbor.getName()).shortDescription());
-                        }
-                    }
-                }
-                System.out.println("Which territory do you want to attack?");
-                defenceCountryString = scanner.nextLine();
-                if (!defenceCountryString.equals(attackCountryString)) break;
-            }
-
-            for (Player player1 : players) {
-                if (player1.checkTerritoryByString(defenceCountryString)) {
-                    defenceCountry = player1.getTerritoryByString(defenceCountryString);
-                    battle(attackCountry, defenceCountry);
-                    break;
-                }
-            }
-            printAttackableInfo(player);
-        } while (player.checkAbilityToAttack());
-    }
+//    public void attackStage(Player player) {
+//        String attackCountryString;
+//        String defenceCountryString;
+//        Territory attackCountry;
+//        Territory defenceCountry;
+//        Outterloop:
+//        do {
+//            while (true) {
+//                System.out.println("Please enter your territory that you want to launch an offense. (Enter \"skip\" to skip this stag)");
+//                attackCountryString = scanner.nextLine();
+//                if (attackCountryString.equals("skip")) break Outterloop;
+//                else if (!player.checkTerritoryByString(attackCountryString)) {
+//                    System.out.println("Please enter your own territory's name...");
+//                    continue;
+//                } else if (player.getTerritoryByString(attackCountryString).getTroops() == 1)
+//                    System.out.println("You have to leave at least one troop to guard this city!");
+//                attackCountry = player.getTerritoryByString(attackCountryString);
+//                for (Territory neighbor : board.getAllNeighbors(attackCountry.getName())) {
+//                    for (Player player1 : players) {
+//                        if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
+//                            System.out.println(player1.getTerritoryByString(neighbor.getName()).shortDescription());
+//                        }
+//                    }
+//                }
+//                System.out.println("Which territory do you want to attack?");
+//                defenceCountryString = scanner.nextLine();
+//                if (!defenceCountryString.equals(attackCountryString)) break;
+//            }
+//
+//            for (Player player1 : players) {
+//                if (player1.checkTerritoryByString(defenceCountryString)) {
+//                    defenceCountry = player1.getTerritoryByString(defenceCountryString);
+//                    battle(attackCountry, defenceCountry);
+//                    break;
+//                }
+//            }
+//            printAttackableInfo(player);
+//        } while (player.checkAbilityToAttack());
+//    }
 
     /**
      * Print ability to attack info.
      *
      * @param player the player to check info of his/her territories
-     */
-    public void printAttackableInfo(Player player) {
-        for (Territory country : player.getTerritories()) {
-            if (country.getTroops() == 1) continue;
-            System.out.print(country.shortDescription() + "--");
-            for (Territory neighbor : board.getAllNeighbors(country.getName())) {
-                for (Player player1 : players) {
-                    if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
-                        System.out.print(player1.getTerritoryByString(neighbor.getName()).shortDescription() + " ");
-                    }
-                }
-            }
-            System.out.println();
-        }
-    }
+//     */
+//    public void printAttackableInfo(Player player) {
+//        for (Territory country : player.getTerritories()) {
+//            if (country.getTroops() == 1) continue;
+//            System.out.print(country.shortDescription() + "--");
+//            for (Territory neighbor : board.getAllNeighbors(country.getName())) {
+//                for (Player player1 : players) {
+//                    if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
+//                        System.out.print(player1.getTerritoryByString(neighbor.getName()).shortDescription() + " ");
+//                    }
+//                }
+//            }
+//            System.out.println();
+//        }
+//    }
 
     public DefaultListModel<Territory> setAttackTerritories(Player player){
         originTerritoryJList.clear();
         for(Territory territory:player.getTerritories()){
-            if(territory.getTroops()>1)originTerritoryJList.addElement(territory);
+            if(territory.getTroops()>1&&checkAttackableNeighbors(territory,player))originTerritoryJList.addElement(territory);
         }
         return originTerritoryJList;
     }
@@ -298,11 +297,8 @@ public class   RiskModel {
         if(territory!= null) {
             targetTerritoryJList.clear();
             for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
-                //对于攻击国的所有邻国
                 for(Territory territory1:allCountries) {
-                    //所有国家轮一遍以拿到目的地国家们的reference。！！！allCountries为空
                     if(territory1.getName().equals(neighbor.getName())&&(!territory1.getHolder().equals(player))) {
-                        //如果邻国和轮着的这个国家的名一样，且这个国家的holder不是这个player，那就加上。
                         targetTerritoryJList.addElement(territory1);
                     }
                 }
@@ -319,50 +315,52 @@ public class   RiskModel {
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
      */
-    public void battle(Territory attackCountry, Territory defenceCountry) {
-        if (attackCountry.getHolder() == defenceCountry.getHolder()) {
-            System.out.println("You cannot attack yourself!!");
-            return;
-        }
-        int defenceTroops;
-        int attackTroops;
+    public boolean battle(Territory attackCountry, Territory defenceCountry,AttackWay attackWay) {
+//        if (attackCountry.getHolder() == defenceCountry.getHolder()) {
+//            System.out.println("You cannot attack yourself!!");
+//            return;
+//        }
+//        int defenceTroops;
+//        int attackTroops;
+//        if (defenceCountry.getTroops() >= 2) defenceTroops = 2;
+//        else defenceTroops = 1;
+//        loop:
+//        while (true) {
+//            System.out.println("How many troops(which type) do you want to attack? (one/two/three/blitz/finish)");
+//            String type = scanner.nextLine();
+//            switch (type) {
+//                case "one":
+//                    attackTroops = 1;
+//                    break loop;
+//                case "two":
+//                    attackTroops = 2;
+//                    break loop;
+//                case "three":
+//                    attackTroops = 3;
+//                    break loop;
+//                case "blitz":
+//                    blitz(attackCountry, defenceCountry);
+//                    return;
+//                case "finish":
+//                    return;
+//                default:
+//                    System.out.println("Please re-select your option without typos!");
+//                    break;
+//            }
+//        }
+//        if (attackTroops > attackCountry.getTroops()) {
+//            System.out.println("Sorry, you only have " + attackCountry.getTroops() + " troops in this country");
+//            attackTroops = attackCountry.getTroops();
+//        }
+        battleStatusString = "";
+        if(attackWay.equals(AttackWay.BLITZ)) return blitz(attackCountry,defenceCountry);
+        int defenceTroops = 1;
         if (defenceCountry.getTroops() >= 2) defenceTroops = 2;
-        else defenceTroops = 1;
-        loop:
-        while (true) {
-            System.out.println("How many troops(which type) do you want to attack? (one/two/three/blitz/finish)");
-            String type = scanner.nextLine();
-            switch (type) {
-                case "one":
-                    attackTroops = 1;
-                    break loop;
-                case "two":
-                    attackTroops = 2;
-                    break loop;
-                case "three":
-                    attackTroops = 3;
-                    break loop;
-                case "blitz":
-                    blitz(attackCountry, defenceCountry);
-                    return;
-                case "finish":
-                    return;
-                default:
-                    System.out.println("Please re-select your option without typos!");
-                    break;
-            }
-        }
-        if (attackTroops > attackCountry.getTroops()) {
-            System.out.println("Sorry, you only have " + attackCountry.getTroops() + " troops in this country");
-            attackTroops = attackCountry.getTroops();
-        }
-
-        Dices attackDice = new Dices(attackTroops);
+        Dices attackDice = new Dices(attackWay.getAttackTroops());
         Dices defenceDice = new Dices(defenceTroops);
         compareDices(attackDice, defenceDice, attackCountry, defenceCountry);
-        if (defenceCountry.getTroops() == 0) {
-            deployTroops(attackCountry, defenceCountry);
-        }
+        if(defenceCountry.getTroops()==0)return true;
+        return false;
     }
 
     /**
@@ -372,7 +370,7 @@ public class   RiskModel {
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
      */
-    public void blitz(Territory attackCountry, Territory defenceCountry) {
+    public boolean blitz(Territory attackCountry, Territory defenceCountry) {
         while ((attackCountry.getTroops() > 1) && (defenceCountry.getTroops() > 0)) {
             int attack = attackCountry.getTroops();
             int defence = defenceCountry.getTroops();
@@ -383,10 +381,10 @@ public class   RiskModel {
             compareDices(attackDice, defenceDice, attackCountry, defenceCountry);
         }
         if (defenceCountry.getTroops() == 0) {
-            deployTroops(attackCountry, defenceCountry);
-        } else if (attackCountry.getTroops() == 1) {
-            System.out.println("You lose this battle... Try more, you could win!\n");
+//            deployTroops(attackCountry, defenceCountry);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -404,12 +402,12 @@ public class   RiskModel {
         for (int i = 0; i < minDiceAmount; i++) {
             if (attackDice.getIndexDice(i) > defenceDice.getIndexDice(i)) {
                 defenceCountry.decreaseTroops(1);
-                System.out.println(attackCountry.getName() + " rolling " + attackDice.getIndexDice(i) + ", and " + defenceCountry.getName() + " rolling " + defenceDice.getIndexDice(i) + ".");
-                System.out.println(defenceCountry.getName() + " lose one troop by rolling.\n");
+                battleStatusString += attackCountry.getName() + " rolling " + attackDice.getIndexDice(i) + ", and " + defenceCountry.getName() + " rolling " + defenceDice.getIndexDice(i) + ".\n";
+                battleStatusString += defenceCountry.getName() + " lost 1 troop.\n";
             } else {
                 attackCountry.decreaseTroops(1);
-                System.out.println(attackCountry.getName() + " rolling " + attackDice.getIndexDice(i) + ", and " + defenceCountry.getName() + " rolling " + defenceDice.getIndexDice(i) + ".");
-                System.out.println(attackCountry.getName() + " lose one troop by rolling.\n");
+                battleStatusString += attackCountry.getName() + " rolling " + attackDice.getIndexDice(i) + ", and " + defenceCountry.getName() + " rolling " + defenceDice.getIndexDice(i) + ".\n";
+                battleStatusString += attackCountry.getName() + " lost 1 troop.\n";
             }
         }
     }
@@ -420,24 +418,7 @@ public class   RiskModel {
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
      */
-    public void deployTroops(Territory attackCountry, Territory defenceCountry) {
-        int deployTroops;
-        do {
-            System.out.println(attackCountry.getHolder().getName() + " wins the battle! Currently you have " + attackCountry.getTroops() + " in your original country.");
-            do {
-                System.out.println(" How many troops deploy to " + defenceCountry.getName());
-                deployTroops = scanner.nextInt();
-                if (deployTroops < 1) System.out.println("Please input valid number");
-                scanner.nextLine();
-            } while (deployTroops < 1);
-            if (deployTroops > attackCountry.getTroops()) {
-                System.out.println("You don't have so much troops, try it again.");
-            } else if (deployTroops == attackCountry.getTroops()) {
-                System.out.println("You have to leave at least one troop in your original country.");
-            } else {
-                break;
-            }
-        } while (true);
+    public void deployTroops(Territory attackCountry, Territory defenceCountry,int deployTroops) {
         attackCountry.decreaseTroops(deployTroops);
         defenceCountry.getHolder().removeTerritory(defenceCountry);
         defenceCountry.setHolder(attackCountry.getHolder());
@@ -498,6 +479,17 @@ public class   RiskModel {
                 }
             }
         }
+    }
+
+    public boolean checkAttackableNeighbors(Territory territory, Player player){
+        for(Territory neighbor : board.getAllNeighbors(territory.getName())){
+            for(Player player1:players){
+                if(player1.checkTerritoryByString(neighbor.getName())&&(!player1.getName().equals(player.getName()))){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -568,6 +560,10 @@ public class   RiskModel {
             if(territory.getName().equals(territoryName))return territory;
         }
         return null;
+    }
+
+    public String getBattleStatusString() {
+        return battleStatusString;
     }
 
     /**
