@@ -76,7 +76,7 @@ public class RiskView extends JFrame {
         originTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
         targetTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
         troopsLabel.setAlignmentX(BOTTOM_ALIGNMENT);
-        statusLabel.setFont(new Font("Arial",1,12));
+        statusLabel.setFont(new Font("Arial",1,20));
 
         operationPanel.setLayout(new BoxLayout(operationPanel,BoxLayout.Y_AXIS));
         operationPanel.add(buttonPanel);
@@ -171,10 +171,24 @@ public class RiskView extends JFrame {
 
 
     public void setTroopsBox(int troops){
+        troopsLabel.setText("Troops:");
         troopsBox.removeAllItems();
         for(int i=1; i<=troops; i++){
             troopsBox.addItem(i);
         }
+    }
+
+    public void setAttackTroopsBox(int troops){
+        troopsLabel.setText("Way to attack:");
+        troopsBox.removeAllItems();
+        troopsBox.addItem(AttackWay.BLITZ);
+        troopsBox.addItem(AttackWay.ONE);
+        if(troops>1)troopsBox.addItem(AttackWay.TWO);
+        if(troops>2)troopsBox.addItem(AttackWay.THREE);
+    }
+
+    public AttackWay getAttackTroopsBox(){
+        return (AttackWay) troopsBox.getSelectedItem();
     }
 
     public void setStartingTerritory(DefaultListModel<Territory> listModel){
@@ -227,9 +241,7 @@ public class RiskView extends JFrame {
     public void addStartingTerritoryListListener(ListSelectionListener listSelectionListener){
         startingTerritory.addListSelectionListener(listSelectionListener);
     }
-    public void addJListSelectListener(ListSelectionListener e){
-        startingTerritory.addListSelectionListener(e);
-    }
+
 
 
 }
