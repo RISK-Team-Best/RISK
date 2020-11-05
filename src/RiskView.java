@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 
 public class RiskView extends JFrame {
@@ -12,10 +13,12 @@ public class RiskView extends JFrame {
     private JLabel troopsLabel = new JLabel("Troops:");
 
     private JPanel mainPanel = new JPanel();
-    private JPanel graphMapPanel = new JPanel();
+//    private JPanel graphMapPanel = new JPanel();
     private JPanel operationPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
     private JPanel decideButtonPanel = new JPanel();
+
+    private MapPanel graphMapPanel = new MapPanel();
 
     private JList<Territory> startingTerritory = new JList<>();
     private JList<Territory> destinationTerritory = new JList<>();
@@ -39,7 +42,51 @@ public class RiskView extends JFrame {
     private JButton skipButton = new JButton("Skip");
     private JButton confirmButton = new JButton("Confirm");
 
+    private JButton Alaska = new JButton();
+    private JButton Alberta = new JButton();
+    private JButton CentralAmerica = new JButton();
+    private JButton EasternUnitedStates = new JButton();
+    private JButton Greenland = new JButton();
+    private JButton NorthwestTerritory = new JButton();
+    private JButton Ontario = new JButton();
+    private JButton Quebec = new JButton();
+    private JButton WesternUnitedStates = new JButton();
+    private JButton Argentina = new JButton();
+    private JButton Brazil = new JButton();
+    private JButton Venezuela = new JButton();
+    private JButton GreatBritain = new JButton();
+    private JButton Iceland = new JButton();
+    private JButton NorthernEurope = new JButton();
+    private JButton Scandinavia = new JButton();
+    private JButton SouthernEurope = new JButton();
+    private JButton Ukraine = new JButton();
+    private JButton WesternEurope = new JButton();
+    private JButton Congo = new JButton();
+    private JButton EastAfrica = new JButton();
+    private JButton Egypt = new JButton();
+    private JButton Madagascar = new JButton();
+    private JButton NorthAfrica = new JButton();
+    private JButton SouthAfrica = new JButton();
+    private JButton Afghanistan = new JButton();
+    private JButton China = new JButton();
+    private JButton India = new JButton();
+    private JButton Irkutsk = new JButton();
+    private JButton Japan = new JButton();
+    private JButton Kamchatka = new JButton();
+    private JButton MiddleEast = new JButton();
+    private JButton Mongolia = new JButton();
+    private JButton Siam = new JButton();
+    private JButton Siberia = new JButton();
+    private JButton Ural = new JButton();
+    private JButton Yakutsk = new JButton();
+    private JButton EasternAustralia = new JButton();
+    private JButton Indonesia = new JButton();
+    private JButton NewGuinea = new JButton();
+    private JButton WesternAustralia = new JButton();
+    private JButton Peru = new JButton();
+
     private ArrayList<JButton> JButtonList = new ArrayList<>();
+    private ArrayList<JButton> TerritoryButtons = new ArrayList<>();
 
     private int numberPlayer = 0;
 
@@ -54,9 +101,11 @@ public class RiskView extends JFrame {
         destinationTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         destinationTerritoryScrollPane = new JScrollPane(destinationTerritory);
 
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("src/RiskMap.jpg"));
-        graphMapPanel.add(label);
+        graphMapPanel.setPreferredSize(new Dimension(850,589));
+        graphMapPanel.setLayout(null);
+        graphMapPanel.add(Alaska);
+        Alaska.setBounds(50,65,30,30);
+
 
         continentInfoPane = new JScrollPane(continentsLabel);
         //continentInfoPane.add(continentsLabel);
