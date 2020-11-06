@@ -307,12 +307,11 @@ public class RiskView extends JFrame {
         Siberia.setName("Siberia");
         Ural.setName("Ural");
         Yakutsk.setName("Yakutsk");
-
-
-
-
-
-
+        EasternAustralia.setName("EasternAustralia");
+        Indonesia.setName("Indonesia");
+        NewGuinea.setName("NewGuinea");
+        WesternAustralia.setName("WesternAustralia");
+        Peru.setName("Peru");
 
 
     }
