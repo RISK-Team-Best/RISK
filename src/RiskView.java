@@ -289,6 +289,21 @@ public class RiskView extends JFrame {
         NorthernEurope.setName("NorthernEurope");
         Scandinavia.setName("Scandinavia");
         SouthernEurope.setName("SouthernEurope");
+        Ukraine.setName("Ukraine");
+        WesternEurope.setName("WesternEurope");
+        Congo.setName("Congo");
+        EastAfrica.setName("EastAfrica");
+        Egypt.setName("Egypt");
+        Madagascar.setName("Madagascar");
+        NorthAfrica.setName("NorthAfrica");
+        SouthAfrica.setName("SouthAfrica");
+        Afghanistan.setName("Afghanistan");
+        China.setName("China");
+        India.setName("India");
+        Irkutsk.setName("Irkutsk");
+        Japan.setName("Japan");
+        Kamchatka.setName("Kamchatka");
+
 
 
 
