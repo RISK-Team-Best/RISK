@@ -84,7 +84,7 @@ public class RiskView extends JFrame {
     private JButton WesternAustralia = new JButton();
     private JButton Peru = new JButton();
 
-    private ArrayList<JButton> JButtonList = new ArrayList<>();
+    private ArrayList<JButton> CommandButtonList = new ArrayList<>();
     private ArrayList<JButton> TerritoryButtons = new ArrayList<>();
 
     private int numberPlayer = 0;
@@ -250,12 +250,12 @@ public class RiskView extends JFrame {
         menuBar.setSize(50, 28);
         this.add(mainPanel);
 
-        this.JButtonList.add(draft);
-        this.JButtonList.add(attack);
-        this.JButtonList.add(fortify);
-        this.JButtonList.add(deploy);
-        this.JButtonList.add(skipButton);
-        this.JButtonList.add(confirmButton);
+        this.CommandButtonList.add(draft);
+        this.CommandButtonList.add(attack);
+        this.CommandButtonList.add(fortify);
+        this.CommandButtonList.add(deploy);
+        this.CommandButtonList.add(skipButton);
+        this.CommandButtonList.add(confirmButton);
 
 
         this.setLocation(50,50);
@@ -295,7 +295,7 @@ public class RiskView extends JFrame {
     }
     public JButton getJButton(String buttonText) {
 
-        for (JButton button : JButtonList){
+        for (JButton button : CommandButtonList){
             if (button.getText() == buttonText)
                 return button;
         }
