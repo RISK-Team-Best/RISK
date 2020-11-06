@@ -91,13 +91,11 @@ public class RiskView extends JFrame {
 
     public RiskView(){
         super("Risk Game");
-        try {
+        /*try {
             RiskController controller= new RiskController();
         }catch (Exception e){
 
-        }
-
-
+        }*/
 
         startingTerritory.setLayoutOrientation(JList.VERTICAL);
         startingTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
