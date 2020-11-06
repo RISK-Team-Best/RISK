@@ -156,7 +156,7 @@ public class RiskView extends JFrame {
 
 
 
-        Alaska.setBounds(50,65,30,30);
+        Alaska .setBounds(50,65,30,30);
         Alberta.setBounds(135,107,30,30);
         CentralAmerica.setBounds(140,275,30,30);
         EasternUnitedStates.setBounds(160,210,30,30);
@@ -280,6 +280,16 @@ public class RiskView extends JFrame {
         NorthwestTerritory.setName("NorthwestTerritory");
         Ontario.setName("Ontario");
         Quebec.setName("Quebec");
+        WesternUnitedStates.setName("WesternUnitedStates");
+        Argentina.setName(" Argentina");
+        Brazil.setName(" Brazil");
+        Venezuela.setName("Venezuela");
+        GreatBritain.setName("GreatBritain");
+        Iceland.setName("Iceland");
+        NorthernEurope.setName("NorthernEurope");
+        Scandinavia.setName("Scandinavia");
+        SouthernEurope.setName("SouthernEurope");
+
 
 
 
