@@ -84,7 +84,7 @@ public class RiskView extends JFrame {
     private JButton WesternAustralia = new JButton();
     private JButton Peru = new JButton();
 
-    private ArrayList<JButton> JButtonList = new ArrayList<>();
+    private ArrayList<JButton> CommandButtonList = new ArrayList<>();
     private ArrayList<JButton> TerritoryButtons = new ArrayList<>();
 
     private int numberPlayer = 0;
@@ -156,48 +156,48 @@ public class RiskView extends JFrame {
 
 
 
-        Alaska.setBounds(50,69,30,30);
-        Alberta.setBounds(130,130,30,30);
+        Alaska.setBounds(50,65,30,30);
+        Alberta.setBounds(135,107,30,30);
         CentralAmerica.setBounds(140,275,30,30);
-        EasternUnitedStates.setBounds(180,200,30,30);
-        Greenland.setBounds(295,50,30,30);
-        NorthwestTerritory.setBounds(145,80,30,30);
-        Ontario.setBounds(183,130,30,30);
-        Quebec.setBounds(235,127,30,30);
-        WesternUnitedStates.setBounds(120,190,30,30);
-        Argentina.setBounds(210,440,30,30);
-        Brazil.setBounds(265,370,30,30);
-        Venezuela.setBounds(185,305,30,30);
-        GreatBritain.setBounds(335,170,30,30);
-        Iceland .setBounds(355,95,30,30);
-        NorthernEurope.setBounds(420,180,30,30);
-        Scandinavia.setBounds(410,100,30,30);
+        EasternUnitedStates.setBounds(160,210,30,30);
+        Greenland.setBounds(280,68,30,30);
+        NorthwestTerritory.setBounds(183,58,30,30);
+        Ontario.setBounds(183,118,30,30);
+        Quebec.setBounds(215,153,30,30);
+        WesternUnitedStates.setBounds(149,170,30,30);
+        Argentina.setBounds(220,440,30,30);
+        Brazil.setBounds(265,380,30,30);
+        Venezuela.setBounds(185,320,30,30);
+        GreatBritain.setBounds(335,150,30,30);
+        Iceland .setBounds(355,82,30,30);
+        NorthernEurope.setBounds(385,190,30,30);
+        Scandinavia.setBounds(410,80,30,30);
         SouthernEurope.setBounds(420,240,30,30);
         Ukraine.setBounds(500,120,30,30);
-        WesternEurope.setBounds(352,260,30,30);
-        Congo.setBounds(445,400,30,30);
-        EastAfrica.setBounds(480,365,30,30);
-        Egypt.setBounds(440,310,30,30);
-        Madagascar.setBounds(530,490,30,30);
+        WesternEurope.setBounds(365,222,30,30);
+        Congo.setBounds(445,389,30,30);
+        EastAfrica.setBounds(480,353,30,30);
+        Egypt.setBounds(445,290,30,30);
+        Madagascar.setBounds(530,450,30,30);
         NorthAfrica.setBounds(365,320,30,30);
         SouthAfrica.setBounds(455,500,30,30);
         Afghanistan.setBounds(555,222,30,30);
-        China.setBounds(676,255,30,30);
-        India.setBounds(600,290,30,30);
-        Irkutsk.setBounds(660,145,30,30);
-        Japan.setBounds(770,185,30,30);
-        Kamchatka.setBounds(745,70,30,30);
+        China.setBounds(696,255,30,30);
+        India.setBounds(580,260,30,30);
+        Irkutsk.setBounds(668,110,30,30);
+        Japan.setBounds(770,165,30,30);
+        Kamchatka.setBounds(745,55,30,30);
         MiddleEast.setBounds(505,290,30,30);
-        Mongolia.setBounds(666,196,30,30);
-        Siam.setBounds(666,315,30,30);
+        Mongolia.setBounds(695,166,30,30);
+        Siam.setBounds(668,325,30,30);
         Siberia.setBounds(610,103,30,30);
         Ural.setBounds(575,150,30,30);
-        Yakutsk.setBounds(680,60,30,30);
-        EasternAustralia.setBounds(770,455,30,30);
-        Indonesia.setBounds(670,410,30,30);
-        NewGuinea.setBounds(760,376,30,30);
-        WesternAustralia.setBounds(720,495,30,30);
-        Peru.setBounds(175,375,30,30);
+        Yakutsk.setBounds(680,45,30,30);
+        EasternAustralia.setBounds(790,495,30,30);
+        Indonesia.setBounds(680,420,30,30);
+        NewGuinea.setBounds(760,360,30,30);
+        WesternAustralia.setBounds(720,453,30,30);
+        Peru.setBounds(175,360,30,30);
 
 
 
@@ -257,12 +257,12 @@ public class RiskView extends JFrame {
         menuBar.setSize(50, 28);
         this.add(mainPanel);
 
-        this.JButtonList.add(draft);
-        this.JButtonList.add(attack);
-        this.JButtonList.add(fortify);
-        this.JButtonList.add(deploy);
-        this.JButtonList.add(skipButton);
-        this.JButtonList.add(confirmButton);
+        this.CommandButtonList.add(draft);
+        this.CommandButtonList.add(attack);
+        this.CommandButtonList.add(fortify);
+        this.CommandButtonList.add(deploy);
+        this.CommandButtonList.add(skipButton);
+        this.CommandButtonList.add(confirmButton);
 
 
         this.setLocation(50,50);
@@ -315,7 +315,7 @@ public class RiskView extends JFrame {
     }
     public JButton getJButton(String buttonText) {
 
-        for (JButton button : JButtonList){
+        for (JButton button : CommandButtonList){
             if (button.getText() == buttonText)
                 return button;
         }
