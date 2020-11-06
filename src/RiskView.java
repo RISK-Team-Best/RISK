@@ -12,10 +12,12 @@ public class RiskView extends JFrame {
     private JLabel troopsLabel = new JLabel("Troops:");
 
     private JPanel mainPanel = new JPanel();
-    private JPanel graphMapPanel = new JPanel();
+//    private JPanel graphMapPanel = new JPanel();
     private JPanel operationPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
     private JPanel decideButtonPanel = new JPanel();
+
+    private MapPanel graphMapPanel = new MapPanel();
 
     private JList<Territory> startingTerritory = new JList<>();
     private JList<Territory> destinationTerritory = new JList<>();
@@ -39,7 +41,51 @@ public class RiskView extends JFrame {
     private JButton skipButton = new JButton("Skip");
     private JButton confirmButton = new JButton("Confirm");
 
+    private JButton Alaska = new JButton();
+    private JButton Alberta = new JButton();
+    private JButton CentralAmerica = new JButton();
+    private JButton EasternUnitedStates = new JButton();
+    private JButton Greenland = new JButton();
+    private JButton NorthwestTerritory = new JButton();
+    private JButton Ontario = new JButton();
+    private JButton Quebec = new JButton();
+    private JButton WesternUnitedStates = new JButton();
+    private JButton Argentina = new JButton();
+    private JButton Brazil = new JButton();
+    private JButton Venezuela = new JButton();
+    private JButton GreatBritain = new JButton();
+    private JButton Iceland = new JButton();
+    private JButton NorthernEurope = new JButton();
+    private JButton Scandinavia = new JButton();
+    private JButton SouthernEurope = new JButton();
+    private JButton Ukraine = new JButton();
+    private JButton WesternEurope = new JButton();
+    private JButton Congo = new JButton();
+    private JButton EastAfrica = new JButton();
+    private JButton Egypt = new JButton();
+    private JButton Madagascar = new JButton();
+    private JButton NorthAfrica = new JButton();
+    private JButton SouthAfrica = new JButton();
+    private JButton Afghanistan = new JButton();
+    private JButton China = new JButton();
+    private JButton India = new JButton();
+    private JButton Irkutsk = new JButton();
+    private JButton Japan = new JButton();
+    private JButton Kamchatka = new JButton();
+    private JButton MiddleEast = new JButton();
+    private JButton Mongolia = new JButton();
+    private JButton Siam = new JButton();
+    private JButton Siberia = new JButton();
+    private JButton Ural = new JButton();
+    private JButton Yakutsk = new JButton();
+    private JButton EasternAustralia = new JButton();
+    private JButton Indonesia = new JButton();
+    private JButton NewGuinea = new JButton();
+    private JButton WesternAustralia = new JButton();
+    private JButton Peru = new JButton();
+
     private ArrayList<JButton> JButtonList = new ArrayList<>();
+    private ArrayList<JButton> TerritoryButtons = new ArrayList<>();
 
     private int numberPlayer = 0;
 
@@ -54,9 +100,99 @@ public class RiskView extends JFrame {
         destinationTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         destinationTerritoryScrollPane = new JScrollPane(destinationTerritory);
 
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("src/RiskMap.jpg"));
-        graphMapPanel.add(label);
+        graphMapPanel.setPreferredSize(new Dimension(850,589));
+        graphMapPanel.setLayout(null);
+
+        graphMapPanel.add(Alaska);
+        graphMapPanel.add(Alberta);
+        graphMapPanel.add(CentralAmerica);
+        graphMapPanel.add(EasternUnitedStates);
+        graphMapPanel.add(Greenland);
+        graphMapPanel.add(NorthwestTerritory);
+        graphMapPanel.add(Ontario);
+        graphMapPanel.add(Quebec);
+        graphMapPanel.add(WesternUnitedStates);
+        graphMapPanel.add(Argentina);
+        graphMapPanel.add(Brazil);
+        graphMapPanel.add(Venezuela);
+        graphMapPanel.add(GreatBritain);
+        graphMapPanel.add(Iceland);
+        graphMapPanel.add(NorthernEurope);
+        graphMapPanel.add(Scandinavia);
+        graphMapPanel.add(SouthernEurope);
+        graphMapPanel.add(Ukraine);
+        graphMapPanel.add(WesternEurope);
+        graphMapPanel.add(Congo);
+        graphMapPanel.add(EastAfrica);
+        graphMapPanel.add(Egypt);
+        graphMapPanel.add(Madagascar);
+        graphMapPanel.add(NorthAfrica);
+        graphMapPanel.add(SouthAfrica);
+        graphMapPanel.add(Afghanistan);
+        graphMapPanel.add(China);
+        graphMapPanel.add(India);
+        graphMapPanel.add(Irkutsk);
+        graphMapPanel.add(Japan);
+        graphMapPanel.add(Kamchatka);
+        graphMapPanel.add(MiddleEast);
+        graphMapPanel.add(Mongolia);
+        graphMapPanel.add(Siam);
+        graphMapPanel.add(Siberia);
+        graphMapPanel.add(Ural);
+        graphMapPanel.add(Yakutsk);
+        graphMapPanel.add(EasternAustralia);
+        graphMapPanel.add(Indonesia);
+        graphMapPanel.add(NewGuinea);
+        graphMapPanel.add(WesternAustralia);
+        graphMapPanel.add(Peru);
+
+
+
+
+        Alaska.setBounds(50,69,30,30);
+        Alberta.setBounds(130,130,30,30);
+        CentralAmerica.setBounds(140,275,30,30);
+        EasternUnitedStates.setBounds(180,200,30,30);
+        Greenland.setBounds(295,50,30,30);
+        NorthwestTerritory.setBounds(145,80,30,30);
+        Ontario.setBounds(183,130,30,30);
+        Quebec.setBounds(235,127,30,30);
+        WesternUnitedStates.setBounds(120,190,30,30);
+        Argentina.setBounds(210,440,30,30);
+        Brazil.setBounds(265,370,30,30);
+        Venezuela.setBounds(185,305,30,30);
+        GreatBritain.setBounds(335,170,30,30);
+        Iceland .setBounds(355,95,30,30);
+        NorthernEurope.setBounds(420,180,30,30);
+        Scandinavia.setBounds(410,100,30,30);
+        SouthernEurope.setBounds(420,240,30,30);
+        Ukraine.setBounds(500,120,30,30);
+        WesternEurope.setBounds(352,260,30,30);
+        Congo.setBounds(445,400,30,30);
+        EastAfrica.setBounds(480,365,30,30);
+        Egypt.setBounds(440,310,30,30);
+        Madagascar.setBounds(530,490,30,30);
+        NorthAfrica.setBounds(365,320,30,30);
+        SouthAfrica.setBounds(455,500,30,30);
+        Afghanistan.setBounds(555,222,30,30);
+        China.setBounds(676,255,30,30);
+        India.setBounds(600,290,30,30);
+        Irkutsk.setBounds(660,145,30,30);
+        Japan.setBounds(770,185,30,30);
+        Kamchatka.setBounds(745,70,30,30);
+        MiddleEast.setBounds(505,290,30,30);
+        Mongolia.setBounds(666,196,30,30);
+        Siam.setBounds(666,315,30,30);
+        Siberia.setBounds(610,103,30,30);
+        Ural.setBounds(575,150,30,30);
+        Yakutsk.setBounds(680,60,30,30);
+        EasternAustralia.setBounds(770,455,30,30);
+        Indonesia.setBounds(670,410,30,30);
+        NewGuinea.setBounds(760,376,30,30);
+        WesternAustralia.setBounds(720,495,30,30);
+        Peru.setBounds(175,375,30,30);
+
+
 
         continentInfoPane = new JScrollPane(continentsLabel);
         //continentInfoPane.add(continentsLabel);
