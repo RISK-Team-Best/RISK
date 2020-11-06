@@ -272,9 +272,20 @@ public class RiskView extends JFrame {
         this.pack();
         this.setVisible(true);
 
+        Alaska.setName("Alaska");
+        Alberta.setName("Alberta");
+        CentralAmerica.setName("CentralAmerica");
+        EasternUnitedStates.setName("EasternUnitedStates");
+        Greenland.setName("Greenland");
+        NorthwestTerritory.setName("NorthwestTerritory");
+        Ontario.setName("Ontario");
+        Quebec.setName("Quebec");
+
+
+
+
 
     }
-
 
     public int getNumberPlayerDialog(){
         int numberPlayer = 0;
