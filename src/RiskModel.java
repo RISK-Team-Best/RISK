@@ -193,7 +193,6 @@ public class   RiskModel {
         }
     }
 
-
     /**
      * Draft stage.
      * Assign troops in player to his/her territories until the player has no troops in hand.
@@ -372,7 +371,7 @@ public class   RiskModel {
      */
     public boolean blitz(Territory attackCountry, Territory defenceCountry) {
         while ((attackCountry.getTroops() > 1) && (defenceCountry.getTroops() > 0)) {
-            int attack = attackCountry.getTroops();
+            int attack = attackCountry.getTroops()-1;
             int defence = defenceCountry.getTroops();
             if (attack > 3) attack = 3;
             if (defence > 2) defence = 2;
@@ -441,6 +440,7 @@ public class   RiskModel {
         }
         return checkFortifyTerritoryJList;
     }
+
     public DefaultListModel<Territory> setFortifiableTerritory(Territory fortifyCountry, Player player){
         neighborCountries.clear();
         checkFortiableTerritoryJList.clear();
@@ -456,7 +456,7 @@ public class   RiskModel {
         fortifyCountry.decreaseTroops(troop);
         fortifiedCountry.increaseTroops(troop);
         //currentPlayer = this.getNextPlayer();
-}
+    }
 
 
     /**
@@ -527,8 +527,8 @@ public class   RiskModel {
     public int getPlayerNum(){
         return this.numberPlayers;
     }
-    public ArrayList<Continent> getAllContinents() {
-        return allContinents;
+    public ArrayList<Territory> getAllCountries() {
+        return allCountries;
     }
 
     public Player getCurrentPlayer(){

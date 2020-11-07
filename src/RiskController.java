@@ -26,8 +26,8 @@ public class RiskController {
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
         view.addStartingTerritoryListListener(new StartingTerritoryListener());
+        view.addTerritoryButtonListener(new TerritoryButtonListener());
     }
-
 
      class NewGameMenuListener implements ActionListener {
 
@@ -39,6 +39,9 @@ public class RiskController {
                 model.addPlayersName(view.popGetName());
                 model.initialGame();
                 currentStage = Stage.DRAFT;
+                for(Territory territory:model.getAllCountries()){
+                    view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
+                }
                 view.setContinentsLabel(model.getMapInfoThroughContinent());
                 view.getJButton("Draft").setEnabled(true);
                 view.setStatusLabel("Now it's "+model.getCurrentPlayer().getName() +"'s turn, please click \"Draft\" button to start DRAFT stage.");
@@ -174,6 +177,14 @@ public class RiskController {
             if(currentStage==Stage.DEPLOY){
                 deployTroopsProcess(attackTerritory,defenceTerritory);
             }
+
+        }
+    }
+
+    public class TerritoryButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e){
 
         }
     }

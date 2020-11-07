@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -85,7 +86,7 @@ public class RiskView extends JFrame {
     private JButton Peru = new JButton();
 
     private ArrayList<JButton> CommandButtonList = new ArrayList<>();
-    private ArrayList<JButton> TerritoryButtons = new ArrayList<>();
+    private ArrayList<JButton> territoryButtons = new ArrayList<>();
 
     private int numberPlayer = 0;
 
@@ -151,6 +152,48 @@ public class RiskView extends JFrame {
         graphMapPanel.add(WesternAustralia);
         graphMapPanel.add(Peru);
 
+        territoryButtons.add(Alaska);
+        territoryButtons.add(Alberta);
+        territoryButtons.add(CentralAmerica);
+        territoryButtons.add(EasternUnitedStates);
+        territoryButtons.add(Greenland);
+        territoryButtons.add(NorthwestTerritory);
+        territoryButtons.add(Ontario);
+        territoryButtons.add(Quebec);
+        territoryButtons.add(WesternUnitedStates);
+        territoryButtons.add(Argentina);
+        territoryButtons.add(Brazil);
+        territoryButtons.add(Venezuela);
+        territoryButtons.add(GreatBritain);
+        territoryButtons.add(Iceland);
+        territoryButtons.add(NorthernEurope);
+        territoryButtons.add(Scandinavia);
+        territoryButtons.add(SouthernEurope);
+        territoryButtons.add(Ukraine);
+        territoryButtons.add(WesternEurope);
+        territoryButtons.add(Congo);
+        territoryButtons.add(EastAfrica);
+        territoryButtons.add(Egypt);
+        territoryButtons.add(Madagascar);
+        territoryButtons.add(NorthAfrica);
+        territoryButtons.add(SouthAfrica);
+        territoryButtons.add(Afghanistan);
+        territoryButtons.add(China);
+        territoryButtons.add(India);
+        territoryButtons.add(Irkutsk);
+        territoryButtons.add(Japan);
+        territoryButtons.add(Kamchatka);
+        territoryButtons.add(MiddleEast);
+        territoryButtons.add(Mongolia);
+        territoryButtons.add(Siam);
+        territoryButtons.add(Siberia);
+        territoryButtons.add(Ural);
+        territoryButtons.add(Yakutsk);
+        territoryButtons.add(EasternAustralia);
+        territoryButtons.add(Indonesia);
+        territoryButtons.add(NewGuinea);
+        territoryButtons.add(WesternAustralia);
+        territoryButtons.add(Peru);
 
 
 
@@ -270,50 +313,53 @@ public class RiskView extends JFrame {
         this.pack();
         this.setVisible(true);
 
-        Alaska.setName("Alaska");
-        Alberta.setName("Alberta");
-        CentralAmerica.setName("CentralAmerica");
-        EasternUnitedStates.setName("EasternUnitedStates");
-        Greenland.setName("Greenland");
-        NorthwestTerritory.setName("NorthwestTerritory");
-        Ontario.setName("Ontario");
-        Quebec.setName("Quebec");
-        WesternUnitedStates.setName("WesternUnitedStates");
-        Argentina.setName(" Argentina");
-        Brazil.setName(" Brazil");
-        Venezuela.setName("Venezuela");
-        GreatBritain.setName("GreatBritain");
-        Iceland.setName("Iceland");
-        NorthernEurope.setName("NorthernEurope");
-        Scandinavia.setName("Scandinavia");
-        SouthernEurope.setName("SouthernEurope");
-        Ukraine.setName("Ukraine");
-        WesternEurope.setName("WesternEurope");
-        Congo.setName("Congo");
-        EastAfrica.setName("EastAfrica");
-        Egypt.setName("Egypt");
-        Madagascar.setName("Madagascar");
-        NorthAfrica.setName("NorthAfrica");
-        SouthAfrica.setName("SouthAfrica");
-        Afghanistan.setName("Afghanistan");
-        China.setName("China");
-        India.setName("India");
-        Irkutsk.setName("Irkutsk");
-        Japan.setName("Japan");
-        Kamchatka.setName("Kamchatka");
-        MiddleEast.setName("MiddleEast");
-        Mongolia.setName("Mongolia");
-        Siam.setName("Siam");
-        Siberia.setName("Siberia");
-        Ural.setName("Ural");
-        Yakutsk.setName("Yakutsk");
-        EasternAustralia.setName("EasternAustralia");
-        Indonesia.setName("Indonesia");
-        NewGuinea.setName("NewGuinea");
-        WesternAustralia.setName("WesternAustralia");
-        Peru.setName("Peru");
+        Alaska.setActionCommand("Alaska");
+        Alberta.setActionCommand("Alberta");
+        CentralAmerica.setActionCommand("Central America");
+        EasternUnitedStates.setActionCommand("Eastern United States");
+        Greenland.setActionCommand("Greenland");
+        NorthwestTerritory.setActionCommand("Northwest Territory");
+        Ontario.setActionCommand("Ontario");
+        Quebec.setActionCommand("Quebec");
+        WesternUnitedStates.setActionCommand("Western United States");
+        Argentina.setActionCommand("Argentina");
+        Brazil.setActionCommand("Brazil");
+        Venezuela.setActionCommand("Venezuela");
+        GreatBritain.setActionCommand("Great Britain");
+        Iceland.setActionCommand("Iceland");
+        NorthernEurope.setActionCommand("Northern Europe");
+        Scandinavia.setActionCommand("Scandinavia");
+        SouthernEurope.setActionCommand("Southern Europe");
+        Ukraine.setActionCommand("Ukraine");
+        WesternEurope.setActionCommand("Western Europe");
+        Congo.setActionCommand("Congo");
+        EastAfrica.setActionCommand("East Africa");
+        Egypt.setActionCommand("Egypt");
+        Madagascar.setActionCommand("Madagascar");
+        NorthAfrica.setActionCommand("North Africa");
+        SouthAfrica.setActionCommand("South Africa");
+        Afghanistan.setActionCommand("Afghanistan");
+        China.setActionCommand("China");
+        India.setActionCommand("India");
+        Irkutsk.setActionCommand("Irkutsk");
+        Japan.setActionCommand("Japan");
+        Kamchatka.setActionCommand("Kamchatka");
+        MiddleEast.setActionCommand("Middle East");
+        Mongolia.setActionCommand("Mongolia");
+        Siam.setActionCommand("Siam");
+        Siberia.setActionCommand("Siberia");
+        Ural.setActionCommand("Ural");
+        Yakutsk.setActionCommand("Yakutsk");
+        EasternAustralia.setActionCommand("Eastern Australia");
+        Indonesia.setActionCommand("Indonesia");
+        NewGuinea.setActionCommand("New Guinea");
+        WesternAustralia.setActionCommand("Western Australia");
+        Peru.setActionCommand("Peru");
 
-
+        for(JButton button:territoryButtons){
+            button.setMargin(new Insets(0,0,0,0));
+            button.setFont(new Font("Arial",Font.PLAIN,12));
+        }
     }
 
     public int getNumberPlayerDialog(){
@@ -390,6 +436,18 @@ public class RiskView extends JFrame {
         destinationTerritory.setSelectedIndex(0);
     }
 
+    public void setTerritoryButtonTroops(String territoryName, int troops){
+        for(JButton button:territoryButtons){
+            if(button.getActionCommand().equals(territoryName))button.setText(String.valueOf(troops));
+        }
+    }
+
+    public void disableAllTerritoryButton(){
+        for(JButton button:territoryButtons){
+            button.setEnabled(false);
+        }
+    }
+
     public Territory getDestinationTerritory() {
         return destinationTerritory.getSelectedValue();
     }
@@ -427,6 +485,11 @@ public class RiskView extends JFrame {
         startingTerritory.addListSelectionListener(listSelectionListener);
     }
 
+    public void addTerritoryButtonListener(ActionListener territoryButtonListener){
+        for(JButton button:territoryButtons){
+            button.addActionListener(territoryButtonListener);
+        }
+    }
 
 
 }
