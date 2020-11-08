@@ -15,8 +15,7 @@ public class MapEditorV3Controller implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         JComponent component = (JComponent) e.getSource();
         Point p = component.getMousePosition();
-        String s = JOptionPane.showInputDialog("Territory Name");
-        model.addTerritory(s,p.x,p.y);
+        model.addTerritory(p.x,p.y);
     }
 
     @Override

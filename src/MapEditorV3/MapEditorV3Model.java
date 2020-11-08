@@ -17,8 +17,10 @@ public class MapEditorV3Model extends DefaultListModel {
     private JList<String> view;
     private JList<String> subView;
     private Map<String,DefaultListModel<String>> subModels = new HashMap<>();
-    public MapEditorV3Model()
+    private MapEditorV3 frame;
+    public MapEditorV3Model(MapEditorV3 frame)
     {
+        this.frame = frame;
         board.appendChild(root);
     }
 
@@ -36,17 +38,22 @@ public class MapEditorV3Model extends DefaultListModel {
 
     }
 
-    public void addTerritory(String name,int x, int y) {
+    public void addTerritory(int x, int y) {
         String continent = view.getSelectedValue();
         if (continent==null){
             System.out.println("No Continent Selected");
             return;
         }
+        String name = JOptionPane.showInputDialog("Territory Name");
+        if (name==null){return;}
         Element territory = board.createElement(name);
         territory.setAttribute("x",String.valueOf(x));
         territory.setAttribute("y",String.valueOf(y));
         Element p = (Element)board.getElementsByTagName(continent).item(0);
         p.appendChild(territory);
+        frame.addButton(x,y);
+
+
 
 
 

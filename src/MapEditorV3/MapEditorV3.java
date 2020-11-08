@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.io.File;
 
 public class MapEditorV3 extends JFrame {
-    private final MapEditorV3Model model = new MapEditorV3Model();
+    private static final int SIZE = 30;
+    private final MapEditorV3Model model = new MapEditorV3Model(this);
     private final JInternalFrame internalFrame = new JInternalFrame("Map Area");
     private final JFileChooser fileChooser = new JFileChooser();
     private final JLabel label = new JLabel();
@@ -93,5 +94,12 @@ public class MapEditorV3 extends JFrame {
 
     public static void main(String[] args) {
         new MapEditorV3();
+    }
+
+    public void addButton(int x, int y) {
+        JButton button = new JButton();
+        button.setBounds(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
+        label.add(button);
+        button.repaint();
     }
 }
