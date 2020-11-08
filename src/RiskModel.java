@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.IOException;
+import java.lang.reflect.AnnotatedParameterizedType;
 import java.util.*;
 
 /**
@@ -12,6 +13,10 @@ public class   RiskModel {
     private final ArrayList<Territory> allCountries;
     private final ArrayList<Continent> allContinents;
     private final HashMap<Integer, Integer> initialTroopHashMap;
+    private ArrayList<Territory> originTerritory = new ArrayList<>();
+    private ArrayList<Territory> targetTerritory = new ArrayList<>();
+    private ArrayList<Territory> fortifyTerritory = new ArrayList<>();
+    private ArrayList<Territory> fortifiedTerritory = new ArrayList<>();
 
     private final LinkedHashSet<Territory> neighborCountries;
 
@@ -20,11 +25,6 @@ public class   RiskModel {
 
     private final Board board;
     private Board tempBoard;
-
-    public static DefaultListModel<Territory> originTerritoryJList;
-    public static DefaultListModel<Territory> targetTerritoryJList;
-    public static DefaultListModel<Territory> checkFortifyTerritoryJList;
-    public static DefaultListModel<Territory> checkFortiableTerritoryJList;
 
     private String battleStatusString;
 
@@ -51,11 +51,6 @@ public class   RiskModel {
         allContinents = board.getAllContinents();
         scanner = new Scanner(System.in);
         neighborCountries = new LinkedHashSet<>();
-
-        originTerritoryJList = new DefaultListModel<>();
-        targetTerritoryJList = new DefaultListModel<>();
-        checkFortifyTerritoryJList = new DefaultListModel<>();
-        checkFortiableTerritoryJList = new DefaultListModel<>();
 
 
         //initialGame();
@@ -284,28 +279,27 @@ public class   RiskModel {
 //        }
 //    }
 
-    public DefaultListModel<Territory> setAttackTerritories(Player player){
-        originTerritoryJList.clear();
+
+
+    public ArrayList<Territory> getAttackTerritoriesList(Player player){
+        originTerritory.clear();
         for(Territory territory:player.getTerritories()){
-            if(territory.getTroops()>1&&checkAttackableNeighbors(territory,player))originTerritoryJList.addElement(territory);
+            if(territory.getTroops()>1&&checkAttackableNeighbors(territory,player))originTerritory.add(territory);
         }
-        return originTerritoryJList;
+        return originTerritory;
     }
 
-    public DefaultListModel<Territory> setDefenceTerritories(Player player,Territory territory){
-        if(territory!= null) {
-            targetTerritoryJList.clear();
-            for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
-                for(Territory territory1:allCountries) {
-                    if(territory1.getName().equals(neighbor.getName())&&(!territory1.getHolder().equals(player))) {
-                        targetTerritoryJList.addElement(territory1);
-                    }
+    public ArrayList<Territory> getDefenceTerritories(Player player,Territory territory){
+        targetTerritory.clear();
+        for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
+            for(Territory territory1:allCountries) {
+                if(territory1.getName().equals(neighbor.getName())&&(!territory1.getHolder().equals(player))) {
+                    targetTerritory.add(territory1);
                 }
             }
         }
-        return targetTerritoryJList;
+        return targetTerritory;
     }
-
 
     /**
      * Battle.
@@ -425,33 +419,30 @@ public class   RiskModel {
         defenceCountry.increaseTroops(deployTroops);
     }
 
-    /**
-     * Fortify stage.
-     * Move troops from one territory to the connect territories.
-     *
-     * @param player the player
-     */
-    public DefaultListModel<Territory> setFortifyTerritory(Player player) {
 
+    public ArrayList<Territory> getFortifyTerritories(Player player){
+        fortifyTerritory.clear();
         for (Territory country : player.getTerritories()) {
             if (country.getTroops() > 1) {
-                this.checkFortifyTerritoryJList.addElement(country);
+                this.fortifyTerritory.add(country);
             }
         }
-        return checkFortifyTerritoryJList;
+        return fortifyTerritory;
     }
 
-    public DefaultListModel<Territory> setFortifiableTerritory(Territory fortifyCountry, Player player){
+    public ArrayList<Territory> getFortifiedTerritory(Territory fortifyCountry, Player player){
+        fortifiedTerritory.clear();
         neighborCountries.clear();
-        checkFortiableTerritoryJList.clear();
         neighborCountries.add(fortifyCountry);
         addNeighborCountries(fortifyCountry, player);
         neighborCountries.remove(fortifyCountry);
         for (Territory country : neighborCountries) {
-            checkFortiableTerritoryJList.addElement(country);
+            fortifiedTerritory.add(country);
         }
-        return checkFortiableTerritoryJList;
+        return fortifiedTerritory;
     }
+
+
     public void fortify(Territory fortifyCountry, Territory fortifiedCountry,int troop) {
         fortifyCountry.decreaseTroops(troop);
         fortifiedCountry.increaseTroops(troop);
