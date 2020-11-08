@@ -8,8 +8,6 @@ import java.util.ArrayList;
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
     private JLabel continentsLabel = new JLabel();
-    private JLabel originTerritoryLabel = new JLabel("Origin Territory:");
-    private JLabel targetTerritoryLabel = new JLabel("Target Territory:");
     private JLabel troopsLabel = new JLabel("Troops:");
 
     private JPanel mainPanel = new JPanel();
@@ -19,9 +17,6 @@ public class RiskView extends JFrame {
     private JPanel decideButtonPanel = new JPanel();
 
     private MapPanel graphMapPanel = new MapPanel();
-
-    private JList<Territory> startingTerritory = new JList<>();
-    private JList<Territory> destinationTerritory = new JList<>();
 
     private JComboBox troopsBox = new JComboBox();
 
@@ -92,19 +87,6 @@ public class RiskView extends JFrame {
 
     public RiskView(){
         super("Risk Game");
-        /*try {
-            RiskController controller= new RiskController();
-        }catch (Exception e){
-
-        }*/
-
-        startingTerritory.setLayoutOrientation(JList.VERTICAL);
-        startingTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        startingTerritoryScrollPane = new JScrollPane(startingTerritory);
-
-        destinationTerritory.setLayoutOrientation(JList.VERTICAL);
-        destinationTerritory.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        destinationTerritoryScrollPane = new JScrollPane(destinationTerritory);
 
         graphMapPanel.setPreferredSize(new Dimension(850,589));
         graphMapPanel.setLayout(null);
@@ -257,17 +239,11 @@ public class RiskView extends JFrame {
         decideButtonPanel.add(confirmButton);
         decideButtonPanel.add(skipButton);
 
-        originTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
-        targetTerritoryLabel.setAlignmentX(BOTTOM_ALIGNMENT);
         troopsLabel.setAlignmentX(BOTTOM_ALIGNMENT);
         statusLabel.setFont(new Font("Arial",1,20));
 
         operationPanel.setLayout(new BoxLayout(operationPanel,BoxLayout.Y_AXIS));
         operationPanel.add(buttonPanel);
-        operationPanel.add(originTerritoryLabel);
-        operationPanel.add(startingTerritoryScrollPane);
-        operationPanel.add(targetTerritoryLabel);
-        operationPanel.add(destinationTerritoryScrollPane);
         operationPanel.add(troopsLabel);
         operationPanel.add(troopsBox);
 
@@ -426,19 +402,6 @@ public class RiskView extends JFrame {
         return (AttackWay) troopsBox.getSelectedItem();
     }
 
-    public void setStartingTerritory(DefaultListModel<Territory> listModel){
-        startingTerritory.setModel(listModel);
-        startingTerritory.setSelectedIndex(0);
-    }
-
-    public Territory getStartingTerritory() {
-        return startingTerritory.getSelectedValue();
-    }
-
-    public void setDestinationTerritory(DefaultListModel<Territory> listModel){
-        destinationTerritory.setModel(listModel);
-        destinationTerritory.setSelectedIndex(0);
-    }
 
     public void setTerritoryButtonTroops(String territoryName, int troops){
         for(JButton button:territoryButtons){
@@ -501,13 +464,6 @@ public class RiskView extends JFrame {
         return null;
     }
 
-    public Territory getDestinationTerritory() {
-        return destinationTerritory.getSelectedValue();
-    }
-    public void clearDestinationTerritory() {
-        destinationTerritory.setModel(null);
-    }
-
     public int getSelectedTroops(){
         return (int) troopsBox.getSelectedItem();
     }
@@ -534,9 +490,7 @@ public class RiskView extends JFrame {
         confirmButton.addActionListener(confirmButtonListener);
     }
 
-    public void addStartingTerritoryListListener(ListSelectionListener listSelectionListener){
-        startingTerritory.addListSelectionListener(listSelectionListener);
-    }
+
 
     public void addTerritoryButtonListener(ActionListener territoryButtonListener){
         for(JButton button:territoryButtons){

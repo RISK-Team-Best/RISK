@@ -32,7 +32,6 @@ public class RiskController {
         view.addFortifyButtonListener(new FortifyButtonListener());
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
-        view.addStartingTerritoryListListener(new StartingTerritoryListener());
         view.addTerritoryButtonListener(new TerritoryButtonListener());
     }
 
@@ -66,7 +65,6 @@ public class RiskController {
                 currentPlayer = model.getCurrentPlayer();
                 //System.out.println(currentPlayer.getName()+currentPlayer.getTerritories()); test
                 model.getCurrentPlayer().gainTroopsFromTerritory();
-                view.setStartingTerritory(currentPlayer.getTerritoriesList());
                 view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
                 view.setTroopsBox(currentPlayer.getTroops());
                 view.enableOriginalTerritories(currentPlayer.getTerritories());
@@ -118,21 +116,6 @@ public class RiskController {
             view.getJButton("Confirm").setEnabled(true);
             view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Set troops to the new earned territory.");
             view.setTroopsBox(attackTerritory.getTroops()-1);
-        }
-    }
-
-    public class StartingTerritoryListener implements ListSelectionListener{
-
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if(currentStage == Stage.ATTACK) {
-                view.setDestinationTerritory(model.setDefenceTerritories(currentPlayer, view.getStartingTerritory()));
-                view.setAttackTroopsBox(view.getStartingTerritory().getTroops()-1);
-            }
-            if(currentStage == Stage.FORTIFY){
-                view.setDestinationTerritory(model.setFortifiableTerritory(view.getStartingTerritory(),currentPlayer));
-                view.setTroopsBox(view.getStartingTerritory().getTroops()-1);
-            }
         }
     }
 
