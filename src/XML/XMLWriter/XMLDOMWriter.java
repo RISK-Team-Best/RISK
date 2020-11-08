@@ -2,6 +2,7 @@ package XML.XMLWriter;
 
 import Copy.Board;
 import Copy.Continent;
+import Copy.Territory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -39,11 +40,14 @@ public class XMLDOMWriter {
         for(Continent continent : board.getAllContinents())
         {
             Element continent2 = map.createElement("continent");
+            continent2.setAttribute("name",continent.getName());
             root.appendChild(continent2);
-            Element name = map.createElement("name");
-            continent2.appendChild(name);
-            Text text = map.createTextNode(continent.getName());
-            name.appendChild(text);
+            for (Territory t : continent.getMembers())
+            {
+                Element territory = map.createElement("territory");
+                territory.setAttribute("name",t.getName());
+                continent2.appendChild(territory);
+            }
 
         }
         DOMSource source = new DOMSource(map);
