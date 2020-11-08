@@ -1,10 +1,10 @@
+package Copy;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * The type Board which read the files and create map informations.
@@ -14,8 +14,8 @@ import java.util.Scanner;
  */
 public class Board {
 
-    private HashMap<String,Territory> countryHashMap;
-    private HashMap<String,Continent> continentHashMap;
+    private HashMap<String, Territory> countryHashMap;
+    private HashMap<String, Continent> continentHashMap;
     private HashMap<String,ArrayList<Territory>> neighbors;
 
     /**
@@ -37,7 +37,7 @@ public class Board {
     public void readCountryFile() throws IOException {
         //URL countryFile = new URL("http://m.uploadedit.com/busd/1603223939868.txt");
         countryHashMap = new HashMap<>();
-        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("country.txt")));
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("country.txt")));
         String line;
         while((line = scanner.readLine())!=null){
             String str = line;
@@ -53,7 +53,7 @@ public class Board {
      */
     public void readContinentFile() throws IOException {
         continentHashMap = new HashMap<>();
-        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("Continent.txt")));
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("Continent.txt")));
         String line;
         while((line = scanner.readLine())!=null){
             String[] array = line.split(",");
@@ -75,7 +75,7 @@ public class Board {
         neighbors = new HashMap<>();
         //URL neighborFile = new URL("http://m.uploadedit.com/busd/1603224004897.txt");
         //Scanner scanner = new Scanner(neighborFile.openStream());
-        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("Neibour.txt")));
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("Neibour.txt")));
         String line;
         while((line = scanner.readLine())!=null){
             String[] array = line.split(",");
@@ -120,7 +120,10 @@ public class Board {
         try{
             Board b = new Board();
             System.out.println(b.getAllCountries());
-        }catch (Exception e){}
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
+
 
 }
