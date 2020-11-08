@@ -75,7 +75,7 @@ public class Board {
         neighbors = new HashMap<>();
         //URL neighborFile = new URL("http://m.uploadedit.com/busd/1603224004897.txt");
         //Scanner scanner = new Scanner(neighborFile.openStream());
-        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("Neibour.txt")));
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("Neighbour.txt")));
         String line;
         while((line = scanner.readLine())!=null){
             String[] array = line.split(",");
