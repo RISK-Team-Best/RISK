@@ -76,6 +76,7 @@ public class RiskModelTest {
 
     /**
      * test CompareDices() in RiskModel
+     * test random number is between 0-6
      */
     @Test
     public void testCompareDices() {
