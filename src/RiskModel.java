@@ -462,9 +462,9 @@ public class   RiskModel {
         for(Territory neighbor: board.getAllNeighbors(territory.getName())){
             for(Player player1:players){
                 if(player1.checkTerritoryByString(neighbor.getName())&&(player1.getName().equals(player.getName()))){
-                    neighborCountries.add(player1.getTerritoryByString(neighbor.getName()));
+                    neighborCountries.add(getTerritoryByString(neighbor.getName()));
                     if(neighborCountries.size()!=size) {
-                        addNeighborCountries(player1.getTerritoryByString(neighbor.getName()),player);
+                        addNeighborCountries(getTerritoryByString(neighbor.getName()),player);
                     }
                     else break;
                 }
