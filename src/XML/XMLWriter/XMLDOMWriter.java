@@ -5,7 +5,6 @@ import Copy.Continent;
 import Copy.Territory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,22 +18,41 @@ import java.io.File;
 
 public class XMLDOMWriter {
     private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    private DocumentBuilder builder;
+    private DocumentBuilder documentBuilder;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private Transformer transformer;
     public XMLDOMWriter()
     {
         try {
-            builder = factory.newDocumentBuilder();
+            documentBuilder = factory.newDocumentBuilder();
+            transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
         }catch (Exception e){
             System.out.println(e);
         }
 
     }
 
+    public Document createEmptyBoard()
+    {
+        Document board = documentBuilder.newDocument();
+        return board;
+    }
+
+    public void generateMapWithDoc(Document doc)
+    {
+        DOMSource source = new DOMSource(doc);
+        Result result = new StreamResult(new File("res//mapResult.xml"));
+        try {
+            transformer.transform(source,result);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
     public void genarateMap (Board board)
     {
-        Document map = builder.newDocument();
+        Document map = documentBuilder.newDocument();
         Element root = map.createElement("board");
         map.appendChild(root);
         for(Continent continent : board.getAllContinents())
@@ -53,8 +71,6 @@ public class XMLDOMWriter {
         DOMSource source = new DOMSource(map);
         Result result = new StreamResult(new File("res//mapResult.xml"));
         try {
-            transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
             transformer.transform(source,result);
         }catch (Exception e){
             System.out.println(e);
