@@ -15,6 +15,8 @@ public class   RiskModel {
     private final HashMap<Integer, Integer> initialTroopHashMap;
     private ArrayList<Territory> originTerritory = new ArrayList<>();
     private ArrayList<Territory> targetTerritory = new ArrayList<>();
+    private ArrayList<Territory> fortifyTerritory = new ArrayList<>();
+    private ArrayList<Territory> fortifiedTerritory = new ArrayList<>();
 
     private final LinkedHashSet<Territory> neighborCountries;
 
@@ -461,6 +463,28 @@ public class   RiskModel {
             }
         }
         return checkFortifyTerritoryJList;
+    }
+
+    public ArrayList<Territory> getFortifyTerritories(Player player){
+        fortifyTerritory.clear();
+        for (Territory country : player.getTerritories()) {
+            if (country.getTroops() > 1) {
+                this.fortifyTerritory.add(country);
+            }
+        }
+        return fortifyTerritory;
+    }
+
+    public ArrayList<Territory> getFortifiedTerritory(Territory fortifyCountry, Player player){
+        fortifiedTerritory.clear();
+        neighborCountries.clear();
+        neighborCountries.add(fortifyCountry);
+        addNeighborCountries(fortifyCountry, player);
+        neighborCountries.remove(fortifyCountry);
+        for (Territory country : neighborCountries) {
+            fortifiedTerritory.add(country);
+        }
+        return fortifiedTerritory;
     }
 
     public DefaultListModel<Territory> setFortifiableTerritory(Territory fortifyCountry, Player player){

@@ -83,6 +83,7 @@ public class RiskController {
             originTerritoryButtonPressed = true;
             view.getJButton("Attack").setEnabled(false);
             view.getJButton("Confirm").setEnabled(true);
+            view.getJButton("Skip").setEnabled(true);
             view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
 //            view.setDestinationTerritory(model.setDefenceTerritories(currentPlayer,view.getStartingTerritory()));
 //            view.setAttackTroopsBox(view.getStartingTerritory().getTroops());
@@ -96,14 +97,13 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            currentStage = null;
+            currentStage = Stage.FORTIFY;
             view.getJButton("Fortify").setEnabled(false);
             view.getJButton("Confirm").setEnabled(true);
-            view.setStartingTerritory(model.setFortifyTerritory(currentPlayer));
-            currentStage = Stage.FORTIFY;
+            view.enableOriginalTerritories(model.getFortifyTerritories(currentPlayer));
             view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the Territory you want send troops from.");
-            view.setDestinationTerritory(model.setFortifiableTerritory(view.getStartingTerritory(),currentPlayer));
-            view.setTroopsBox(view.getStartingTerritory().getTroops()-1);
+//            view.setDestinationTerritory(model.setFortifiableTerritory(view.getStartingTerritory(),currentPlayer));
+//            view.setTroopsBox(view.getStartingTerritory().getTroops()-1);
 
 
         }
@@ -241,7 +241,39 @@ public class RiskController {
                     view.enableTargetTerritories(model.getDefenceTerritories(currentPlayer,model.getTerritoryByString(originTerritoryName)),originTerritoryName);
                     targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
                 }
-
+            }
+            if(currentStage==Stage.FORTIFY){
+                if (originTerritoryButtonPressed) {
+                    originTerritoryName = e.getActionCommand();
+                    ((JButton)e.getSource()).setBackground(Color.RED);
+                    view.setTroopsBox(model.getTerritoryByString(originTerritoryName).getTroops()-1);
+                    view.enableTargetTerritories(model.getFortifiedTerritory(model.getTerritoryByString(originTerritoryName),currentPlayer),originTerritoryName);
+                    originTerritoryButtonPressed =! originTerritoryButtonPressed;
+                }else if(e.getActionCommand().equals(originTerritoryName)){
+                    originTerritoryName = "";
+                    if(targetTerritoryName!=""){
+                        view.getTerritoryButtonByString(targetTerritoryName).setBackground(null);
+                        targetTerritoryButtonPressed = true;
+                    }
+                    view.clearTroopsBox();
+                    ((JButton)e.getSource()).setBackground(null);
+                    view.disableAllTerritoryButton();
+                    view.enableOriginalTerritories(model.getFortifyTerritories(currentPlayer));
+                    originTerritoryButtonPressed =! originTerritoryButtonPressed;
+                }else if(targetTerritoryButtonPressed){
+                    targetTerritoryName = e.getActionCommand();
+                    ((JButton)e.getSource()).setBackground(Color.ORANGE);
+                    view.disableAllTerritoryButton();
+                    view.enableTerritoryButton(originTerritoryName);
+                    view.enableTerritoryButton(targetTerritoryName);
+                    targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+                }else if(!targetTerritoryButtonPressed){
+                    targetTerritoryName = "";
+                    ((JButton)e.getSource()).setBackground(null);
+                    view.onlyEnableOriginTerritory(originTerritoryName);
+                    view.enableTargetTerritories(model.getFortifiedTerritory(model.getTerritoryByString(originTerritoryName),currentPlayer),originTerritoryName);
+                    targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+                }
             }
         }
     }
@@ -255,8 +287,8 @@ public class RiskController {
         defenceTerritory = model.getTerritoryByString(targetTerritoryName);
         AttackWay attackWay = view.getAttackTroopsBox();
         boolean winBattle = model.battle(attackTerritory,defenceTerritory,attackWay);
-        view.setTerritoryButtonTroops(originTerritoryName,model.getTerritoryByString(originTerritoryName).getTroops());
-        view.setTerritoryButtonTroops(targetTerritoryName,model.getTerritoryByString(targetTerritoryName).getTroops());
+        view.setTerritoryButtonTroops(originTerritoryName,attackTerritory.getTroops());
+        view.setTerritoryButtonTroops(targetTerritoryName,defenceTerritory.getTroops());
         view.setContinentsLabel(model.getMapInfoThroughContinent());
         if(winBattle){
             JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"\nCongratulation, you win this battle!");
@@ -284,12 +316,16 @@ public class RiskController {
     }
 
     private void resetButtonsAndBoxProcedure(){
-        view.getTerritoryButtonByString(originTerritoryName).setBackground(null);
-        view.getTerritoryButtonByString(targetTerritoryName).setBackground(null);
-        targetTerritoryButtonPressed = true;
-        originTerritoryButtonPressed = true;
-        originTerritoryName = "";
-        targetTerritoryName = "";
+        if(originTerritoryName!="") {
+            view.getTerritoryButtonByString(originTerritoryName).setBackground(null);
+            originTerritoryButtonPressed = true;
+            originTerritoryName = "";
+        }
+        if(targetTerritoryName!="") {
+            view.getTerritoryButtonByString(targetTerritoryName).setBackground(null);
+            targetTerritoryButtonPressed = true;
+            targetTerritoryName = "";
+        }
         view.clearTroopsBox();
         view.disableAllTerritoryButton();
         view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
@@ -321,15 +357,18 @@ public class RiskController {
     }
 
     private void fortifyProcess(){
-        Territory startCountry = view.getStartingTerritory();
-        Territory destinationCountry = view.getDestinationTerritory();
-        int troops = view.getSelectedTroops();
-        if(destinationCountry==null) {
-            JOptionPane.showMessageDialog(null, startCountry.getName()+" doesn't have any neighbors under your control!", "Warning", JOptionPane.ERROR_MESSAGE);
+        if(originTerritoryName==""||targetTerritoryName=="") {
+            JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
             return;
         }
+        Territory startCountry = model.getTerritoryByString(originTerritoryName);
+        Territory destinationCountry = model.getTerritoryByString(targetTerritoryName);
+        int troops = view.getSelectedTroops();
         model.fortify(startCountry,destinationCountry,troops);
         view.setContinentsLabel(model.getMapInfoThroughContinent());
+        view.setTerritoryButtonTroops(originTerritoryName,startCountry.getTroops());
+        view.setTerritoryButtonTroops(targetTerritoryName,destinationCountry.getTroops());
+        resetButtonsAndBoxProcedure();
         currentPlayer = model.getNextPlayer();
         model.setCurrentPlayer(currentPlayer);
         view.getJButton("Draft").setEnabled(true);
