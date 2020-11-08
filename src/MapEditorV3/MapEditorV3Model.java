@@ -6,6 +6,7 @@ import javax.xml.transform.Source;
 import XML.XMLWriter.XMLDOMWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class MapEditorV3Model extends DefaultListModel {
         territory.setAttribute("y",String.valueOf(y));
         Element p = (Element)board.getElementsByTagName(continent).item(0);
         p.appendChild(territory);
-        frame.addButton(x,y);
+        frame.addButton(name,x,y);
 
 
 
@@ -77,5 +78,26 @@ public class MapEditorV3Model extends DefaultListModel {
 
     public void setSubView(JList<String> subView) {
         this.subView = subView;
+    }
+
+    public void removeTerritory() {
+        String s = subView.getSelectedValue();
+        if(s==null){return;}
+        DefaultListModel<String> temp = (DefaultListModel)subView.getModel();
+        temp.removeElement(s);
+        frame.removeButton(s);
+        Node node = board.getElementsByTagName(s).item(0);
+        node.getParentNode().removeChild(node);
+    }
+
+    public void changeSubmodel() {
+        String continent = view.getSelectedValue();
+        if (continent==null){
+            System.out.println("No Continent Selected");
+            return;
+        }
+
+        DefaultListModel<String> subViewModel = subModels.get(continent);
+        subView.setModel(subViewModel);
     }
 }
