@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import Copy.*;
 
 public class XMLDOMReader {
     public XMLDOMReader()
@@ -42,6 +43,11 @@ public class XMLDOMReader {
     }
 
     public static void main(String[] args) {
+        try{
+        Board map = new Board();
         new XMLDOMReader();
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 }
