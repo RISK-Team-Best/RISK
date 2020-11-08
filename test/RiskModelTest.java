@@ -50,16 +50,35 @@ public class RiskModelTest {
     }
 
     @Test
-    public void testAttack() {
+    public void testbattle() {
+        //Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
+        //Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
+        //boolean battleWin = riskModel.battle(attackCountry,defenceCountry,AttackWay.BLITZ);
+        //assertEquals(battleWin);
+
     }
 
 
     @Test
     public void testCompareDices() {
+
     }
 
     @Test
     public void testDeployTroops() {
+
+        //assume the player1 win the battle and test the troop movement and the change of holder name
+        Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
+        Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
+        int movetroops = attackCountry.getTroops()-1;
+        int originalDefenceTroops = defenceCountry.getTroops();
+        //int originalAttackTroops = attackCountry.getTroops();
+        riskModel.deployTroops(attackCountry,defenceCountry,movetroops);
+        assertEquals(1,attackCountry.getTroops());
+        assertEquals(originalDefenceTroops+movetroops,defenceCountry.getTroops());
+        //assertEquals(originalAttackTroops - movetroops,attackCountry.getTroops());
+        assertEquals(attackCountry.getHolder().getName(),defenceCountry.getHolder().getName());
+
     }
 
 
