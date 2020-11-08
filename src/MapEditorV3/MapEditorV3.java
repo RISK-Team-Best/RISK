@@ -2,14 +2,17 @@ package MapEditorV3;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.HashMap;
 
 public class MapEditorV3 extends JFrame {
-    private final MapEditorV3Model model = new MapEditorV3Model();
+    private static final int SIZE = 30;
+    private final MapEditorV3Model model = new MapEditorV3Model(this);
     private final JInternalFrame internalFrame = new JInternalFrame("Map Area");
     private final JFileChooser fileChooser = new JFileChooser();
     private final JLabel label = new JLabel();
     private final JScrollPane scrollPane = new JScrollPane(label);
     private final MapEditorV3Controller controller;
+    private HashMap<String,JButton> buttons = new HashMap<>();
 
     public MapEditorV3()
     {
@@ -59,14 +62,11 @@ public class MapEditorV3 extends JFrame {
         JList<String> continents = new JList<>();
         continents.setModel(model);
         model.setView(continents);
+        continents.addListSelectionListener(e -> {
+            model.changeSubmodel();
+        });
         JScrollPane scrollPane= new JScrollPane(continents);
         controlArea.add(scrollPane);
-
-        //List2
-        JList<String> territories = new JList<>();
-        model.setSubView(territories);
-        JScrollPane scrollPane2= new JScrollPane(territories);
-        controlArea.add(scrollPane2);
 
         //button 1
         JButton addContinent = new JButton("addContinent");
@@ -76,7 +76,22 @@ public class MapEditorV3 extends JFrame {
         });
         controlArea.add(addContinent);
 
+        //List2
+        JList<String> territories = new JList<>();
+        model.setSubView(territories);
+        JScrollPane scrollPane2= new JScrollPane(territories);
+        controlArea.add(scrollPane2);
+
         //button 2
+        JButton removeTerritory = new JButton("Remove Territory");
+        removeTerritory.addActionListener(e -> {
+            model.removeTerritory();
+        });
+        controlArea.add(removeTerritory);
+
+
+
+        //button 3
         JButton writeMap = new JButton("Generate Map");
         writeMap.addActionListener(e -> {
             model.generateBoard();
@@ -93,5 +108,19 @@ public class MapEditorV3 extends JFrame {
 
     public static void main(String[] args) {
         new MapEditorV3();
+    }
+
+    public void addButton(String name,int x, int y) {
+        JButton button = new JButton();
+        button.setBounds(x-SIZE/2,y-SIZE/2,SIZE*2,SIZE);
+        label.add(button);
+        button.setText(name);
+        buttons.put(name,button);
+        button.repaint();
+    }
+
+    public void removeButton(String s) {
+        label.remove(buttons.get(s));
+        label.repaint();
     }
 }
