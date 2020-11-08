@@ -3,8 +3,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for RiskModel
+ */
 public class RiskModelTest {
     private RiskModel riskModel;
     private Territory country1,country2;
@@ -12,7 +14,9 @@ public class RiskModelTest {
     private String country1Name,country2Name;
 
 
-
+    /**
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         riskModel = new RiskModel();
@@ -37,6 +41,9 @@ public class RiskModelTest {
     }
 
 
+    /**
+     * test Draft() in RiskModel
+     */
     @Test
     public void testDraft() {
 
@@ -50,6 +57,10 @@ public class RiskModelTest {
 
     }
 
+    /**
+     *  test Battle() in RiskModel
+     *  Test after battle, either attack country or defence country lost troops
+     */
     @Test
     public void testBattle() {
         Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
@@ -58,47 +69,60 @@ public class RiskModelTest {
         int defenceCountryTroops = defenceCountry.getTroops();
         riskModel.battle(attackCountry,defenceCountry,AttackWay.BLITZ);
         assertEquals(true,(attackCountryTroops > attackCountry.getTroops())||(defenceCountryTroops > defenceCountry.getTroops()));
-        //test after battle, either attack country or defence country lost troops
+
 
     }
 
 
+    /**
+     * test CompareDices() in RiskModel
+     */
     @Test
     public void testCompareDices() {
 
         Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
         Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
-        int attackCountryTroops = attackCountry.getTroops();
-        int defenceCountryTroops = defenceCountry.getTroops();
         Dices attackDice = new Dices(1);
         Dices defenceDice = new Dices(1);
         riskModel.compareDices(attackDice,defenceDice,attackCountry,defenceCountry);
-        assertTrue((attackCountryTroops > attackCountry.getTroops()) || (defenceCountryTroops > defenceCountry.getTroops()));
+        assertEquals(true,(attackDice.getIndexDice(0)>0)||(attackDice.getIndexDice(0)<=6));
+        assertEquals(true,(defenceDice.getIndexDice(0)>0)||(defenceDice.getIndexDice(0)<=6));//test dice between 0-6
+
 
 
 
     }
 
+    /**
+     * test DeployTroops() in RiskModel
+     * Assume the player1 win the battle and test the troop movement and the change of holder name
+     */
     @Test
     public void testDeployTroops() {
 
-        //assume the player1 win the battle and test the troop movement and the change of holder name
+
         Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
         Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
         int movetroops = attackCountry.getTroops()-1;
         int originalDefenceTroops = defenceCountry.getTroops();
-        //int originalAttackTroops = attackCountry.getTroops();
         riskModel.deployTroops(attackCountry,defenceCountry,movetroops);
         assertEquals(1,attackCountry.getTroops());//original country troops decrease
         assertEquals(originalDefenceTroops+movetroops,defenceCountry.getTroops());//defence country troops increase
-        //assertEquals(originalAttackTroops - movetroops,attackCountry.getTroops());
         assertEquals(attackCountry.getHolder().getName(),defenceCountry.getHolder().getName());//holder name changed
 
     }
 
 
+    /**
+     *  test Fortify() in RiskModel
+     *  If this method test return error, please run test again.
+     *  Because the territory that can be fortified is random each time,
+     *  there might be no territory that can be fortified by the 'fortifycounrty'
+     *  around 10%
+     */
     @Test
     public void testFortify() {
+
         Territory fortifycounrty = riskModel.getFortifyTerritories(player1).get(0);
         Territory fortifiedcountry = riskModel.getFortifiedTerritory(fortifycounrty,player1).get(0);
         int movetroops = fortifycounrty.getTroops()-1;
