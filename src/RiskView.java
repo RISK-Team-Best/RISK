@@ -414,8 +414,12 @@ public class RiskView extends JFrame {
         troopsBox.removeAllItems();
         troopsBox.addItem(AttackWay.BLITZ);
         troopsBox.addItem(AttackWay.ONE);
-        if(troops>1)troopsBox.addItem(AttackWay.TWO);
-        if(troops>2)troopsBox.addItem(AttackWay.THREE);
+        if(troops>2)troopsBox.addItem(AttackWay.TWO);
+        if(troops>3)troopsBox.addItem(AttackWay.THREE);
+    }
+
+    public void clearTroopsBox(){
+        troopsBox.removeAllItems();
     }
 
     public AttackWay getAttackTroopsBox(){
@@ -446,6 +450,55 @@ public class RiskView extends JFrame {
         for(JButton button:territoryButtons){
             button.setEnabled(false);
         }
+    }
+
+    public void enableOriginalTerritories(ArrayList<Territory> territories){
+        for(Territory territory:territories){
+            for(JButton button:territoryButtons){
+                if(button.getActionCommand().equals(territory.getName())){
+                    button.setEnabled(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void onlyEnableOriginTerritory(String territoryName){
+        disableAllTerritoryButton();
+        for(JButton button:territoryButtons){
+            if(button.getActionCommand().equals(territoryName)){
+                button.setEnabled(true);
+                return;
+            }
+        }
+    }
+
+    public void enableTerritoryButton(String territoryName){
+        for(JButton button:territoryButtons){
+            if(button.getActionCommand().equals(territoryName)){
+                button.setEnabled(true);
+                return;
+            }
+        }
+    }
+
+    public void enableTargetTerritories(ArrayList<Territory>territories, String originTerritory){
+        onlyEnableOriginTerritory(originTerritory);
+        for(Territory territory:territories){
+            for(JButton button:territoryButtons){
+                if(button.getActionCommand().equals(territory.getName())){
+                    button.setEnabled(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    public JButton getTerritoryButtonByString(String territoryName){
+        for(JButton button:territoryButtons){
+            if(button.getActionCommand().equals(territoryName))return button;
+        }
+        return null;
     }
 
     public Territory getDestinationTerritory() {

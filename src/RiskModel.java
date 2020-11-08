@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.IOException;
+import java.lang.reflect.AnnotatedParameterizedType;
 import java.util.*;
 
 /**
@@ -12,6 +13,8 @@ public class   RiskModel {
     private final ArrayList<Territory> allCountries;
     private final ArrayList<Continent> allContinents;
     private final HashMap<Integer, Integer> initialTroopHashMap;
+    private ArrayList<Territory> originTerritory = new ArrayList<>();
+    private ArrayList<Territory> targetTerritory = new ArrayList<>();
 
     private final LinkedHashSet<Territory> neighborCountries;
 
@@ -306,6 +309,25 @@ public class   RiskModel {
         return targetTerritoryJList;
     }
 
+    public ArrayList<Territory> getAttackTerritoriesList(Player player){
+        originTerritory.clear();
+        for(Territory territory:player.getTerritories()){
+            if(territory.getTroops()>1&&checkAttackableNeighbors(territory,player))originTerritory.add(territory);
+        }
+        return originTerritory;
+    }
+
+    public ArrayList<Territory> getDefenceTerritories(Player player,Territory territory){
+        targetTerritory.clear();
+        for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
+            for(Territory territory1:allCountries) {
+                if(territory1.getName().equals(neighbor.getName())&&(!territory1.getHolder().equals(player))) {
+                    targetTerritory.add(territory1);
+                }
+            }
+        }
+        return targetTerritory;
+    }
 
     /**
      * Battle.
