@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RiskModelTest {
     private RiskModel riskModel;
@@ -44,23 +45,37 @@ public class RiskModelTest {
         int originalPlayerTroops = player1.getTroops();
         int moveTroops = 3;
         riskModel.draft(player1,country1Name,moveTroops);
-        assertEquals((originalTroops + moveTroops),country1.getTroops());
-        assertEquals((originalPlayerTroops - moveTroops),player1.getTroops());
+        assertEquals((originalTroops + moveTroops),country1.getTroops());//territory troops increased
+        assertEquals((originalPlayerTroops - moveTroops),player1.getTroops());//player's available troops decreased
 
     }
 
     @Test
-    public void testbattle() {
-        //Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
-        //Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
-        //boolean battleWin = riskModel.battle(attackCountry,defenceCountry,AttackWay.BLITZ);
-        //assertEquals(battleWin);
+    public void testBattle() {
+        Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
+        Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
+        int attackCountryTroops = attackCountry.getTroops();
+        int defenceCountryTroops = defenceCountry.getTroops();
+        riskModel.battle(attackCountry,defenceCountry,AttackWay.BLITZ);
+        assertEquals(true,(attackCountryTroops > attackCountry.getTroops())||(defenceCountryTroops > defenceCountry.getTroops()));
+        //test after battle, either attack country or defence country lost troops
 
     }
 
 
     @Test
     public void testCompareDices() {
+
+        Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
+        Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
+        int attackCountryTroops = attackCountry.getTroops();
+        int defenceCountryTroops = defenceCountry.getTroops();
+        Dices attackDice = new Dices(1);
+        Dices defenceDice = new Dices(1);
+        riskModel.compareDices(attackDice,defenceDice,attackCountry,defenceCountry);
+        assertTrue((attackCountryTroops > attackCountry.getTroops()) || (defenceCountryTroops > defenceCountry.getTroops()));
+
+
 
     }
 
@@ -74,10 +89,10 @@ public class RiskModelTest {
         int originalDefenceTroops = defenceCountry.getTroops();
         //int originalAttackTroops = attackCountry.getTroops();
         riskModel.deployTroops(attackCountry,defenceCountry,movetroops);
-        assertEquals(1,attackCountry.getTroops());
-        assertEquals(originalDefenceTroops+movetroops,defenceCountry.getTroops());
+        assertEquals(1,attackCountry.getTroops());//original country troops decrease
+        assertEquals(originalDefenceTroops+movetroops,defenceCountry.getTroops());//defence country troops increase
         //assertEquals(originalAttackTroops - movetroops,attackCountry.getTroops());
-        assertEquals(attackCountry.getHolder().getName(),defenceCountry.getHolder().getName());
+        assertEquals(attackCountry.getHolder().getName(),defenceCountry.getHolder().getName());//holder name changed
 
     }
 
@@ -89,8 +104,9 @@ public class RiskModelTest {
         int movetroops = fortifycounrty.getTroops()-1;
         int origianltroops = fortifiedcountry.getTroops();
         riskModel.fortify(fortifycounrty,fortifiedcountry,movetroops);
-        assertEquals(1,fortifycounrty.getTroops());
+        assertEquals(1,fortifycounrty.getTroops());//original country troops decrease
         assertEquals(origianltroops+movetroops,fortifiedcountry.getTroops());
+        //destination country troops increase
     }
 
 
