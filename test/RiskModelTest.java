@@ -79,7 +79,7 @@ public class RiskModelTest {
 
 
         Territory attackCountry2 = riskModel.getAttackTerritoriesList(player2).get(0);
-        Territory defenceCountry2 = riskModel.getDefenceTerritories(player2,attackCountry).get(0);
+        Territory defenceCountry2 = riskModel.getDefenceTerritories(player2,attackCountry2).get(0);
         int attackCountry2Troops = attackCountry2.getTroops();
         int defenceCountry2Troops = defenceCountry2.getTroops();
         riskModel.battle(attackCountry2,defenceCountry2,AttackWay.ONE);
@@ -137,12 +137,13 @@ public class RiskModelTest {
     }
 
 
-    /*
+    /**
      *  test Fortify() in RiskModel
      *  If this method test return error, please run test again.
      *  Because the territory that can be fortified is random each time,
      *  there might be no territory that can be fortified by the 'fortifycounrty'
-     *  around 10%
+     * around 10%
+     */
 
     @Test
     public void testFortify() {
@@ -155,13 +156,23 @@ public class RiskModelTest {
         assertEquals(1,fortifycounrty.getTroops());//original country troops decrease
         assertEquals(origianltroops+movetroops,fortifiedcountry.getTroops());
         //destination country troops increase
+
+
+        Territory fortifycounrty2 = riskModel.getFortifyTerritories(player2).get(0);
+        Territory fortifiedcountry2 = riskModel.getFortifiedTerritory(fortifycounrty2,player2).get(0);
+        int moveCountry2troops = fortifycounrty2.getTroops()-1;
+        int origianlCountry2troops = fortifiedcountry2.getTroops();
+        riskModel.fortify(fortifycounrty2,fortifiedcountry2,moveCountry2troops);
+        assertEquals(1,fortifycounrty2.getTroops());//original country troops decrease
+        assertEquals(origianlCountry2troops+moveCountry2troops,fortifiedcountry2.getTroops());
+        //destination country troops increase
     }
 
     //@Test
     //public void testCheckWinner() {
     //}
 
-     */
+
 
 
 }
