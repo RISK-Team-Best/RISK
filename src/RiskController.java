@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Controller connect the model and view
+ */
 public class RiskController {
     private RiskModel model;
     private RiskView view;
@@ -22,6 +25,11 @@ public class RiskController {
 
     private HashMap<Integer,Color> colorIDHashMap = new HashMap<>();
 
+    /**
+     * @param riskModel
+     * @param riskView
+     * @throws IOException
+     */
     public RiskController(RiskModel riskModel,RiskView riskView) throws IOException{
         this.model = riskModel;
         this.view = riskView;
@@ -44,6 +52,9 @@ public class RiskController {
 
     }
 
+    /**
+     * Inner class implement NewGame function
+     */
      class NewGameMenuListener implements ActionListener {
 
         @Override
@@ -64,6 +75,9 @@ public class RiskController {
 
         }
 
+    /**
+     * Inner class implement Draft function
+     */
     class DraftButtonListener implements ActionListener{
 
             @Override
@@ -87,6 +101,9 @@ public class RiskController {
             }
         }
 
+    /**
+     * Inner class implement Attack function
+     */
     public class AttackButtonListener implements ActionListener{
 
         @Override
@@ -103,6 +120,9 @@ public class RiskController {
     }
 
 
+    /**
+     * Inner class implement Fortify function
+     */
     public class FortifyButtonListener implements ActionListener{
 
         @Override
@@ -116,6 +136,10 @@ public class RiskController {
             view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the two Territories you want send troops from and to.");
         }
     }
+
+    /**
+     * Inner class implement Deploy function
+     */
     public class DeployButtonListener implements ActionListener{
 
         @Override
@@ -130,6 +154,9 @@ public class RiskController {
         }
     }
 
+    /**
+     * Inner class implement Skip function
+     */
     public class SkipButtonListener implements ActionListener{
 
         @Override
@@ -159,6 +186,9 @@ public class RiskController {
     }
 
 
+    /**
+     * Inner class implement Confirm function
+     */
     public class ConfirmButtonListener implements ActionListener{
 
         @Override
@@ -190,6 +220,9 @@ public class RiskController {
         }
     }
 
+    /**
+     * Inner class implement Territory buttons function
+     */
     public class TerritoryButtonListener implements ActionListener{
 
         @Override
@@ -275,6 +308,9 @@ public class RiskController {
         }
     }
 
+    /**
+     *  set the display the view in attack stage
+     */
     private void attackProcess() {
         if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
@@ -301,6 +337,11 @@ public class RiskController {
         resetButtonsAndBoxProcedure();
     }
 
+    /**
+     * set the display the view in deploy stage
+     * @param attackTerritory
+     * @param defenceTerritory
+     */
     private void deployTroopsProcess(Territory attackTerritory, Territory defenceTerritory){
         model.deployTroops(attackTerritory,defenceTerritory,view.getSelectedTroops());
         view.setContinentsLabel(model.getMapInfoThroughContinent());
@@ -314,6 +355,9 @@ public class RiskController {
         currentStage = Stage.ATTACK;
     }
 
+    /**
+     * clear and reload the button info
+     */
     private void resetButtonsAndBoxProcedure(){
         if(!originTerritoryName.equals("")) {
             originTerritoryButtonPressed = true;
@@ -329,6 +373,9 @@ public class RiskController {
         view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
     }
 
+    /**
+     * set the display the view in draft stage
+     */
     private void draftProcess(){
         if(originTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null, "Please select One territory!", "No Territory Selected", JOptionPane.ERROR_MESSAGE);
@@ -353,6 +400,9 @@ public class RiskController {
         originTerritoryButtonPressed = true;
     }
 
+    /**
+     * set the display the view in fortify stage
+     */
     private void fortifyProcess(){
         if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
@@ -371,6 +421,9 @@ public class RiskController {
         view.getJButton("Attack").setEnabled(false);
     }
 
+    /**
+     * paint the color in Territory buttons
+     */
     private void paintTerritoryButtons(){
         for(int id = 0; id<model.getPlayerNum();id++){
             view.paintTerritoryButtons(model.getPlayerById(id),colorIDHashMap.get(id));

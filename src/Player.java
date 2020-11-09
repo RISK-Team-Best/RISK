@@ -213,9 +213,16 @@ public class Player {
         return false;
     }
 
+     /**
+      * @param i set the id of the player
+      */
     public void setID(int i){
         this.id = i;
     }
+
+     /**
+      * @return the id of the player
+      */
     public int getID(){
         return this.id;
     }

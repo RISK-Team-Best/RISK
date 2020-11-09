@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The View in the mvc
+ */
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
     private JLabel continentsLabel = new JLabel();
@@ -85,6 +88,9 @@ public class RiskView extends JFrame {
 
     private int numberPlayer = 0;
 
+    /**
+     * Initial frame
+     */
     public RiskView(){
         super("Risk Game");
 
@@ -338,6 +344,9 @@ public class RiskView extends JFrame {
         }
     }
 
+    /**
+     * @return the number of player
+     */
     public int getNumberPlayerDialog(){
         int numberPlayer = 0;
         while(numberPlayer==0) {
@@ -352,6 +361,9 @@ public class RiskView extends JFrame {
     }
 
 
+    /**
+     * @return the player's name string list
+     */
     public String[] popGetName(){
         String[] playerNameList = new String[6];
         List<String> list = Arrays.asList(playerNameList);
@@ -367,9 +379,17 @@ public class RiskView extends JFrame {
          return playerNameList;
     }
 
+    /**
+     * @param string
+     */
     public void setContinentsLabel(String string){
         continentsLabel.setText(string);
     }
+
+    /**
+     * @param buttonText
+     * @return the JButton that contain the buttonText
+     */
     public JButton getJButton(String buttonText) {
 
         for (JButton button : CommandButtonList){
@@ -378,11 +398,18 @@ public class RiskView extends JFrame {
         }
         return null;
     }
+
+    /**
+     * @param str set the text in status label
+     */
     public void setStatusLabel(String str){
         statusLabel.setText(str);
     }
 
 
+    /**
+     * @param troops set the numbers in troops box
+     */
     public void setTroopsBox(int troops){
         troopsLabel.setText("Troops:");
         troopsBox.removeAllItems();
@@ -391,6 +418,9 @@ public class RiskView extends JFrame {
         }
     }
 
+    /**
+     * @param troops set the way to attack:one,two,three, and blitz
+     */
     public void setAttackTroopsBox(int troops){
         troopsLabel.setText("Way to attack:");
         troopsBox.removeAllItems();
@@ -400,27 +430,43 @@ public class RiskView extends JFrame {
         if(troops>3)troopsBox.addItem(AttackWay.THREE);
     }
 
+    /**
+     * clear the troop box
+     */
     public void clearTroopsBox(){
         troopsBox.removeAllItems();
     }
 
+    /**
+     * @return the troop number in troops box that selected
+     */
     public AttackWay getAttackTroopsBox(){
         return (AttackWay) troopsBox.getSelectedItem();
     }
 
 
+    /**
+     * @param territoryName
+     * @param troops
+     */
     public void setTerritoryButtonTroops(String territoryName, int troops){
         for(JButton button:territoryButtons){
             if(button.getActionCommand().equals(territoryName))button.setText(String.valueOf(troops));
         }
     }
 
+    /**
+     * Disable all territory buttons
+     */
     public void disableAllTerritoryButton(){
         for(JButton button:territoryButtons){
             button.setEnabled(false);
         }
     }
 
+    /**
+     * @param territories
+     */
     public void enableOriginalTerritories(ArrayList<Territory> territories){
         for(Territory territory:territories){
             for(JButton button:territoryButtons){
@@ -432,6 +478,9 @@ public class RiskView extends JFrame {
         }
     }
 
+    /**
+     * @param territoryName
+     */
     public void onlyEnableOriginTerritory(String territoryName){
         disableAllTerritoryButton();
         for(JButton button:territoryButtons){
@@ -442,6 +491,9 @@ public class RiskView extends JFrame {
         }
     }
 
+    /**
+     * @param territoryName
+     */
     public void enableTerritoryButton(String territoryName){
         for(JButton button:territoryButtons){
             if(button.getActionCommand().equals(territoryName)){
@@ -451,6 +503,10 @@ public class RiskView extends JFrame {
         }
     }
 
+    /**
+     * @param territories
+     * @param originTerritory
+     */
     public void enableTargetTerritories(ArrayList<Territory>territories, String originTerritory){
         onlyEnableOriginTerritory(originTerritory);
         for(Territory territory:territories){
@@ -470,6 +526,10 @@ public class RiskView extends JFrame {
         return null;
     }
 
+    /** paint the color for each player
+     * @param player
+     * @param color
+     */
     public void paintTerritoryButtons(Player player,Color color){
         for(Territory territory:player.getTerritories()){
             for(JButton button:territoryButtons){
@@ -481,34 +541,66 @@ public class RiskView extends JFrame {
         }
     }
 
+    /**
+     * @return the troops number that be selected
+     */
     public int getSelectedTroops(){
         return (int) troopsBox.getSelectedItem();
     }
 
+    /**
+     * @param newGameListener
+     */
     public void addNewGameMenuListener(ActionListener newGameListener){
         newGameItem.addActionListener(newGameListener);
     }
+
+    /**
+     * @param draftButtonListener
+     */
     public void addDraftButtonListener(ActionListener draftButtonListener){
         draft.addActionListener(draftButtonListener);
     }
+
+    /**
+     * @param attackButtonListener
+     */
     public void addAttackButtonListener(ActionListener attackButtonListener){
         attack.addActionListener(attackButtonListener);
     }
+
+    /**
+     * @param fortifyButtonListener
+     */
     public void addFortifyButtonListener(ActionListener fortifyButtonListener){
         fortify.addActionListener(fortifyButtonListener);
     }
+
+    /**
+     * @param deployButtonListener
+     */
     public void addDeployButtonListener(ActionListener deployButtonListener){
         deploy.addActionListener(deployButtonListener);
     }
+
+    /**
+     * @param skipButtonListener
+     */
     public void addSkipButtonListener(ActionListener skipButtonListener){
         skipButton.addActionListener(skipButtonListener);
     }
+
+    /**
+     * @param confirmButtonListener
+     */
     public void addConfirmButtonListener(ActionListener confirmButtonListener){
         confirmButton.addActionListener(confirmButtonListener);
     }
 
 
-
+    /**
+     * @param territoryButtonListener
+     */
     public void addTerritoryButtonListener(ActionListener territoryButtonListener){
         for(JButton button:territoryButtons){
             button.addActionListener(territoryButtonListener);

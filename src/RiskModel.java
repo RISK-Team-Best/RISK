@@ -72,6 +72,9 @@ public class   RiskModel {
 
     }
 
+    /**
+     * @param playerNameList
+     */
     public void addPlayersName(String[] playerNameList) {
         players.clear();
         for (int i = 0; i < numberPlayers; i++) {
@@ -79,6 +82,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * set initial troops based on player number
+     */
     public void setInitialTroopHashMap() {
         initialTroopHashMap.put(2, TWO_PLAYERS_TROOPS);
         initialTroopHashMap.put(3, THREE_PLAYERS_TROOPS);
@@ -87,6 +93,9 @@ public class   RiskModel {
         initialTroopHashMap.put(6, SIX_PLAYERS_TROOPS);
     }
 
+    /**
+     * assign the troops randomly for each player
+     */
     public void setTroopsInitially() {
         int troops = initialTroopHashMap.get(numberPlayers);
         for (Player player : players) {
@@ -172,6 +181,10 @@ public class   RiskModel {
     }
 
 
+    /**
+     * @param player
+     * @return the attack territory list
+     */
     public ArrayList<Territory> getAttackTerritoriesList(Player player){
         originTerritory.clear();
         for(Territory territory:player.getTerritories()){
@@ -180,6 +193,11 @@ public class   RiskModel {
         return originTerritory;
     }
 
+    /**
+     * @param player
+     * @param territory
+     * @return the defence territory list
+     */
     public ArrayList<Territory> getDefenceTerritories(Player player,Territory territory){
         targetTerritory.clear();
         for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
@@ -279,6 +297,10 @@ public class   RiskModel {
     }
 
 
+    /**
+     * @param player
+     * @return the fortify territory list
+     */
     public ArrayList<Territory> getFortifyTerritories(Player player){
         fortifyTerritory.clear();
         for (Territory country : player.getTerritories()) {
@@ -291,6 +313,11 @@ public class   RiskModel {
         return fortifyTerritory;
     }
 
+    /**
+     * @param fortifyCountry
+     * @param player
+     * @return the fortified territory list
+     */
     public ArrayList<Territory> getFortifiedTerritory(Territory fortifyCountry, Player player){
         fortifiedTerritory.clear();
         neighborCountries.clear();
@@ -304,6 +331,12 @@ public class   RiskModel {
     }
 
 
+    /**
+     * The fortify move troops from fortifyCountry to fortifiedCountry
+     * @param fortifyCountry
+     * @param fortifiedCountry
+     * @param troop
+     */
     public void fortify(Territory fortifyCountry, Territory fortifiedCountry,int troop) {
         fortifyCountry.decreaseTroops(troop);
         fortifiedCountry.increaseTroops(troop);
@@ -332,6 +365,12 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * @param territory
+     * @param player
+     * @return ture if the territory has attackable neighbors
+     *         false if the territory has no attackable neighbors
+     */
     public boolean checkAttackableNeighbors(Territory territory, Player player){
         for(Territory neighbor : board.getAllNeighbors(territory.getName())){
             for(Player player1:players){
@@ -361,6 +400,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Update the info in GUI
+     */
     public void updateContinentListInfo(){
         for(Continent continent:allContinents){
             for(Player player:players){
@@ -374,27 +416,55 @@ public class   RiskModel {
         }
 
     }
+
+    /**
+     * @param num set the player number
+     */
     public void setPlayerNum(int num){
         this.numberPlayers = num;
     }
+
+    /**
+     * @return the number of players
+     */
     public int getPlayerNum(){
         return this.numberPlayers;
     }
+
+    /**
+     * @return all territory list
+     */
     public ArrayList<Territory> getAllCountries() {
         return allCountries;
     }
 
+    /**
+     * @return the player that currently doing the action
+     */
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
+
+    /**
+     * @param currentPlayerID
+     * @return the next player
+     */
     public Player getNextPlayer(int currentPlayerID){
         int nextPlayerID = (currentPlayerID+1)%numberPlayers;
         if(!playerIDHashMap.containsKey(nextPlayerID))return getNextPlayer(nextPlayerID);
         return playerIDHashMap.get(nextPlayerID);
     }
+
+    /**
+     * @param player set the current Player
+     */
     public void setCurrentPlayer(Player player){
         this.currentPlayer = player;
     }
+
+    /**
+     * @return the map info
+     */
     public String getMapInfoThroughContinent(){
         updateContinentListInfo();
         String str = "<html> TERRITORY-HOLDER-TROOPS<br><br>";
@@ -409,6 +479,10 @@ public class   RiskModel {
         return  str;
     }
 
+    /**
+     * @param territoryName
+     * @return the territory that have the territoryName
+     */
     public Territory getTerritoryByString(String territoryName){
         for(Territory territory:allCountries){
             if(territory.getName().equals(territoryName))return territory;
@@ -416,6 +490,10 @@ public class   RiskModel {
         return null;
     }
 
+    /**
+     * @param id
+     * @return player match the id
+     */
     public Player getPlayerById(int id){
         for(Player player:players){
             if(player.getID()==id)return player;
@@ -423,6 +501,9 @@ public class   RiskModel {
         return null;
     }
 
+    /**
+     * @return the status of the battle
+     */
     public String getBattleStatusString() {
         return battleStatusString;
     }
