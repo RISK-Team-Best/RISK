@@ -22,9 +22,9 @@ public class RiskController {
 
     private HashMap<Integer,Color> colorIDHashMap = new HashMap<>();
 
-    public RiskController() throws IOException{
-        this.model = new RiskModel();
-        this.view = new RiskView();
+    public RiskController(RiskModel riskModel,RiskView riskView) throws IOException{
+        this.model = riskModel;
+        this.view = riskView;
 
         view.addNewGameMenuListener(new NewGameMenuListener() );
         view.addDraftButtonListener(new DraftButtonListener());
@@ -48,8 +48,6 @@ public class RiskController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-
                 model.setPlayerNum(view.getNumberPlayerDialog());
                 model.addPlayersName(view.popGetName());
                 model.initialGame();
@@ -71,11 +69,19 @@ public class RiskController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 view.getJButton("Confirm").setEnabled(true);
-                currentStage = Stage.DRAFT;
                 view.getJButton("Draft").setEnabled(false);
+                currentStage = Stage.DRAFT;
                 currentPlayer = model.getCurrentPlayer();
+                model.checkContinent(currentPlayer);
                 model.getCurrentPlayer().gainTroopsFromTerritory();
-                view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
+                String continentBonus="";
+                if(currentPlayer.haveContinent()) {
+                    continentBonus = " With ";
+                    for(Continent continent:currentPlayer.getContinents()){
+                        continentBonus+="--"+continent.getName();
+                    }
+                }
+                view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonus);
                 view.setTroopsBox(currentPlayer.getTroops());
                 view.enableOriginalTerritories(currentPlayer.getTerritories());
             }
@@ -102,6 +108,7 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             currentStage = Stage.FORTIFY;
+            view.disableAllTerritoryButton();
             view.getJButton("Skip").setEnabled(true);
             view.getJButton("Fortify").setEnabled(false);
             view.getJButton("Confirm").setEnabled(true);
@@ -329,14 +336,7 @@ public class RiskController {
         }
         model.draft(currentPlayer, originTerritoryName, view.getSelectedTroops());
         view.setContinentsLabel(model.getMapInfoThroughContinent());
-        String continentBonus="";
-        if(currentPlayer.haveContinent()) {
-            continentBonus = "With ";
-            for(Continent continent:currentPlayer.getContinents()){
-                continentBonus+=continent.getName()+": "+continent.getBonusTroops()+" troops.";
-            }
-        }
-        view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonus);
+        view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
         view.setTroopsBox(currentPlayer.getTroops());
         view.setTerritoryButtonTroops(originTerritoryName,model.getTerritoryByString(originTerritoryName).getTroops());
         paintTerritoryButtons();
@@ -375,10 +375,6 @@ public class RiskController {
         for(int id = 0; id<model.getPlayerNum();id++){
             view.paintTerritoryButtons(model.getPlayerById(id),colorIDHashMap.get(id));
         }
-    }
-
-    public static void main(String[] args)  throws IOException{
-        new RiskController();
     }
 }
 

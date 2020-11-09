@@ -282,8 +282,10 @@ public class   RiskModel {
     public ArrayList<Territory> getFortifyTerritories(Player player){
         fortifyTerritory.clear();
         for (Territory country : player.getTerritories()) {
-            if (country.getTroops() > 1) {
-                this.fortifyTerritory.add(country);
+            for(Territory territory:board.getAllNeighbors(country.getName())){
+                if((getTerritoryByString(territory.getName()).getHolder().equals(country.getHolder()))&&(country.getTroops()>1)&&(!fortifyTerritory.contains(country))){
+                    this.fortifyTerritory.add(country);
+                }
             }
         }
         return fortifyTerritory;

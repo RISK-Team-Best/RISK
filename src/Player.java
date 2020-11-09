@@ -192,7 +192,7 @@ public class Player {
      * Add continent bonus. Each continent will have different bonus troops, depending on different maps and rules.
      */
     public void addContinentBonus(){
-        if(this.haveContinent()){
+        if(!getContinents().isEmpty()){
             System.out.println("Player " + this.getName()+" has continents: ");
             for(Continent continent:this.getContinents()){
                 this.increaseTroop(continent.getBonusTroops());
