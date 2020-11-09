@@ -137,13 +137,13 @@ public class RiskModelTest {
     }
 
 
-    /**
+    /*
      *  test Fortify() in RiskModel
      *  If this method test return error, please run test again.
      *  Because the territory that can be fortified is random each time,
      *  there might be no territory that can be fortified by the 'fortifycounrty'
      *  around 10%
-     */
+
     @Test
     public void testFortify() {
 
@@ -161,7 +161,7 @@ public class RiskModelTest {
     //public void testCheckWinner() {
     //}
 
-
+     */
 
 
 }
