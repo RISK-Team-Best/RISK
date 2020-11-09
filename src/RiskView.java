@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RiskView extends JFrame {
     private JLabel statusLabel = new JLabel();
@@ -332,7 +334,7 @@ public class RiskView extends JFrame {
 
         for(JButton button:territoryButtons){
             button.setMargin(new Insets(0,0,0,0));
-            button.setFont(new Font("Arial",Font.PLAIN,12));
+            button.setFont(new Font("Arial",Font.BOLD,12));
         }
     }
 
@@ -352,8 +354,14 @@ public class RiskView extends JFrame {
 
     public String[] popGetName(){
         String[] playerNameList = new String[6];
+        List<String> list = Arrays.asList(playerNameList);
         for(int i=0 ;i<this.numberPlayer;i++){
             String name = JOptionPane.showInputDialog("Please enter Player "+ (i+1)+ " name");
+            if(name==null||list.contains(name)||name.equals("")){
+                JOptionPane.showMessageDialog(null,"Cannot have repeat player's name! Or no name!","Name Repetition",JOptionPane.ERROR_MESSAGE);
+                i--;
+                continue;
+            }
             playerNameList[i] = name;
         }
          return playerNameList;
@@ -460,6 +468,17 @@ public class RiskView extends JFrame {
             if(button.getActionCommand().equals(territoryName))return button;
         }
         return null;
+    }
+
+    public void paintTerritoryButtons(Player player,Color color){
+        for(Territory territory:player.getTerritories()){
+            for(JButton button:territoryButtons){
+                if(territory.getName().equals(button.getActionCommand())){
+                    button.setBackground(color);
+                    continue;
+                }
+            }
+        }
     }
 
     public int getSelectedTroops(){

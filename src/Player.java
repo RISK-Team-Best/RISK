@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,8 +15,6 @@ public class Player {
     private HashMap<String,Continent> continents;
     private int id;
 
-    private static DefaultListModel<Territory> territoryDefaultList;
-
     /**
      * Instantiates a new Player.
      *
@@ -27,7 +24,6 @@ public class Player {
         this.name = name;
         territories = new HashMap<>();
         continents = new HashMap<>();
-        territoryDefaultList = new DefaultListModel<>();
     }
 
     /**
@@ -217,10 +213,6 @@ public class Player {
         return false;
     }
 
-    public DefaultListModel<Territory> getTerritoriesList(){
-        territoryDefaultList.addAll(territories.values());
-        return territoryDefaultList;
-    }
     public void setID(int i){
         this.id = i;
     }
