@@ -18,7 +18,7 @@ A GUI-based version, now adding the View and the Controller of the game. Display
 
 
 #### Instruction:    
-Use cmd  to run this program: java -jar RiskGame.jar      
+Use cmd  to run this program: java -jar RISK.jar      
 (Please note that this project is designed and compiled in JDK 14, if encounter Java version issue, please install JDK14)    
 Use IntelliJ to run this program: click RiskGame.java > Run    
 (The RiskGame.java includes the static main method to run RISK)    
