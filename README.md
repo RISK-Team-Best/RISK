@@ -74,7 +74,7 @@ Dices.java,Player.java,RiskModelTest.java,UML Class Diagram:Tiantian Lin
 
    (2)At first, we don't want to use buttons to instead territories, because it's so ugly and hard to maintain(For Milestone4, we may change another map). So we had two JLists as the choosing place for origin and target territories. And it also correspond to the lab that we took for MVC. We also placed a graph map only as a reference, and all info of the map showed on the info panel (the most right side of the GUI). However, Prof Babak wants the buttons which we don't like, so we combined the two ideas: replace JLists with JButtons. 
 
-   (3)<i>Finally, we placed the buttons on the graph map and make button shows the troops on the territory. It will only enable the avaiable buttons for different steps, different requiremnet. And we also want the button shows the different players. So we added the color on buttons according to player's ID. Also the player's id used on change to next player. And the Info panel still shows the whole map's info (Continent-Territory-Holder-troops).</i>
+   (3)<i>Finally, we placed the buttons on the graph map and make button shows the troops on the territory. It will only enable the avaiable buttons for different steps, different requirement. And we also want the button shows the different players. So we added the color on buttons according to player's ID. Also the player's id used on change to next player. And the Info panel still shows the whole map's info (Continent-Territory-Holder-troops).</i>
 
 3. Fortify part, used recursion method to visit all availble territory that can be fortified.
 
