@@ -249,11 +249,9 @@ public class RiskController {
                 }else if(e.getActionCommand().equals(originTerritoryName)){
                     originTerritoryName = "";
                     if(!targetTerritoryName.equals("")){
-//                        view.getTerritoryButtonByString(targetTerritoryName).setBackground(colorIDHashMap.get(model.getTerritoryByString(targetTerritoryName).getHolder().getID()));
                         targetTerritoryButtonPressed = true;
                     }
                     view.clearTroopsBox();
-//                    ((JButton)e.getSource()).setBackground(colorIDHashMap.get(currentPlayer.getID()));
                     paintTerritoryButtons();
                     view.disableAllTerritoryButton();
                     view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
