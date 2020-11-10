@@ -35,7 +35,8 @@ Then the map will automatically generate territories and troops for you.<br>
 &emsp;(3)once you choose both territory and troops, click confirm to process<br>   
 5.Click attack button（This step could choose skip, if you click skip, then move to fortify):<br>         
 &emsp;(1)choose the territory button on the map that you want to launch attack(click the territory button again to cancel and reselect)        
-&emsp;(2)choose the territory button on the map that you want to attack(click the territory button again to cancel and reselect) &emsp;(3)choose the attackway in the attackWay box on the right of the map to attack (one/two/three/blitz)                           
+&emsp;(2)choose the territory button on the map that you want to attack(click the territory button again to cancel and reselect)                         
+&emsp;(3)choose the attackway in the attackWay box on the right of the map to attack (one/two/three/blitz)                                                    
 &emsp;(4)once you choose the territories and attackWay, click confirm to process                                                       
 &emsp;(5)the game will pop the battle result.If you win, click deploy to deploy troops.If you lose, choose another territory button on the map to launch attack or click skip to move to fortify                                                                     
 &emsp;(6)Deploy(only you win in the battle):choose the number of troops that you want to send to the territory that you just win,then click confirm to process<br>      
