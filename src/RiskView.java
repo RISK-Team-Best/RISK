@@ -345,6 +345,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Prompt to get the number of players.
      * @return the number of player
      */
     public int getNumberPlayerDialog(){
@@ -362,6 +363,7 @@ public class RiskView extends JFrame {
 
 
     /**
+     * Prompt to get each player's name
      * @return the player's name string list
      */
     public String[] popGetName(){
@@ -380,6 +382,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Setter for continentsLabel
      * @param string
      */
     public void setContinentsLabel(String string){
@@ -387,6 +390,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Get the operating JButton
      * @param buttonText
      * @return the JButton that contain the buttonText
      */
@@ -400,6 +404,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Set status Label
      * @param str set the text in status label
      */
     public void setStatusLabel(String str){
@@ -408,6 +413,7 @@ public class RiskView extends JFrame {
 
 
     /**
+     * Set the JComboBox with troops available in different stage.
      * @param troops set the numbers in troops box
      */
     public void setTroopsBox(int troops){
@@ -419,6 +425,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Set the JComboBox with ways to attack.
      * @param troops set the way to attack:one,two,three, and blitz
      */
     public void setAttackTroopsBox(int troops){
@@ -438,6 +445,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Get the attackway for attack stage in JComboBox
      * @return the troop number in troops box that selected
      */
     public AttackWay getAttackTroopsBox(){
@@ -446,6 +454,7 @@ public class RiskView extends JFrame {
 
 
     /**
+     * Set the troops onto the territory button.
      * @param territoryName
      * @param troops
      */
@@ -465,6 +474,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Make the original territories button enabled
      * @param territories
      */
     public void enableOriginalTerritories(ArrayList<Territory> territories){
@@ -479,6 +489,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Only enable one territory button and disable all others
      * @param territoryName
      */
     public void onlyEnableOriginTerritory(String territoryName){
@@ -492,6 +503,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Enable one territory button without disable others
      * @param territoryName
      */
     public void enableTerritoryButton(String territoryName){
@@ -504,6 +516,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Enable the target territories buttons
      * @param territories
      * @param originTerritory
      */
@@ -526,7 +539,8 @@ public class RiskView extends JFrame {
         return null;
     }
 
-    /** paint the color for each player
+    /**
+     * paint the territory's button for the player
      * @param player
      * @param color
      */
@@ -542,6 +556,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Get the selected troops in JComboBox and cast into int
      * @return the troops number that be selected
      */
     public int getSelectedTroops(){
@@ -549,6 +564,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for newGame button
      * @param newGameListener
      */
     public void addNewGameMenuListener(ActionListener newGameListener){
@@ -556,6 +572,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for draft button
      * @param draftButtonListener
      */
     public void addDraftButtonListener(ActionListener draftButtonListener){
@@ -563,6 +580,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for attack button
      * @param attackButtonListener
      */
     public void addAttackButtonListener(ActionListener attackButtonListener){
@@ -570,6 +588,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for fortify button
      * @param fortifyButtonListener
      */
     public void addFortifyButtonListener(ActionListener fortifyButtonListener){
@@ -577,6 +596,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for deploy button
      * @param deployButtonListener
      */
     public void addDeployButtonListener(ActionListener deployButtonListener){
@@ -584,6 +604,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for skip button
      * @param skipButtonListener
      */
     public void addSkipButtonListener(ActionListener skipButtonListener){
@@ -591,6 +612,7 @@ public class RiskView extends JFrame {
     }
 
     /**
+     * Add new action listener for confirm button
      * @param confirmButtonListener
      */
     public void addConfirmButtonListener(ActionListener confirmButtonListener){
@@ -599,6 +621,7 @@ public class RiskView extends JFrame {
 
 
     /**
+     * Add new action listener for territory Button
      * @param territoryButtonListener
      */
     public void addTerritoryButtonListener(ActionListener territoryButtonListener){

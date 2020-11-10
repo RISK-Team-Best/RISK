@@ -5,7 +5,9 @@
 public enum AttackWay {
     ONE(1),TWO(2),THREE(3),BLITZ(-1);
 
+    private int attackTroops;
     /**
+     * Constructor for AttackWay, number means the troops to attack, blitz is special so use -1
      * @param attackTroops
      */
     AttackWay(int attackTroops){
@@ -13,12 +15,12 @@ public enum AttackWay {
     }
 
     /**
+     * Getter the troops of attackWay
      * @return the number of attack troops
      */
     public int getAttackTroops() {
         return attackTroops;
     }
-    private int attackTroops;
 
 
 }

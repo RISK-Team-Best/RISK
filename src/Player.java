@@ -214,6 +214,8 @@ public class Player {
     }
 
      /**
+      * Setter for player id
+      *
       * @param i set the id of the player
       */
     public void setID(int i){
@@ -221,6 +223,8 @@ public class Player {
     }
 
      /**
+      * Getter for player id
+      *
       * @return the id of the player
       */
     public int getID(){

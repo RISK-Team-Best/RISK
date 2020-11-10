@@ -73,6 +73,7 @@ public class   RiskModel {
     }
 
     /**
+     * Add player names into the game
      * @param playerNameList
      */
     public void addPlayersName(String[] playerNameList) {
@@ -182,6 +183,7 @@ public class   RiskModel {
 
 
     /**
+     * Get the player's territories which are available to attack
      * @param player
      * @return the attack territory list
      */
@@ -194,6 +196,8 @@ public class   RiskModel {
     }
 
     /**
+     * Get the enemy's territories which are surrounded this player's this territory
+     *
      * @param player
      * @param territory
      * @return the defence territory list
@@ -216,6 +220,7 @@ public class   RiskModel {
      *
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
+     * @return Whether player conquered the target territory.
      */
     public boolean battle(Territory attackCountry, Territory defenceCountry,AttackWay attackWay) {
         battleStatusString = "";
@@ -234,6 +239,7 @@ public class   RiskModel {
      *
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
+     * @return Whether player conquered the target territory.
      */
     public boolean blitz(Territory attackCountry, Territory defenceCountry) {
         while ((attackCountry.getTroops() > 1) && (defenceCountry.getTroops() > 0)) {
@@ -298,6 +304,8 @@ public class   RiskModel {
 
 
     /**
+     * Get the player's available territories for fortify
+     *
      * @param player
      * @return the fortify territory list
      */
@@ -314,6 +322,8 @@ public class   RiskModel {
     }
 
     /**
+     * Get the territories connect to the fortifyCountry and can be fortified
+     *
      * @param fortifyCountry
      * @param player
      * @return the fortified territory list
@@ -366,6 +376,8 @@ public class   RiskModel {
     }
 
     /**
+     * Check whether the territory has the enemy neighbors.
+     *
      * @param territory
      * @param player
      * @return ture if the territory has attackable neighbors
@@ -384,6 +396,7 @@ public class   RiskModel {
 
     /**
      * Check winner and print out congratulation message.
+     * If only any player lost all territories. Prompt to show his failure.
      */
     public void checkWinner(){
         for(Player player:players){
@@ -401,7 +414,7 @@ public class   RiskModel {
     }
 
     /**
-     * Update the info in GUI
+     * Update any player has the continent or lose
      */
     public void updateContinentListInfo(){
         for(Continent continent:allContinents){
@@ -418,6 +431,8 @@ public class   RiskModel {
     }
 
     /**
+     * Set the number of players
+     *
      * @param num set the player number
      */
     public void setPlayerNum(int num){
@@ -425,6 +440,7 @@ public class   RiskModel {
     }
 
     /**
+     * Getter of playerNum
      * @return the number of players
      */
     public int getPlayerNum(){
@@ -432,6 +448,7 @@ public class   RiskModel {
     }
 
     /**
+     * Getter for allCountries in arraylist
      * @return all territory list
      */
     public ArrayList<Territory> getAllCountries() {
@@ -439,6 +456,7 @@ public class   RiskModel {
     }
 
     /**
+     * getter of CurrentPlayer
      * @return the player that currently doing the action
      */
     public Player getCurrentPlayer(){
@@ -446,6 +464,7 @@ public class   RiskModel {
     }
 
     /**
+     * Get the next player
      * @param currentPlayerID
      * @return the next player
      */
@@ -456,6 +475,8 @@ public class   RiskModel {
     }
 
     /**
+     * setter for Current player
+     *
      * @param player set the current Player
      */
     public void setCurrentPlayer(Player player){
@@ -463,6 +484,8 @@ public class   RiskModel {
     }
 
     /**
+     * The Continent and Territory info. Write it in html and print out on ContinentInfo Panel
+     *
      * @return the map info
      */
     public String getMapInfoThroughContinent(){
@@ -480,6 +503,8 @@ public class   RiskModel {
     }
 
     /**
+     * Get the territory's reference by territory's name
+     *
      * @param territoryName
      * @return the territory that have the territoryName
      */
@@ -491,6 +516,8 @@ public class   RiskModel {
     }
 
     /**
+     * Get player through ID
+     *
      * @param id
      * @return player match the id
      */
@@ -502,6 +529,8 @@ public class   RiskModel {
     }
 
     /**
+     * Getter for battleStatusString, used in GUI.
+     *
      * @return the status of the battle
      */
     public String getBattleStatusString() {

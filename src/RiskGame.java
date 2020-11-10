@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 /**
- * Run this class to start the game
+ * User Interface so that user can run this class to start the game
  */
 public class RiskGame {
     public static void main(String[] args) throws IOException {

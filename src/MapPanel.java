@@ -25,6 +25,7 @@ public class MapPanel extends JPanel{
     }
 
     /**
+     * draw the graph as the background of this panel
      * @param g add image to the component
      */
     @Override
