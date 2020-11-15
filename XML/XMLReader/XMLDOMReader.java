@@ -16,7 +16,7 @@ public class XMLDOMReader {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            File f = new File(getClass().getClassLoader().getResource("test.xml").getFile());
+            File f = new File(getClass().getClassLoader().getResource("XML/test.xml").getFile());
             System.out.println(f.exists());
             Document doc = builder.parse(f);
             NodeList booklist = doc.getElementsByTagName("book");

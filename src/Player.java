@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,8 +15,6 @@ public class Player {
     private HashMap<String,Continent> continents;
     private int id;
 
-    private static DefaultListModel<Territory> territoryDefaultList;
-
     /**
      * Instantiates a new Player.
      *
@@ -27,7 +24,6 @@ public class Player {
         this.name = name;
         territories = new HashMap<>();
         continents = new HashMap<>();
-        territoryDefaultList = new DefaultListModel<>();
     }
 
     /**
@@ -196,7 +192,7 @@ public class Player {
      * Add continent bonus. Each continent will have different bonus troops, depending on different maps and rules.
      */
     public void addContinentBonus(){
-        if(this.haveContinent()){
+        if(!getContinents().isEmpty()){
             System.out.println("Player " + this.getName()+" has continents: ");
             for(Continent continent:this.getContinents()){
                 this.increaseTroop(continent.getBonusTroops());
@@ -217,13 +213,20 @@ public class Player {
         return false;
     }
 
-    public DefaultListModel<Territory> getTerritoriesList(){
-        territoryDefaultList.addAll(territories.values());
-        return territoryDefaultList;
-    }
+     /**
+      * Setter for player id
+      *
+      * @param i set the id of the player
+      */
     public void setID(int i){
         this.id = i;
     }
+
+     /**
+      * Getter for player id
+      *
+      * @return the id of the player
+      */
     public int getID(){
         return this.id;
     }

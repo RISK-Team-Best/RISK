@@ -116,11 +116,5 @@ public class Board {
         return neighbors.get(countryName);
     }
 
-    public static void main(String[] args) {
-        try{
-            Board b = new Board();
-            System.out.println(b.getAllCountries());
-        }catch (Exception e){}
-    }
 
 }

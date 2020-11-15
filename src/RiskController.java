@@ -1,11 +1,13 @@
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.HashMap;
 
+/**
+ * Controller connect the model and view
+ */
 public class RiskController {
     private RiskModel model;
     private RiskView view;
@@ -21,9 +23,16 @@ public class RiskController {
     private boolean originTerritoryButtonPressed = true;
     private boolean targetTerritoryButtonPressed = true;
 
-    public RiskController() throws IOException{
-        this.model = new RiskModel();
-        this.view = new RiskView();
+    private HashMap<Integer,Color> colorIDHashMap = new HashMap<>();
+
+    /**
+     * @param riskModel
+     * @param riskView
+     * @throws IOException
+     */
+    public RiskController(RiskModel riskModel,RiskView riskView) throws IOException{
+        this.model = riskModel;
+        this.view = riskView;
 
         view.addNewGameMenuListener(new NewGameMenuListener() );
         view.addDraftButtonListener(new DraftButtonListener());
@@ -33,14 +42,23 @@ public class RiskController {
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
         view.addTerritoryButtonListener(new TerritoryButtonListener());
+
+        colorIDHashMap.put(0,Color.MAGENTA);
+        colorIDHashMap.put(1,Color.CYAN);
+        colorIDHashMap.put(2,Color.GREEN);
+        colorIDHashMap.put(3,Color.PINK);
+        colorIDHashMap.put(4,Color.WHITE);
+        colorIDHashMap.put(5,Color.LIGHT_GRAY);
+
     }
 
+    /**
+     * Inner class implement NewGame function
+     */
      class NewGameMenuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-
                 model.setPlayerNum(view.getNumberPlayerDialog());
                 model.addPlayersName(view.popGetName());
                 model.initialGame();
@@ -51,28 +69,41 @@ public class RiskController {
                 view.setContinentsLabel(model.getMapInfoThroughContinent());
                 view.getJButton("Draft").setEnabled(true);
                 view.setStatusLabel("Now it's "+model.getCurrentPlayer().getName() +"'s turn, please click \"Draft\" button to start DRAFT stage.");
-                view.getJButton("Confirm").setEnabled(true);
                 view.disableAllTerritoryButton();
+                paintTerritoryButtons();
             }
 
         }
 
+    /**
+     * Inner class implement Draft function
+     */
     class DraftButtonListener implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                view.getJButton("Confirm").setEnabled(true);
                 view.getJButton("Draft").setEnabled(false);
+                currentStage = Stage.DRAFT;
                 currentPlayer = model.getCurrentPlayer();
-                //System.out.println(currentPlayer.getName()+currentPlayer.getTerritories()); test
+                model.checkContinent(currentPlayer);
                 model.getCurrentPlayer().gainTroopsFromTerritory();
-                view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
+                String continentBonus="";
+                if(currentPlayer.haveContinent()) {
+                    continentBonus = " With ";
+                    for(Continent continent:currentPlayer.getContinents()){
+                        continentBonus+="--"+continent.getName();
+                    }
+                }
+                view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonus);
                 view.setTroopsBox(currentPlayer.getTroops());
                 view.enableOriginalTerritories(currentPlayer.getTerritories());
-                //view.getJButton("Skip").setEnabled(true);
-                //currentStage = Stage.ATTACK;
             }
         }
 
+    /**
+     * Inner class implement Attack function
+     */
     public class AttackButtonListener implements ActionListener{
 
         @Override
@@ -83,29 +114,32 @@ public class RiskController {
             view.getJButton("Confirm").setEnabled(true);
             view.getJButton("Skip").setEnabled(true);
             view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
-//            view.setDestinationTerritory(model.setDefenceTerritories(currentPlayer,view.getStartingTerritory()));
-//            view.setAttackTroopsBox(view.getStartingTerritory().getTroops());
             currentStage=Stage.ATTACK;
-            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Select territory from Origin Territory list and pick target territory in Target Territory list");
+            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Click enabled territory button and pick surround available target territory button.");
         }
     }
 
 
+    /**
+     * Inner class implement Fortify function
+     */
     public class FortifyButtonListener implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
             currentStage = Stage.FORTIFY;
+            view.disableAllTerritoryButton();
+            view.getJButton("Skip").setEnabled(true);
             view.getJButton("Fortify").setEnabled(false);
             view.getJButton("Confirm").setEnabled(true);
             view.enableOriginalTerritories(model.getFortifyTerritories(currentPlayer));
-            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the Territory you want send troops from.");
-//            view.setDestinationTerritory(model.setFortifiableTerritory(view.getStartingTerritory(),currentPlayer));
-//            view.setTroopsBox(view.getStartingTerritory().getTroops()-1);
-
-
+            view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the two Territories you want send troops from and to.");
         }
     }
+
+    /**
+     * Inner class implement Deploy function
+     */
     public class DeployButtonListener implements ActionListener{
 
         @Override
@@ -114,43 +148,47 @@ public class RiskController {
             view.getJButton("Deploy").setEnabled(false);
             view.getJButton("Attack").setEnabled(false);
             view.getJButton("Confirm").setEnabled(true);
+            view.getJButton("Skip").setEnabled(false);
             view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Set troops to the new earned territory.");
             view.setTroopsBox(attackTerritory.getTroops()-1);
         }
     }
 
+    /**
+     * Inner class implement Skip function
+     */
     public class SkipButtonListener implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (currentStage == Stage.ATTACK){
                 view.getJButton("Attack").setEnabled(false);
-                view.getJButton("Deploy").setEnabled(false);
-                view.getJButton("Draft").setEnabled(false);
                 view.getJButton("Fortify").setEnabled(true);
+                view.getJButton("Confirm").setEnabled(false);
+                view.getJButton("Skip").setEnabled(false);
                 resetButtonsAndBoxProcedure();
+                view.setStatusLabel(currentPlayer.getName() + "'s turn, Click \"Fortify\" button to start Fortify stage.");
             }
 
 
             if(currentStage == Stage.FORTIFY){
                 view.getJButton("Fortify").setEnabled(false);
-                view.getJButton("Attack").setEnabled(false);
-                view.getJButton("Deploy").setEnabled(false);
                 view.getJButton("Skip").setEnabled(false);
                 view.getJButton("Draft").setEnabled(true);
-
+                view.getJButton("Confirm").setEnabled(false);
+                resetButtonsAndBoxProcedure();
+                currentPlayer = model.getNextPlayer(currentPlayer.getID());
+                model.setCurrentPlayer(currentPlayer);
+                view.setStatusLabel(currentPlayer.getName()+ "'s turn, please click \"Draft\" button to start DRAFT stage.");
+                view.disableAllTerritoryButton();
             }
-
-
-
-
-
-
-
         }
     }
 
 
+    /**
+     * Inner class implement Confirm function
+     */
     public class ConfirmButtonListener implements ActionListener{
 
         @Override
@@ -161,21 +199,30 @@ public class RiskController {
 
             if(currentStage==Stage.ATTACK){
                 attackProcess();
+                model.checkContinent(currentPlayer);
             }
 
             if(currentStage==Stage.FORTIFY){
                 fortifyProcess();
-                //only process once, then transfer to another player.
-                currentStage = null;
+                resetButtonsAndBoxProcedure();
+                currentPlayer = model.getNextPlayer(currentPlayer.getID());
+                model.setCurrentPlayer(currentPlayer);
+                view.setStatusLabel(currentPlayer.getName()+ "'s turn, please click \"Draft\" button to start DRAFT stage.");
+                view.disableAllTerritoryButton();
             }
 
             if(currentStage==Stage.DEPLOY){
                 deployTroopsProcess(attackTerritory,defenceTerritory);
+                model.checkWinner();
+                view.disableAllTerritoryButton();
             }
 
         }
     }
 
+    /**
+     * Inner class implement Territory buttons function
+     */
     public class TerritoryButtonListener implements ActionListener{
 
         @Override
@@ -188,7 +235,7 @@ public class RiskController {
                 }else{
                     originTerritoryName = "";
                     view.enableOriginalTerritories(currentPlayer.getTerritories());
-                    ((JButton)e.getSource()).setBackground(null);
+                    ((JButton)e.getSource()).setBackground(colorIDHashMap.get(currentPlayer.getID()));
                 }
                 originTerritoryButtonPressed = !originTerritoryButtonPressed;
             }
@@ -201,12 +248,11 @@ public class RiskController {
                     originTerritoryButtonPressed =! originTerritoryButtonPressed;
                 }else if(e.getActionCommand().equals(originTerritoryName)){
                     originTerritoryName = "";
-                    if(targetTerritoryName!=""){
-                        view.getTerritoryButtonByString(targetTerritoryName).setBackground(null);
+                    if(!targetTerritoryName.equals("")){
                         targetTerritoryButtonPressed = true;
                     }
                     view.clearTroopsBox();
-                    ((JButton)e.getSource()).setBackground(null);
+                    paintTerritoryButtons();
                     view.disableAllTerritoryButton();
                     view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
                     originTerritoryButtonPressed =! originTerritoryButtonPressed;
@@ -219,7 +265,7 @@ public class RiskController {
                     targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
                 }else if(!targetTerritoryButtonPressed){
                     targetTerritoryName = "";
-                    ((JButton)e.getSource()).setBackground(null);
+                    paintTerritoryButtons();
                     view.onlyEnableOriginTerritory(originTerritoryName);
                     view.enableTargetTerritories(model.getDefenceTerritories(currentPlayer,model.getTerritoryByString(originTerritoryName)),originTerritoryName);
                     targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
@@ -234,12 +280,11 @@ public class RiskController {
                     originTerritoryButtonPressed =! originTerritoryButtonPressed;
                 }else if(e.getActionCommand().equals(originTerritoryName)){
                     originTerritoryName = "";
-                    if(targetTerritoryName!=""){
-                        view.getTerritoryButtonByString(targetTerritoryName).setBackground(null);
+                    if(!targetTerritoryName.equals("")){
                         targetTerritoryButtonPressed = true;
                     }
                     view.clearTroopsBox();
-                    ((JButton)e.getSource()).setBackground(null);
+                    paintTerritoryButtons();
                     view.disableAllTerritoryButton();
                     view.enableOriginalTerritories(model.getFortifyTerritories(currentPlayer));
                     originTerritoryButtonPressed =! originTerritoryButtonPressed;
@@ -251,8 +296,8 @@ public class RiskController {
                     view.enableTerritoryButton(targetTerritoryName);
                     targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
                 }else if(!targetTerritoryButtonPressed){
+                    ((JButton)e.getSource()).setBackground(colorIDHashMap.get(model.getTerritoryByString(targetTerritoryName).getHolder().getID()));
                     targetTerritoryName = "";
-                    ((JButton)e.getSource()).setBackground(null);
                     view.onlyEnableOriginTerritory(originTerritoryName);
                     view.enableTargetTerritories(model.getFortifiedTerritory(model.getTerritoryByString(originTerritoryName),currentPlayer),originTerritoryName);
                     targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
@@ -261,31 +306,40 @@ public class RiskController {
         }
     }
 
+    /**
+     *  set the display the view in attack stage
+     */
     private void attackProcess() {
-        if(originTerritoryName==""||targetTerritoryName=="") {
+        if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
             return;
         }
         attackTerritory = model.getTerritoryByString(originTerritoryName);
         defenceTerritory = model.getTerritoryByString(targetTerritoryName);
         AttackWay attackWay = view.getAttackTroopsBox();
-        boolean winBattle = model.battle(attackTerritory,defenceTerritory,attackWay);
+        boolean gainTerritory = model.battle(attackTerritory,defenceTerritory,attackWay);
         view.setTerritoryButtonTroops(originTerritoryName,attackTerritory.getTroops());
         view.setTerritoryButtonTroops(targetTerritoryName,defenceTerritory.getTroops());
         view.setContinentsLabel(model.getMapInfoThroughContinent());
-        if(winBattle){
-            JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"\nCongratulation, you win this battle!");
+        if(gainTerritory){
+            JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"/nYou conquered "+defenceTerritory.getName()+"!");
             view.getJButton("Deploy").setEnabled(true);
             view.getJButton("Confirm").setEnabled(false);
             view.getJButton("Skip").setEnabled(false);
             view.disableAllTerritoryButton();
             view.setStatusLabel(currentPlayer.getName()+" wins the battle! Press \"Deploy\" button to deploy troops.");
+            view.clearTroopsBox();
             return;
         }
-        JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"\nUnfortunately, you lose this battle...");
+        JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"/nYou didn't conquered "+defenceTerritory.getName()+".");
         resetButtonsAndBoxProcedure();
     }
 
+    /**
+     * set the display the view in deploy stage
+     * @param attackTerritory
+     * @param defenceTerritory
+     */
     private void deployTroopsProcess(Territory attackTerritory, Territory defenceTerritory){
         model.deployTroops(attackTerritory,defenceTerritory,view.getSelectedTroops());
         view.setContinentsLabel(model.getMapInfoThroughContinent());
@@ -296,26 +350,32 @@ public class RiskController {
         view.getJButton("Confirm").setEnabled(false);
         view.getJButton("Skip").setEnabled(true);
         view.setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to continue ATTACK stage OR \"Skip\" button to skip to Fortify Stage.");
+        currentStage = Stage.ATTACK;
     }
 
+    /**
+     * clear and reload the button info
+     */
     private void resetButtonsAndBoxProcedure(){
-        if(originTerritoryName!="") {
-            view.getTerritoryButtonByString(originTerritoryName).setBackground(null);
+        if(!originTerritoryName.equals("")) {
             originTerritoryButtonPressed = true;
             originTerritoryName = "";
         }
-        if(targetTerritoryName!="") {
-            view.getTerritoryButtonByString(targetTerritoryName).setBackground(null);
+        if(!targetTerritoryName.equals("")) {
             targetTerritoryButtonPressed = true;
             targetTerritoryName = "";
         }
+        paintTerritoryButtons();
         view.clearTroopsBox();
         view.disableAllTerritoryButton();
         view.enableOriginalTerritories(model.getAttackTerritoriesList(currentPlayer));
     }
 
+    /**
+     * set the display the view in draft stage
+     */
     private void draftProcess(){
-        if(originTerritoryName=="") {
+        if(originTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null, "Please select One territory!", "No Territory Selected", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -324,14 +384,13 @@ public class RiskController {
         view.setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
         view.setTroopsBox(currentPlayer.getTroops());
         view.setTerritoryButtonTroops(originTerritoryName,model.getTerritoryByString(originTerritoryName).getTroops());
-        view.getTerritoryButtonByString(originTerritoryName).setBackground(null);
+        paintTerritoryButtons();
         if(currentPlayer.getTroops()==0){
             view.disableAllTerritoryButton();
             view.getJButton("Confirm").setEnabled(false);
             view.getJButton("Attack").setEnabled(true);
             view.getJButton("Skip").setEnabled(false);
             view.setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
-            currentStage = null;
             return;
         }
         view.enableOriginalTerritories(currentPlayer.getTerritories());
@@ -339,8 +398,11 @@ public class RiskController {
         originTerritoryButtonPressed = true;
     }
 
+    /**
+     * set the display the view in fortify stage
+     */
     private void fortifyProcess(){
-        if(originTerritoryName==""||targetTerritoryName=="") {
+        if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -351,33 +413,19 @@ public class RiskController {
         view.setContinentsLabel(model.getMapInfoThroughContinent());
         view.setTerritoryButtonTroops(originTerritoryName,startCountry.getTroops());
         view.setTerritoryButtonTroops(targetTerritoryName,destinationCountry.getTroops());
-        resetButtonsAndBoxProcedure();
-        currentPlayer = model.getNextPlayer();
-        model.setCurrentPlayer(currentPlayer);
         view.getJButton("Draft").setEnabled(true);
         view.getJButton("Confirm").setEnabled(false);
         view.getJButton("Skip").setEnabled(false);
         view.getJButton("Attack").setEnabled(false);
-        currentStage = Stage.DRAFT;
-        view.setStatusLabel(currentPlayer.getName()+ "'s turn, " + currentStage.getName() + " stage, please click \"Draft\" button to start DRAFT stage.");
     }
 
-    private DefaultListModel<Territory> getTempStartingTerritoryList(Territory startingTerritory){
-        DefaultListModel<Territory> tempStartingTerritory = new DefaultListModel<>();
-        tempStartingTerritory.addElement(startingTerritory);
-        return tempStartingTerritory;
-    }
-
-    private DefaultListModel<Territory> getTempTargetTerritoryList(Territory targetTerritory){
-        DefaultListModel<Territory> tempTargetTerritory = new DefaultListModel<>();
-        tempTargetTerritory.addElement(targetTerritory);
-        return tempTargetTerritory;
-    }
-
-
-
-    public static void main(String[] args)  throws IOException{
-        new RiskController();
+    /**
+     * paint the color in Territory buttons
+     */
+    private void paintTerritoryButtons(){
+        for(int id = 0; id<model.getPlayerNum();id++){
+            view.paintTerritoryButtons(model.getPlayerById(id),colorIDHashMap.get(id));
+        }
     }
 }
 

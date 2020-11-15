@@ -57,6 +57,10 @@ public class Continent {
         return memberString;
     }
 
+    /**
+     * @param territory
+     * @return
+     */
     public Territory getMemberTerritory(Territory territory){
         for(Territory territory1:members){
             if(territory.getName().equals(territory1.getName()))return territory1;
@@ -64,6 +68,9 @@ public class Continent {
         return null;
     }
 
+    /**
+     * @return the territory list in this continent
+     */
     public ArrayList<Territory> getMembers() {
         return members;
     }
