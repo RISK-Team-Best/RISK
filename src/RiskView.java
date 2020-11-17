@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The View in the mvc
  */
-public class RiskView extends JFrame {
+public class RiskView extends JFrame implements RiskViewInterface{
     private JLabel statusLabel = new JLabel();
     private JLabel continentsLabel = new JLabel();
     private JLabel troopsLabel = new JLabel("Troops:");
@@ -348,6 +348,7 @@ public class RiskView extends JFrame {
      * Prompt to get the number of players.
      * @return the number of player
      */
+    @Override
     public int getNumberPlayerDialog(){
         int numberPlayer = 0;
         while(numberPlayer==0) {
@@ -366,6 +367,7 @@ public class RiskView extends JFrame {
      * Prompt to get each player's name
      * @return the player's name string list
      */
+    @Override
     public String[] popGetName(){
         String[] playerNameList = new String[6];
         List<String> list = Arrays.asList(playerNameList);
@@ -387,6 +389,16 @@ public class RiskView extends JFrame {
      */
     public void setContinentsLabel(String string){
         continentsLabel.setText(string);
+    }
+
+    @Override
+    public void updateWinAttack(Player currentPlayer) {
+        deploy.setEnabled(true);
+        confirmButton.setEnabled(false);
+        skipButton.setEnabled(false);
+        disableAllTerritoryButton();
+        setStatusLabel(currentPlayer.getName()+" wins the battle! Press \"Deploy\" button to deploy troops.");
+        clearTroopsBox();
     }
 
     /**
@@ -448,9 +460,12 @@ public class RiskView extends JFrame {
      * Get the attackway for attack stage in JComboBox
      * @return the troop number in troops box that selected
      */
+    @Override
     public AttackWay getAttackTroopsBox(){
         return (AttackWay) troopsBox.getSelectedItem();
     }
+
+
 
 
     /**
@@ -462,6 +477,14 @@ public class RiskView extends JFrame {
         for(JButton button:territoryButtons){
             if(button.getActionCommand().equals(territoryName))button.setText(String.valueOf(troops));
         }
+    }
+
+    @Override
+    public void updateNewGameProcess(String mapInfoThroughContinent, String currentPlayerName) {
+        setContinentsLabel(mapInfoThroughContinent);
+        draft.setEnabled(true);
+        setStatusLabel("Now it's "+ currentPlayerName +"'s turn, please click \"Draft\" button to start DRAFT stage.");
+        disableAllTerritoryButton();
     }
 
     /**
@@ -477,6 +500,7 @@ public class RiskView extends JFrame {
      * Make the original territories button enabled
      * @param territories
      */
+    @Override
     public void enableOriginalTerritories(ArrayList<Territory> territories){
         for(Territory territory:territories){
             for(JButton button:territoryButtons){
@@ -488,10 +512,30 @@ public class RiskView extends JFrame {
         }
     }
 
+    @Override
+    public void updateDeployFinish(Player currentPlayer) {
+        getJButton("Attack").setEnabled(true);
+        getJButton("Confirm").setEnabled(false);
+        getJButton("Skip").setEnabled(true);
+        setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to continue ATTACK stage OR \"Skip\" button to skip to Fortify Stage.");
+        disableAllTerritoryButton();
+    }
+
+    @Override
+    public void updateFortifyFinish(Player currentPlayer) {
+        draft.setEnabled(true);
+        confirmButton.setEnabled(false);
+        skipButton.setEnabled(false);
+        attack.setEnabled(false);
+        setStatusLabel(currentPlayer.getName()+ "'s turn, please click \"Draft\" button to start DRAFT stage.");
+        disableAllTerritoryButton();
+    }
+
     /**
      * Only enable one territory button and disable all others
      * @param territoryName
      */
+    @Override
     public void onlyEnableOriginTerritory(String territoryName){
         disableAllTerritoryButton();
         for(JButton button:territoryButtons){
@@ -500,6 +544,38 @@ public class RiskView extends JFrame {
                 return;
             }
         }
+    }
+
+    @Override
+    public void updateClickAttackTerritoryButton(int attackTerritoryTroops, ArrayList<Territory> defenceTerritories, String attackTerritoryName) {
+        setAttackTroopsBox(attackTerritoryTroops);
+        enableTargetTerritories(defenceTerritories, attackTerritoryName);
+    }
+
+    @Override
+    public void updateClickTargetTerritoryButton(String originTerritoryName, String targetTerritoryName) {
+        disableAllTerritoryButton();
+        enableTerritoryButton(originTerritoryName);
+        enableTerritoryButton(targetTerritoryName);
+    }
+
+    @Override
+    public void updateCancelDefenceTerritoryButton(String originTerritoryName, ArrayList<Territory> defenceTerritories) {
+        onlyEnableOriginTerritory(originTerritoryName);
+        enableTargetTerritories(defenceTerritories, originTerritoryName);
+    }
+
+    @Override
+    public void updateClickFortifyButton(int fortifyTroops, ArrayList<Territory> fortifiedTerritory, String originTerritoryName) {
+        setTroopsBox(fortifyTroops);
+        enableTargetTerritories(fortifiedTerritory,originTerritoryName);
+    }
+
+    @Override
+    public void updateCancelFortifyTerritoryButton(String originTerritoryName, ArrayList<Territory> fortifiedTerritory) {
+        onlyEnableOriginTerritory(originTerritoryName);
+        enableTargetTerritories(fortifiedTerritory,originTerritoryName);
+
     }
 
     /**
@@ -555,12 +631,93 @@ public class RiskView extends JFrame {
         }
     }
 
+    @Override
+    public void updateDraftPrepare(Player currentPlayer, Stage currentStage, String continentBonus) {
+        confirmButton.setEnabled(true);
+        draft.setEnabled(false);
+        setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonus);
+        setTroopsBox(currentPlayer.getTroops());
+        enableOriginalTerritories(currentPlayer.getTerritories());
+    }
+
+    @Override
+    public void updateAttackPrepare(Player currentPlayer, Stage currentStage, ArrayList<Territory> attackTerritoriesList) {
+        attack.setEnabled(false);
+        confirmButton.setEnabled(true);
+        skipButton.setEnabled(true);
+        enableOriginalTerritories(attackTerritoriesList);
+        setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Click enabled territory button and pick surround available target territory button.");
+    }
+
+    @Override
+    public void updateFortifyPrepare(ArrayList<Territory> fortifyTerritories, Player currentPlayer, Stage currentStage) {
+        disableAllTerritoryButton();
+        skipButton.setEnabled(true);
+        fortify.setEnabled(false);
+        confirmButton.setEnabled(true);
+        enableOriginalTerritories(fortifyTerritories);
+        setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Please choose the two Territories you want send troops from and to.");
+    }
+
+    @Override
+    public void updateDeployPrepare(Player currentPlayer, Stage currentStage, int attackTroops) {
+        deploy.setEnabled(false);
+        attack.setEnabled(false);
+        confirmButton.setEnabled(true);
+        skipButton.setEnabled(false);
+        setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Set troops to the new earned territory.");
+        setTroopsBox(attackTroops);
+    }
+
+    @Override
+    public void updateSkipAttack(Player currentPlayer) {
+        attack.setEnabled(false);
+        fortify.setEnabled(true);
+        confirmButton.setEnabled(false);
+        skipButton.setEnabled(false);
+        setStatusLabel(currentPlayer.getName() + "'s turn, Click \"Fortify\" button to start Fortify stage.");
+    }
+
+    @Override
+    public void updateSkipFortify(Player currentPlayer) {
+        fortify.setEnabled(false);
+        skipButton.setEnabled(false);
+        draft.setEnabled(true);
+        confirmButton.setEnabled(false);
+        setStatusLabel(currentPlayer.getName()+ "'s turn, please click \"Draft\" button to start DRAFT stage.");
+        disableAllTerritoryButton();
+    }
+
+    @Override
+    public void resetButtonsAndBox(ArrayList<Territory> attackTerritoriesList) {
+        clearTroopsBox();
+        disableAllTerritoryButton();
+        enableOriginalTerritories(attackTerritoriesList);
+    }
+
     /**
      * Get the selected troops in JComboBox and cast into int
      * @return the troops number that be selected
      */
+    @Override
     public int getSelectedTroops(){
         return (int) troopsBox.getSelectedItem();
+    }
+
+    @Override
+    public void updateDraftProcess(Player currentPlayer, Stage currentStage) {
+        setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. You have " + currentPlayer.getTroops() + " troops can be sent.");
+        setTroopsBox(currentPlayer.getTroops());
+    }
+
+    @Override
+    public void updateDraftFinish(Player currentPlayer) {
+        disableAllTerritoryButton();
+        confirmButton.setEnabled(false);
+        attack.setEnabled(true);
+        skipButton.setEnabled(false);
+        setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
+
     }
 
     /**

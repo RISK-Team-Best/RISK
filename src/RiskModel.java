@@ -1,11 +1,15 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 /**
  * The main Game.
  */
 public class   RiskModel {
+
+    private final List<RiskViewInterface> viewList;
 
     private final ArrayList<Player> players;
     private final ArrayList<Territory> allCountries;
@@ -29,11 +33,24 @@ public class   RiskModel {
 
     private Player currentPlayer;
 
+    private Stage currentStage;
+
     private final int TWO_PLAYERS_TROOPS = 50;
     private final int THREE_PLAYERS_TROOPS = 35;
     private final int FOUR_PLAYERS_TROOPS = 30;
     private final int FIVE_PLAYERS_TROOPS = 25;
     private final int SIX_PLAYERS_TROOPS = 20;
+
+    private HashMap<Integer, Color> colorIDHashMap = new HashMap<>();
+
+    private boolean originTerritoryButtonPressed = true;
+    private boolean targetTerritoryButtonPressed = true;
+
+    private Territory attackTerritory;
+    private Territory defenceTerritory;
+
+    private String originTerritoryName = "";
+    private String targetTerritoryName = "";
 
     /**
      * Instantiates a new Game.
@@ -50,6 +67,18 @@ public class   RiskModel {
         allCountries = new ArrayList<>();
         allContinents = board.getAllContinents();
         neighborCountries = new LinkedHashSet<>();
+        viewList = new ArrayList<>();
+
+        colorIDHashMap.put(0,Color.MAGENTA);
+        colorIDHashMap.put(1,Color.CYAN);
+        colorIDHashMap.put(2,Color.GREEN);
+        colorIDHashMap.put(3,Color.PINK);
+        colorIDHashMap.put(4,Color.WHITE);
+        colorIDHashMap.put(5,Color.LIGHT_GRAY);
+    }
+
+    public void addView(RiskViewInterface viewInterface){
+        viewList.add(viewInterface);
     }
 
     /**
@@ -74,7 +103,6 @@ public class   RiskModel {
 
     /**
      * Add player names into the game
-     * @param playerNameList
      */
     public void addPlayersName(String[] playerNameList) {
         players.clear();
@@ -433,10 +461,9 @@ public class   RiskModel {
     /**
      * Set the number of players
      *
-     * @param num set the player number
      */
-    public void setPlayerNum(int num){
-        this.numberPlayers = num;
+    public void setPlayerNum(int playerNum){
+        this.numberPlayers = playerNum;
     }
 
     /**
@@ -535,5 +562,295 @@ public class   RiskModel {
      */
     public String getBattleStatusString() {
         return battleStatusString;
+    }
+
+    public void newGameProcess(){
+        currentStage = Stage.DRAFT;
+
+        int playerNum = 0;
+        for(RiskViewInterface view: viewList){
+            playerNum = view.getNumberPlayerDialog();
+        }
+        setPlayerNum(playerNum);
+
+
+        String[] playerNameList = new String[0];
+        for(RiskViewInterface view: viewList){
+            playerNameList = view.popGetName();
+        }
+        addPlayersName(playerNameList);
+        initialGame();
+        for(RiskViewInterface view: viewList){
+            for(Territory territory:getAllCountries()){
+                view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
+            }
+        }
+        for(RiskViewInterface view: viewList){
+            view.updateNewGameProcess(getMapInfoThroughContinent(),getCurrentPlayer().getName());
+            paintTerritoryButtons(view);
+        }
+    }
+
+    public void draftPrepare(){
+        currentStage =Stage.DRAFT;
+        checkContinent(currentPlayer);
+        currentPlayer.gainTroopsFromTerritory();
+        String continentBonus="";
+        if(currentPlayer.haveContinent()) {
+            continentBonus = " With ";
+            for(Continent continent:currentPlayer.getContinents()){
+                continentBonus+="--"+continent.getName();
+            }
+        }
+        for(RiskViewInterface view: viewList){
+            view.updateDraftPrepare(currentPlayer,currentStage,continentBonus);
+        }
+    }
+
+    public void attackPrepare(){
+        currentStage = Stage.ATTACK;
+        originTerritoryButtonPressed = true;
+        for(RiskViewInterface view: viewList){
+            view.updateAttackPrepare(currentPlayer,currentStage,getAttackTerritoriesList(currentPlayer));
+        }
+    }
+
+    public void fortifyPrepare(){
+        currentStage = Stage.FORTIFY;
+        for(RiskViewInterface view: viewList) {
+            view.updateFortifyPrepare(getFortifyTerritories(currentPlayer),currentPlayer,currentStage);
+        }
+    }
+
+    public void deployPrepare(){
+        currentStage = Stage.DEPLOY;
+        for(RiskViewInterface view: viewList){
+            view.updateDeployPrepare(currentPlayer,currentStage,attackTerritory.getTroops()-1);
+        }
+    }
+
+    public void skipProcess(){
+        if(currentStage==Stage.ATTACK){
+            for(RiskViewInterface view: viewList){
+                view.updateSkipAttack(currentPlayer);
+            }
+        }
+        if(currentStage==Stage.FORTIFY){
+            resetButtonsAndBoxProcedure();
+            currentPlayer = getNextPlayer(currentPlayer.getID());
+            for(RiskViewInterface view: viewList){
+                view.updateSkipFortify(currentPlayer);
+            }
+        }
+    }
+
+    public void confirmProcess(){
+        if(currentStage==Stage.DRAFT){
+            draftProcess();
+        }
+
+        if(currentStage==Stage.ATTACK){
+            attackProcess();
+        }
+
+        if(currentStage==Stage.FORTIFY){
+            fortifyProcess();
+            resetButtonsAndBoxProcedure();
+        }
+
+        if(currentStage==Stage.DEPLOY){
+            deployTroopsProcess();
+            checkWinner();
+        }
+    }
+
+    public void resetButtonsAndBoxProcedure(){
+        if(!originTerritoryName.equals("")){
+            originTerritoryButtonPressed = true;
+            originTerritoryName = "";
+        }
+        if(!targetTerritoryName.equals("")){
+            targetTerritoryButtonPressed = true;
+            targetTerritoryName = "";
+        }
+        for(RiskViewInterface view: viewList) {
+            paintTerritoryButtons(view);
+            view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
+        }
+
+    }
+
+    private void draftProcess(){
+        if(originTerritoryName.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please select One territory!", "No Territory Selected", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        for(RiskViewInterface view: viewList) {
+            draft(currentPlayer, originTerritoryName, view.getSelectedTroops());
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            view.updateDraftProcess(currentPlayer,currentStage);
+            view.setTerritoryButtonTroops(originTerritoryName,getTerritoryByString(originTerritoryName).getTroops());
+            paintTerritoryButtons(view);
+            if(currentPlayer.getTroops()==0){
+                view.updateDraftFinish(currentPlayer);
+                return;
+            }
+            view.enableOriginalTerritories(currentPlayer.getTerritories());
+        }
+        originTerritoryName="";
+        originTerritoryButtonPressed = true;
+    }
+
+    private void attackProcess() {
+        if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
+            JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        attackTerritory = getTerritoryByString(originTerritoryName);
+        defenceTerritory = getTerritoryByString(targetTerritoryName);
+        AttackWay attackWay = null;
+        for(RiskViewInterface view: viewList) {
+            attackWay = view.getAttackTroopsBox();
+        }
+        boolean gainTerritory = battle(attackTerritory,defenceTerritory,attackWay);
+        for(RiskViewInterface view: viewList) {
+            view.setTerritoryButtonTroops(originTerritoryName, attackTerritory.getTroops());
+            view.setTerritoryButtonTroops(targetTerritoryName, defenceTerritory.getTroops());
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            if(gainTerritory) {
+                JOptionPane.showMessageDialog(null,getBattleStatusString()+"/nYou conquered "+defenceTerritory.getName()+"!");
+                view.updateWinAttack(currentPlayer);
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null,getBattleStatusString()+"/nYou didn't conquered "+defenceTerritory.getName()+".");
+        resetButtonsAndBoxProcedure();
+        checkContinent(currentPlayer);
+    }
+
+    public void fortifyProcess(){
+        if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
+            JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Territory startCountry = getTerritoryByString(originTerritoryName);
+        Territory destinationCountry = getTerritoryByString(targetTerritoryName);
+        int troops = 0;
+        for(RiskViewInterface view: viewList) {
+            troops = view.getSelectedTroops();
+        }
+        fortify(startCountry,destinationCountry,troops);
+        currentPlayer = getNextPlayer(currentPlayer.getID());
+        for(RiskViewInterface view: viewList) {
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            view.setTerritoryButtonTroops(originTerritoryName, startCountry.getTroops());
+            view.setTerritoryButtonTroops(targetTerritoryName, destinationCountry.getTroops());
+            view.updateFortifyFinish(currentPlayer);
+        }
+    }
+
+    public void deployTroopsProcess(){
+        for(RiskViewInterface view: viewList) {
+            deployTroops(attackTerritory, defenceTerritory, view.getSelectedTroops());
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            view.setTerritoryButtonTroops(originTerritoryName, getTerritoryByString(originTerritoryName).getTroops());
+            view.setTerritoryButtonTroops(targetTerritoryName, getTerritoryByString(targetTerritoryName).getTroops());
+            resetButtonsAndBoxProcedure();
+            view.updateDeployFinish(currentPlayer);
+        }
+        currentStage = Stage.ATTACK;
+    }
+
+    public void territoryButtonClickProcess(String territoryName,JButton button){
+        if(currentStage==Stage.DRAFT){
+            if(originTerritoryButtonPressed){
+                originTerritoryName = territoryName;
+                for(RiskViewInterface view: viewList) {
+                    view.onlyEnableOriginTerritory(territoryName);
+                }
+                button.setBackground(Color.RED);
+            }else{
+                originTerritoryName = "";
+                for(RiskViewInterface view: viewList) {
+                    view.enableOriginalTerritories(currentPlayer.getTerritories());
+                    paintTerritoryButtons(view);
+                }
+            }
+            originTerritoryButtonPressed = !originTerritoryButtonPressed;
+        }
+        if(currentStage==Stage.ATTACK){
+            if (originTerritoryButtonPressed) {
+                originTerritoryName = territoryName;
+                button.setBackground(Color.RED);
+                for(RiskViewInterface view: viewList) {
+                    view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(),getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
+                }
+                originTerritoryButtonPressed =! originTerritoryButtonPressed;
+            }else if(territoryName.equals(originTerritoryName)){
+                originTerritoryName = "";
+                if(!targetTerritoryName.equals("")){
+                    targetTerritoryButtonPressed = true;
+                }
+                for(RiskViewInterface view: viewList) {
+                    view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
+                    paintTerritoryButtons(view);
+                }
+                originTerritoryButtonPressed =! originTerritoryButtonPressed;
+            }else if(targetTerritoryButtonPressed){
+                targetTerritoryName = territoryName;
+                button.setBackground(Color.ORANGE);
+                for(RiskViewInterface view: viewList) {
+                    view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+                }
+                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+            }else if(!targetTerritoryButtonPressed){
+                targetTerritoryName = "";
+                for(RiskViewInterface view: viewList) {
+                    paintTerritoryButtons(view);
+                    view.updateCancelDefenceTerritoryButton(originTerritoryName,getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)));
+                }
+                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+            }
+        }
+        if(currentStage==Stage.FORTIFY){
+            if (originTerritoryButtonPressed) {
+                originTerritoryName = territoryName;
+                button.setBackground(Color.RED);
+                for(RiskViewInterface view:viewList) {
+                    view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1,getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
+                }
+                originTerritoryButtonPressed =! originTerritoryButtonPressed;
+            }else if(territoryName.equals(originTerritoryName)){
+                originTerritoryName = "";
+                if(!targetTerritoryName.equals("")){
+                    targetTerritoryButtonPressed = true;
+                }
+                for(RiskViewInterface view:viewList) {
+                    paintTerritoryButtons(view);
+                    view.resetButtonsAndBox(getFortifyTerritories(currentPlayer));
+                }
+                originTerritoryButtonPressed =! originTerritoryButtonPressed;
+            }else if(targetTerritoryButtonPressed){
+                targetTerritoryName = territoryName;
+                button.setBackground(Color.ORANGE);
+                for(RiskViewInterface view: viewList) {
+                    view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+                }
+                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+            }else if(!targetTerritoryButtonPressed){
+                button.setBackground(colorIDHashMap.get(getTerritoryByString(targetTerritoryName).getHolder().getID()));
+                targetTerritoryName = "";
+                for(RiskViewInterface view: viewList) {
+                    view.updateCancelFortifyTerritoryButton(originTerritoryName,getFortifiedTerritory(getTerritoryByString(originTerritoryName),currentPlayer));
+                }
+                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+            }
+        }
+    }
+
+    public void paintTerritoryButtons(RiskViewInterface view){
+        for(int id=0; id<numberPlayers;id++){
+            view.paintTerritoryButtons(getPlayerById(id),colorIDHashMap.get(id));
+        }
     }
 }
