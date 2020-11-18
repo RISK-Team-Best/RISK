@@ -631,6 +631,7 @@ public class   RiskModel {
 
     public void skipProcess(){
         if(currentStage==Stage.ATTACK){
+            resetButtonsAndBoxProcedure();
             for(RiskViewInterface view: viewList){
                 view.updateSkipAttack(currentPlayer);
             }
@@ -804,9 +805,9 @@ public class   RiskModel {
                 }
                 targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
             }else if(!targetTerritoryButtonPressed){
+                button.setBackground(colorIDHashMap.get(getTerritoryByString(targetTerritoryName).getHolder().getID()));
                 targetTerritoryName = "";
                 for(RiskViewInterface view: viewList) {
-                    paintTerritoryButtons(view);
                     view.updateCancelDefenceTerritoryButton(originTerritoryName,getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)));
                 }
                 targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
