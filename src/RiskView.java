@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalButtonUI;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -342,6 +343,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
             button.setMargin(new Insets(0,0,0,0));
             button.setFont(new Font("Arial",Font.BOLD,12));
             button.setOpaque(true);
+            //Windows default border for JButton. Set it to make color in enabled button visible
+            button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         }
     }
 
@@ -676,6 +679,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
         fortify.setEnabled(true);
         confirmButton.setEnabled(false);
         skipButton.setEnabled(false);
+        disableAllTerritoryButton();
         setStatusLabel(currentPlayer.getName() + "'s turn, Click \"Fortify\" button to start Fortify stage.");
     }
 
