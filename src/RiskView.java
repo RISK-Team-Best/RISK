@@ -341,6 +341,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
         for(JButton button:territoryButtons){
             button.setMargin(new Insets(0,0,0,0));
             button.setFont(new Font("Arial",Font.BOLD,12));
+            button.setOpaque(true);
         }
     }
 
