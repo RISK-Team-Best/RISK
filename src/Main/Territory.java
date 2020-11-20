@@ -1,4 +1,4 @@
-package Copy;
+package Main;
 
 /**
  * The class Territory store the information of territory's name,troops number and owner
@@ -92,6 +92,9 @@ public class Territory {
      */
     public String shortDescription(){return getName()+"("+getTroops()+" troops)";}
 
+     /**
+      * @return Territory's name
+      */
     @Override
      public String toString(){
         return this.getName();

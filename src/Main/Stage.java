@@ -1,3 +1,5 @@
+package Main;
+
 /**
  * Enum Stage is for record the stage of the game
  */

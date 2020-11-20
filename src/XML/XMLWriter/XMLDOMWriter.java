@@ -1,8 +1,6 @@
 package XML.XMLWriter;
 
-import Copy.Board;
-import Copy.Continent;
-import Copy.Territory;
+import Main.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

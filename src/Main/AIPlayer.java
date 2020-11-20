@@ -1,4 +1,6 @@
-public class AIPlayer extends Player{
+package Main;
+
+public class AIPlayer extends Player {
     private String decision;
     private Board board;
     /**
@@ -6,7 +8,7 @@ public class AIPlayer extends Player{
      *
      * @param name the player's name
      */
-    public AIPlayer(String name,Board board) {
+    public AIPlayer(String name, Board board) {
         super(name);
         this.board = board;
     }

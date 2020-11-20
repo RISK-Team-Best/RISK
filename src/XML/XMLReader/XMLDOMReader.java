@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import Copy.*;
+import Main.*;
 
 public class XMLDOMReader {
     public XMLDOMReader()
