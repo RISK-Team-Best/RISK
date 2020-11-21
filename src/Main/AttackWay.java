@@ -1,3 +1,5 @@
+package Main;
+
 /**
  * AttackWay include one,two,three, and blitz
  *

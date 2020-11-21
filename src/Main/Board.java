@@ -1,10 +1,12 @@
-package Copy;
+package Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * The type Board which read the files and create map informations.
@@ -14,8 +16,8 @@ import java.util.HashMap;
  */
 public class Board {
 
-    private HashMap<String, Territory> countryHashMap;
-    private HashMap<String, Continent> continentHashMap;
+    private HashMap<String,Territory> countryHashMap;
+    private HashMap<String,Continent> continentHashMap;
     private HashMap<String,ArrayList<Territory>> neighbors;
 
     /**
@@ -114,15 +116,6 @@ public class Board {
      */
     public ArrayList<Territory> getAllNeighbors(String countryName){
         return neighbors.get(countryName);
-    }
-
-    public static void main(String[] args) {
-        try{
-            Board b = new Board();
-            System.out.println(b.getAllCountries());
-        }catch (Exception e){
-            System.out.println(e);
-        }
     }
 
 

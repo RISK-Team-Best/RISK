@@ -1,6 +1,7 @@
 
 import org.junit.Before;
 import org.junit.Test;
+import Main.*;
 
 import static org.junit.Assert.assertEquals;
 
