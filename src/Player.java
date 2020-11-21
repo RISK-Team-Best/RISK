@@ -14,16 +14,18 @@ public class Player {
     private HashMap<String,Territory> territories;
     private HashMap<String,Continent> continents;
     private int id;
+    private boolean AI;
 
     /**
      * Instantiates a new Player.
      *
      * @param name the player's name
      */
-    public Player(String name){
+    public Player(String name,boolean AI){
         this.name = name;
         territories = new HashMap<>();
         continents = new HashMap<>();
+        this.AI = AI;
     }
 
     /**

@@ -21,7 +21,7 @@ public class RiskModelTest {
     public void setUp() throws Exception {
         riskModel = new RiskModel();
         riskModel.setPlayerNum(2);
-        riskModel.addPlayersName(new String[]{"Player_1", "Player_2"});
+        riskModel.addPlayersName(new String[]{"Player_1", "Player_2"},new Boolean[]{false,false});
         riskModel.initialGame();
 
 

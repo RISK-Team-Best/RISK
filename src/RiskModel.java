@@ -104,10 +104,10 @@ public class   RiskModel {
     /**
      * Add player names into the game
      */
-    public void addPlayersName(String[] playerNameList) {
+    public void addPlayersName(String[] playerNameList,Boolean[] AITypeList) {
         players.clear();
         for (int i = 0; i < numberPlayers; i++) {
-            players.add(new Player(playerNameList[i]));
+            players.add(new Player(playerNameList[i],AITypeList[i]));
         }
     }
 
@@ -575,10 +575,13 @@ public class   RiskModel {
 
 
         String[] playerNameList = new String[0];
+        Boolean[] AITypeList = new Boolean[0];
         for(RiskViewInterface view: viewList){
-            playerNameList = view.popGetName();
+            LinkedHashMap<String,Boolean> namesAndType = view.popGetName();
+            playerNameList = namesAndType.keySet().toArray(new String[0]);
+            AITypeList = namesAndType.values().toArray(new Boolean[0]);
         }
-        addPlayersName(playerNameList);
+        addPlayersName(playerNameList,AITypeList);
         initialGame();
         for(RiskViewInterface view: viewList){
             for(Territory territory:getAllCountries()){

@@ -1,11 +1,12 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public interface RiskViewInterface {
 
     //New game process
     int getNumberPlayerDialog();
-    String[] popGetName();
+    LinkedHashMap<String,Boolean> popGetName();
     void setTerritoryButtonTroops(String territoryName, int troops);
     void updateNewGameProcess(String mapInfoThroughContinent, String currentPlayerName);
 
