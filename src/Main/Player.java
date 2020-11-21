@@ -235,4 +235,8 @@ public class Player {
         return this.id;
     }
 
+    public boolean isAI(){
+        return this.AI;
+     }
+
 }

@@ -597,6 +597,10 @@ public class   RiskModel {
     }
 
     public void draftPrepare(){
+        if(currentPlayer.isAI()){
+            AIProcess();
+            return;
+        }
         currentStage =Stage.DRAFT;
         checkContinent(currentPlayer);
         currentPlayer.gainTroopsFromTerritory();
@@ -858,5 +862,23 @@ public class   RiskModel {
         for(int id=0; id<numberPlayers;id++){
             view.paintTerritoryButtons(getPlayerById(id),colorIDHashMap.get(id));
         }
+    }
+
+    public void AIProcess(){
+        AIDraftProcess();
+        AIAttackProcess();
+        AIFortifyProcess();
+    }
+
+    public void AIDraftProcess(){
+
+    }
+
+    public void AIAttackProcess(){
+
+    }
+
+    public void AIFortifyProcess(){
+
     }
 }
