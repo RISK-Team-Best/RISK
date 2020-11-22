@@ -67,11 +67,13 @@ public interface RiskViewInterface {
 
     void updateCancelFortifyTerritoryButton(String originTerritoryName, ArrayList<Territory> fortifiedTerritory);
 
-    void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory, int draftTroops);
+    void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory);
 
     void setStatusLabel(String statusLabel);
 
     void updateAIAttack(Player currentPlayer, Territory tempAttackTerritory, Territory tempDefenceTerritory);
 
     void disableAllCommandButtons();
+
+    void updateAIFortify(Player currentPlayer, String fortifyTerritoryName, String fortifiedTerritoryName);
 }

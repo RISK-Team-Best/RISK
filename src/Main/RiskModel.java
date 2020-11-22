@@ -594,12 +594,7 @@ public class   RiskModel {
             view.updateNewGameProcess(getMapInfoThroughContinent(),getCurrentPlayer().getName());
             paintTerritoryButtons(view);
         }
-
-
-        if(currentPlayer.isAI()){
-            AIProcess();
-            return;
-        }
+        jumpToAIProcess();
     }
 
     public void draftPrepare(){
@@ -659,10 +654,7 @@ public class   RiskModel {
             for(RiskViewInterface view: viewList){
                 view.updateSkipFortify(currentPlayer);
             }
-            if(currentPlayer.isAI()){
-                AIProcess();
-                return;
-            }
+            jumpToAIProcess();
         }
     }
 
@@ -678,12 +670,7 @@ public class   RiskModel {
         if(currentStage==Stage.FORTIFY){
             fortifyProcess();
             resetButtonsAndBoxProcedure();
-
-
-            if(currentPlayer.isAI()){
-                AIProcess();
-                return;
-            }
+            jumpToAIProcess();
         }
 
         if(currentStage==Stage.DEPLOY){
@@ -878,6 +865,7 @@ public class   RiskModel {
 
     public void paintTerritoryButtons(RiskViewInterface view){
         for(int id=0; id<numberPlayers;id++){
+            if(!playerIDHashMap.containsKey(id))continue;
             view.paintTerritoryButtons(getPlayerById(id),colorIDHashMap.get(id));
         }
     }
@@ -886,18 +874,26 @@ public class   RiskModel {
         AIDraftProcess();
         AIAttackProcess();
         AIFortifyProcess();
+        jumpToAIProcess();
     }
 
     public void AIDraftProcess(){
         checkContinent(currentPlayer);
         currentPlayer.gainTroopsFromTerritory();
-        ArrayList<Territory> maxTroopsAttackTerritoryList = getMaxTroopsAttackTerritoryList();
+        ArrayList<Territory> maxTroopsAttackTerritoryList;
+        if(getAttackTerritoriesList(currentPlayer).size()==0){
+            maxTroopsAttackTerritoryList=currentPlayer.getTerritories();//in case player will have one troops in each territory
+        }
+        else {
+            maxTroopsAttackTerritoryList = getMaxTroopsAttackTerritoryList();
+        }
         Territory draftTerritory = maxTroopsAttackTerritoryList.get(new Random().nextInt(maxTroopsAttackTerritoryList.size()));
         int draftTroops = currentPlayer.getTroops();
-        draft(currentPlayer,draftTerritory.getName(),draftTroops);
         for(RiskViewInterface view:viewList){
             view.disableAllCommandButtons();
-            view.updateAIDraft(currentPlayer,getContinentBonusString(),draftTerritory,draftTroops);
+            view.updateAIDraft(currentPlayer,getContinentBonusString(),draftTerritory);
+            JOptionPane.showMessageDialog(null,currentPlayer.getName() +" sent "+ draftTroops+ " troops to "+draftTerritory.getName());
+            draft(currentPlayer,draftTerritory.getName(),draftTroops);
             view.setContinentsLabel(getMapInfoThroughContinent());
             view.setTerritoryButtonTroops(draftTerritory.getName(),draftTerritory.getTroops());
             paintTerritoryButtons(view);
@@ -905,6 +901,10 @@ public class   RiskModel {
     }
 
     public void AIAttackProcess(){
+        if(getAttackTerritoriesList(currentPlayer).size()==0){
+            JOptionPane.showMessageDialog(null,currentPlayer.getName()+" has no available territory to attack, skip Attack stage.");
+            return;
+        }
         ArrayList<Territory> maxTroopsAttackTerritoryList = getMaxTroopsAttackTerritoryList();
         Territory tempAttackTerritory = maxTroopsAttackTerritoryList.get(new Random().nextInt(maxTroopsAttackTerritoryList.size()));
         ArrayList<Territory> minTroopsDefenceTerritoryList = getMinTroopsDefenceTerritory(tempAttackTerritory);
@@ -927,19 +927,55 @@ public class   RiskModel {
     }
 
     public void AIFortifyProcess(){
+        ArrayList<Territory> tempFortifyTerritories = getFortifyTerritories(currentPlayer);
+        if(tempFortifyTerritories.size()==0){
+            currentPlayer = getNextPlayer(currentPlayer.getID());
+            for(RiskViewInterface view: viewList) {
+                view.updateFortifyFinish(currentPlayer);
+            }
+            return;
+        }
+        Territory tempFortifyTerritory = tempFortifyTerritories.get(new Random().nextInt(tempFortifyTerritories.size()));
 
+        ArrayList<Territory> tempFortifiedTerritories = getFortifiedTerritory(tempFortifyTerritory,currentPlayer);
+        Territory tempFortifiedTerritory = tempFortifiedTerritories.get(new Random().nextInt(tempFortifiedTerritories.size()));
+
+        int troops = new Random().nextInt(tempFortifyTerritory.getTroops()-1)+1;
+        fortify(tempFortifyTerritory,tempFortifiedTerritory,troops);
+
+        for(RiskViewInterface view:viewList){
+            view.updateAIFortify(currentPlayer,tempFortifyTerritory.getName(),tempFortifiedTerritory.getName());
+            JOptionPane.showMessageDialog(null,currentPlayer.getName() +" moved "+ troops+ " troops from "+tempFortifyTerritory.getName()+" to "+tempFortifiedTerritory.getName()+".");
+        }
+        currentPlayer = getNextPlayer(currentPlayer.getID());
+        for(RiskViewInterface view: viewList) {
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            view.setTerritoryButtonTroops(tempFortifyTerritory.getName(),tempFortifyTerritory.getTroops());
+            view.setTerritoryButtonTroops(tempFortifiedTerritory.getName(),tempFortifiedTerritory.getTroops());
+            view.updateFortifyFinish(currentPlayer);
+            paintTerritoryButtons(view);
+        }
+        return;
     }
 
     public void AIDeployProcess(Territory tempAttackTerritory,Territory tempDefenceTerritory){
         for(RiskViewInterface view: viewList) {
             view.setStatusLabel(currentPlayer.getName()+"'s turn, Deploy stage.");
-            int troops = tempAttackTerritory.getTroops()-1;
+            int troops = new Random().nextInt(tempAttackTerritory.getTroops()-1)+1;
             deployTroops(tempAttackTerritory, tempDefenceTerritory, troops);
             view.setContinentsLabel(getMapInfoThroughContinent());
             JOptionPane.showMessageDialog(null,currentPlayer.getName()+" deployed "+troops+" troops from "+tempAttackTerritory.getName()+" to "+tempDefenceTerritory.getName());
             view.setTerritoryButtonTroops(tempAttackTerritory.getName(), tempAttackTerritory.getTroops());
             view.setTerritoryButtonTroops(tempDefenceTerritory.getName(), tempDefenceTerritory.getTroops());
             paintTerritoryButtons(view);
+        }
+        checkWinner();
+    }
+
+    public void jumpToAIProcess(){
+        if(currentPlayer.isAI()){
+            AIProcess();
+            return;
         }
     }
 

@@ -432,6 +432,13 @@ public class RiskView extends JFrame implements RiskViewInterface{
         }
     }
 
+    @Override
+    public void updateAIFortify(Player currentPlayer,String fortifyTerritoryName, String fortifiedTerritoryName) {
+        getTerritoryButtonByString(fortifyTerritoryName).setBackground(Color.RED);
+        getTerritoryButtonByString(fortifiedTerritoryName).setBackground(Color.ORANGE);
+        setStatusLabel(currentPlayer.getName()+"'s turn, Fortify Stage. Move troops from "+fortifyTerritoryName+" to "+fortifiedTerritoryName+".");
+    }
+
 
     /**
      * Set the JComboBox with troops available in different stage.
@@ -588,10 +595,9 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     @Override
-    public void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory,int draftTroops) {
+    public void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory) {
         setStatusLabel(currentPlayer.getName() + "'s turn, Draft stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonusString);
         getTerritoryButtonByString(draftTerritory.getName()).setBackground(Color.RED);
-        JOptionPane.showMessageDialog(null,currentPlayer.getName() +" sends "+ draftTroops+ " troops to  "+draftTerritory.getName());
     }
 
     /**
