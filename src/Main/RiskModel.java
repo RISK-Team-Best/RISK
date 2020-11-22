@@ -871,10 +871,11 @@ public class   RiskModel {
     }
 
     public void AIProcess(){
-        AIDraftProcess();
-        AIAttackProcess();
-        AIFortifyProcess();
-        jumpToAIProcess();
+        do {
+            AIDraftProcess();
+            AIAttackProcess();
+            AIFortifyProcess();
+        }while(currentPlayer.isAI());
     }
 
     public void AIDraftProcess(){
