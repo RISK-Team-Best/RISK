@@ -746,12 +746,12 @@ public class   RiskModel {
             view.setTerritoryButtonTroops(targetTerritoryName, defenceTerritory.getTroops());
             view.setContinentsLabel(getMapInfoThroughContinent());
             if(gainTerritory) {
-                JOptionPane.showMessageDialog(null,getBattleStatusString()+"/nYou conquered "+defenceTerritory.getName()+"!");
+                JOptionPane.showMessageDialog(null,getBattleStatusString()+"You conquered "+defenceTerritory.getName()+"!");
                 view.updateWinAttack(currentPlayer);
                 return;
             }
         }
-        JOptionPane.showMessageDialog(null,getBattleStatusString()+"/nYou didn't conquered "+defenceTerritory.getName()+".");
+        JOptionPane.showMessageDialog(null,getBattleStatusString()+"You didn't conquered "+defenceTerritory.getName()+".");
         resetButtonsAndBoxProcedure();
         checkContinent(currentPlayer);
     }
@@ -896,6 +896,7 @@ public class   RiskModel {
         int draftTroops = currentPlayer.getTroops();
         draft(currentPlayer,draftTerritory.getName(),draftTroops);
         for(RiskViewInterface view:viewList){
+            view.disableAllCommandButtons();
             view.updateAIDraft(currentPlayer,getContinentBonusString(),draftTerritory,draftTroops);
             view.setContinentsLabel(getMapInfoThroughContinent());
             view.setTerritoryButtonTroops(draftTerritory.getName(),draftTerritory.getTroops());
@@ -904,11 +905,42 @@ public class   RiskModel {
     }
 
     public void AIAttackProcess(){
-
+        ArrayList<Territory> maxTroopsAttackTerritoryList = getMaxTroopsAttackTerritoryList();
+        Territory tempAttackTerritory = maxTroopsAttackTerritoryList.get(new Random().nextInt(maxTroopsAttackTerritoryList.size()));
+        ArrayList<Territory> minTroopsDefenceTerritoryList = getMinTroopsDefenceTerritory(tempAttackTerritory);
+        Territory tempDefenceTerritory = minTroopsDefenceTerritoryList.get(new Random().nextInt(minTroopsDefenceTerritoryList.size()));
+        boolean gainTerritory = battle(tempAttackTerritory,tempDefenceTerritory,AttackWay.BLITZ);
+        for(RiskViewInterface view:viewList){
+            view.updateAIAttack(currentPlayer,tempAttackTerritory,tempDefenceTerritory);
+            view.setTerritoryButtonTroops(tempAttackTerritory.getName(), tempAttackTerritory.getTroops());
+            view.setTerritoryButtonTroops(tempDefenceTerritory.getName(), tempDefenceTerritory.getTroops());
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            if(gainTerritory){
+                JOptionPane.showMessageDialog(null,getBattleStatusString()+"You conquered "+tempDefenceTerritory.getName()+"!");
+                AIDeployProcess(tempAttackTerritory,tempDefenceTerritory);
+                return;
+            }
+            JOptionPane.showMessageDialog(null,getBattleStatusString()+"You didn't conquered "+tempDefenceTerritory.getName()+".");
+            paintTerritoryButtons(view);
+            checkContinent(currentPlayer);
+        }
     }
 
     public void AIFortifyProcess(){
 
+    }
+
+    public void AIDeployProcess(Territory tempAttackTerritory,Territory tempDefenceTerritory){
+        for(RiskViewInterface view: viewList) {
+            view.setStatusLabel(currentPlayer.getName()+"'s turn, Deploy stage.");
+            int troops = tempAttackTerritory.getTroops()-1;
+            deployTroops(tempAttackTerritory, tempDefenceTerritory, troops);
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            JOptionPane.showMessageDialog(null,currentPlayer.getName()+" deployed "+troops+" troops from "+tempAttackTerritory.getName()+" to "+tempDefenceTerritory.getName());
+            view.setTerritoryButtonTroops(tempAttackTerritory.getName(), tempAttackTerritory.getTroops());
+            view.setTerritoryButtonTroops(tempDefenceTerritory.getName(), tempDefenceTerritory.getTroops());
+            paintTerritoryButtons(view);
+        }
     }
 
     public ArrayList<Territory>getMaxTroopsAttackTerritoryList(){
@@ -931,5 +963,27 @@ public class   RiskModel {
             }
         }
         return maxTroops;
+    }
+
+    public ArrayList<Territory> getMinTroopsDefenceTerritory(Territory attackTerritory){
+        ArrayList<Territory> minTroopsTerritories = new ArrayList<>();
+        ArrayList<Territory> defenceTerritories = getDefenceTerritories(currentPlayer,attackTerritory);
+        int minTroops = getMinTroopsInTerritoryList(defenceTerritories);
+        for(Territory territory:defenceTerritories){
+            if(territory.getTroops()==minTroops){
+                minTroopsTerritories.add(territory);
+            }
+        }
+        return minTroopsTerritories;
+    }
+
+    public int getMinTroopsInTerritoryList(ArrayList<Territory> territories){
+        int minTroops = territories.get(0).getTroops();
+        for(Territory territory:territories){
+            if(territory.getTroops()<minTroops){
+                minTroops = territory.getTroops();
+            }
+        }
+        return minTroops;
     }
 }

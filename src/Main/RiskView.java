@@ -81,7 +81,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
     private JButton WesternAustralia = new JButton();
     private JButton Peru = new JButton();
 
-    private ArrayList<JButton> CommandButtonList = new ArrayList<>();
+    private ArrayList<JButton> commandButtonList = new ArrayList<>();
     private ArrayList<JButton> territoryButtons = new ArrayList<>();
 
     private int numberPlayer = 0;
@@ -280,12 +280,12 @@ public class RiskView extends JFrame implements RiskViewInterface{
         menuBar.setSize(50, 28);
         this.add(mainPanel);
 
-        this.CommandButtonList.add(draft);
-        this.CommandButtonList.add(attack);
-        this.CommandButtonList.add(fortify);
-        this.CommandButtonList.add(deploy);
-        this.CommandButtonList.add(skipButton);
-        this.CommandButtonList.add(confirmButton);
+        this.commandButtonList.add(draft);
+        this.commandButtonList.add(attack);
+        this.commandButtonList.add(fortify);
+        this.commandButtonList.add(deploy);
+        this.commandButtonList.add(skipButton);
+        this.commandButtonList.add(confirmButton);
 
 
         this.setLocation(50,50);
@@ -402,7 +402,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
      */
     public JButton getJButton(String buttonText) {
 
-        for (JButton button : CommandButtonList){
+        for (JButton button : commandButtonList){
             if (button.getText() == buttonText)
                 return button;
         }
@@ -413,8 +413,23 @@ public class RiskView extends JFrame implements RiskViewInterface{
      * Set status Label
      * @param str set the text in status label
      */
+    @Override
     public void setStatusLabel(String str){
         statusLabel.setText(str);
+    }
+
+    @Override
+    public void updateAIAttack(Player currentPlayer, Territory tempAttackTerritory, Territory tempDefenceTerritory) {
+        setStatusLabel(currentPlayer.getName()+"'s turn, Attack Stage. "+tempAttackTerritory.getName()+" attacks "+tempDefenceTerritory.getName()+".");
+        getTerritoryButtonByString(tempAttackTerritory.getName()).setBackground(Color.RED);
+        getTerritoryButtonByString(tempDefenceTerritory.getName()).setBackground(Color.ORANGE);
+    }
+
+    @Override
+    public void disableAllCommandButtons() {
+        for(JButton button:commandButtonList){
+            button.setEnabled(false);
+        }
     }
 
 
