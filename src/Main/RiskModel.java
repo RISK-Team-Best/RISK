@@ -566,6 +566,9 @@ public class   RiskModel {
         return battleStatusString;
     }
 
+    /**
+     * Model handle a new game process and update the view
+     */
     public void newGameProcess(){
         currentStage = Stage.DRAFT;
 
@@ -597,6 +600,9 @@ public class   RiskModel {
         jumpToAIProcess();
     }
 
+    /**
+     * Model handle the draft preparation and update the view
+     */
     public void draftPrepare(){
         currentStage =Stage.DRAFT;
         checkContinent(currentPlayer);
@@ -619,6 +625,9 @@ public class   RiskModel {
         return continentBonus;
     }
 
+    /**
+     * Model handle the attack preparation and update the view
+     */
     public void attackPrepare(){
         currentStage = Stage.ATTACK;
         originTerritoryButtonPressed = true;
@@ -627,6 +636,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Model handle the fortify preparation and update the view
+     */
     public void fortifyPrepare(){
         currentStage = Stage.FORTIFY;
         for(RiskViewInterface view: viewList) {
@@ -634,6 +646,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Model handle the deploy preparation and update the view
+     */
     public void deployPrepare(){
         currentStage = Stage.DEPLOY;
         for(RiskViewInterface view: viewList){
@@ -641,6 +656,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Model do the skip process and update the view
+     */
     public void skipProcess(){
         if(currentStage==Stage.ATTACK){
             resetButtonsAndBoxProcedure();
@@ -658,6 +676,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Model handle confirm process and update the view
+     */
     public void confirmProcess(){
         if(currentStage==Stage.DRAFT){
             draftProcess();
@@ -695,6 +716,9 @@ public class   RiskModel {
 
     }
 
+    /**
+     * Model do the draft process and update the view
+     */
     private void draftProcess(){
         if(originTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null, "Please select One territory!", "No Territory Selected", JOptionPane.ERROR_MESSAGE);
@@ -716,6 +740,9 @@ public class   RiskModel {
         originTerritoryButtonPressed = true;
     }
 
+    /**
+     * Model do the attack process and update the view
+     */
     private void attackProcess() {
         if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
@@ -743,6 +770,9 @@ public class   RiskModel {
         checkContinent(currentPlayer);
     }
 
+    /**
+     * Model do the fortify process and update the view
+     */
     public void fortifyProcess(){
         if(originTerritoryName.equals("") || targetTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
@@ -764,6 +794,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Model do the deploy process and update the view
+     */
     public void deployTroopsProcess(){
         for(RiskViewInterface view: viewList) {
             deployTroops(attackTerritory, defenceTerritory, view.getSelectedTroops());
@@ -776,6 +809,10 @@ public class   RiskModel {
         currentStage = Stage.ATTACK;
     }
 
+    /** This method update the view when user click the button on the map
+     * @param territoryName
+     * @param button
+     */
     public void territoryButtonClickProcess(String territoryName,JButton button){
         if(currentStage==Stage.DRAFT){
             if(originTerritoryButtonPressed){
@@ -863,6 +900,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * @param view Update the map view using after each action
+     */
     public void paintTerritoryButtons(RiskViewInterface view){
         for(int id=0; id<numberPlayers;id++){
             if(!playerIDHashMap.containsKey(id))continue;
@@ -870,6 +910,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * AI player process:Draft, Attack, Fortify
+     */
     public void AIProcess(){
         do {
             AIDraftProcess();
@@ -878,6 +921,9 @@ public class   RiskModel {
         }while(currentPlayer.isAI());
     }
 
+    /**
+     * AI's Draft Process: Draft to the territory that has the max num of troops
+     */
     public void AIDraftProcess(){
         checkContinent(currentPlayer);
         currentPlayer.gainTroopsFromTerritory();
@@ -901,6 +947,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * AI's Attack Process：Choose the territory that has the max num of troops and attack the territory that has the min num of troops
+     */
     public void AIAttackProcess(){
         if(getAttackTerritoriesList(currentPlayer).size()==0){
             JOptionPane.showMessageDialog(null,currentPlayer.getName()+" has no available territory to attack, skip Attack stage.");
@@ -917,16 +966,20 @@ public class   RiskModel {
             view.setTerritoryButtonTroops(tempDefenceTerritory.getName(), tempDefenceTerritory.getTroops());
             view.setContinentsLabel(getMapInfoThroughContinent());
             if(gainTerritory){
-                JOptionPane.showMessageDialog(null,getBattleStatusString()+"You conquered "+tempDefenceTerritory.getName()+"!");
+                JOptionPane.showMessageDialog(null,getBattleStatusString()+currentPlayer.getName()+" conquered "+tempDefenceTerritory.getName()+"!");
                 AIDeployProcess(tempAttackTerritory,tempDefenceTerritory);
                 return;
             }
-            JOptionPane.showMessageDialog(null,getBattleStatusString()+"You didn't conquered "+tempDefenceTerritory.getName()+".");
+            JOptionPane.showMessageDialog(null,getBattleStatusString()+currentPlayer.getName()+" didn't conquered "+tempDefenceTerritory.getName()+".");
             paintTerritoryButtons(view);
             checkContinent(currentPlayer);
         }
     }
 
+    /**
+     * AI's Fortify Process: If currently don't have enough troops that can send to another country, skip this process.
+     * Randomly choose two country to do this process
+     */
     public void AIFortifyProcess(){
         ArrayList<Territory> tempFortifyTerritories = getFortifyTerritories(currentPlayer);
         if(tempFortifyTerritories.size()==0){
@@ -959,6 +1012,10 @@ public class   RiskModel {
         return;
     }
 
+    /**
+     * @param tempAttackTerritory
+     * @param tempDefenceTerritory
+     */
     public void AIDeployProcess(Territory tempAttackTerritory,Territory tempDefenceTerritory){
         for(RiskViewInterface view: viewList) {
             view.setStatusLabel(currentPlayer.getName()+"'s turn, Deploy stage.");
@@ -973,6 +1030,9 @@ public class   RiskModel {
         checkWinner();
     }
 
+    /**
+     * Determine if the currentPlayer is AI, and do the corresponding actions
+     */
     public void jumpToAIProcess(){
         if(currentPlayer.isAI()){
             AIProcess();
@@ -980,6 +1040,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * @return the territory list that have the max num of troops
+     */
     public ArrayList<Territory>getMaxTroopsAttackTerritoryList(){
         ArrayList<Territory> maxTroopsTerritories = new ArrayList<>();
         ArrayList<Territory> attackTerritories = getAttackTerritoriesList(currentPlayer);
@@ -992,6 +1055,10 @@ public class   RiskModel {
         return maxTroopsTerritories;
     }
 
+    /**
+     * @param territories
+     * @return the max num of troops in one territory list
+     */
     public int getMaxTroopsInTerritoryList(ArrayList<Territory> territories){
         int maxTroops = territories.get(0).getTroops();
         for(Territory territory:territories){
@@ -1002,6 +1069,10 @@ public class   RiskModel {
         return maxTroops;
     }
 
+    /**
+     * @param attackTerritory
+     * @return the territory list that has the minimum num of troops
+     */
     public ArrayList<Territory> getMinTroopsDefenceTerritory(Territory attackTerritory){
         ArrayList<Territory> minTroopsTerritories = new ArrayList<>();
         ArrayList<Territory> defenceTerritories = getDefenceTerritories(currentPlayer,attackTerritory);
@@ -1014,6 +1085,10 @@ public class   RiskModel {
         return minTroopsTerritories;
     }
 
+    /**
+     * @param territories
+     * @return get the minimum num of troops in one territory list
+     */
     public int getMinTroopsInTerritoryList(ArrayList<Territory> territories){
         int minTroops = territories.get(0).getTroops();
         for(Territory territory:territories){
