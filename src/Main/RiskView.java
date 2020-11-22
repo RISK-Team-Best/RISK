@@ -572,6 +572,13 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     }
 
+    @Override
+    public void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory,int draftTroops) {
+        setStatusLabel(currentPlayer.getName() + "'s turn, Draft stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonusString);
+        getTerritoryButtonByString(draftTerritory.getName()).setBackground(Color.RED);
+        JOptionPane.showMessageDialog(null,currentPlayer.getName() +" sends "+ draftTroops+ " troops to  "+draftTerritory.getName());
+    }
+
     /**
      * Enable one territory button without disable others
      * @param territoryName
@@ -740,6 +747,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     /**
+    /**
      * Add new action listener for fortify button
      * @param fortifyButtonListener
      */
@@ -781,6 +789,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
             button.addActionListener(territoryButtonListener);
         }
     }
+
+
 
 
 }

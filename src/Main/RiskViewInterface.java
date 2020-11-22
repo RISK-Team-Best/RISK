@@ -66,4 +66,6 @@ public interface RiskViewInterface {
     void updateClickFortifyButton(int fortifyTroops, ArrayList<Territory> fortifiedTerritory, String originTerritoryName);
 
     void updateCancelFortifyTerritoryButton(String originTerritoryName, ArrayList<Territory> fortifiedTerritory);
+
+    void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory, int draftTroops);
 }

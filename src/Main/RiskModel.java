@@ -3,8 +3,8 @@ package Main;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * The main Game.
@@ -594,26 +594,34 @@ public class   RiskModel {
             view.updateNewGameProcess(getMapInfoThroughContinent(),getCurrentPlayer().getName());
             paintTerritoryButtons(view);
         }
-    }
 
-    public void draftPrepare(){
+
         if(currentPlayer.isAI()){
             AIProcess();
             return;
         }
+    }
+
+    public void draftPrepare(){
         currentStage =Stage.DRAFT;
         checkContinent(currentPlayer);
         currentPlayer.gainTroopsFromTerritory();
-        String continentBonus="";
+
+        String continentBonus= getContinentBonusString();
+        for(RiskViewInterface view: viewList){
+            view.updateDraftPrepare(currentPlayer,currentStage,continentBonus);
+        }
+    }
+
+    public String getContinentBonusString(){
+        String continentBonus = "";
         if(currentPlayer.haveContinent()) {
             continentBonus = " With ";
             for(Continent continent:currentPlayer.getContinents()){
                 continentBonus+="--"+continent.getName();
             }
         }
-        for(RiskViewInterface view: viewList){
-            view.updateDraftPrepare(currentPlayer,currentStage,continentBonus);
-        }
+        return continentBonus;
     }
 
     public void attackPrepare(){
@@ -651,6 +659,10 @@ public class   RiskModel {
             for(RiskViewInterface view: viewList){
                 view.updateSkipFortify(currentPlayer);
             }
+            if(currentPlayer.isAI()){
+                AIProcess();
+                return;
+            }
         }
     }
 
@@ -666,6 +678,12 @@ public class   RiskModel {
         if(currentStage==Stage.FORTIFY){
             fortifyProcess();
             resetButtonsAndBoxProcedure();
+
+
+            if(currentPlayer.isAI()){
+                AIProcess();
+                return;
+            }
         }
 
         if(currentStage==Stage.DEPLOY){
@@ -871,7 +889,18 @@ public class   RiskModel {
     }
 
     public void AIDraftProcess(){
-
+        checkContinent(currentPlayer);
+        currentPlayer.gainTroopsFromTerritory();
+        ArrayList<Territory> maxTroopsAttackTerritoryList = getMaxTroopsAttackTerritoryList();
+        Territory draftTerritory = maxTroopsAttackTerritoryList.get(new Random().nextInt(maxTroopsAttackTerritoryList.size()));
+        int draftTroops = currentPlayer.getTroops();
+        draft(currentPlayer,draftTerritory.getName(),draftTroops);
+        for(RiskViewInterface view:viewList){
+            view.updateAIDraft(currentPlayer,getContinentBonusString(),draftTerritory,draftTroops);
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            view.setTerritoryButtonTroops(draftTerritory.getName(),draftTerritory.getTroops());
+            paintTerritoryButtons(view);
+        }
     }
 
     public void AIAttackProcess(){
@@ -880,5 +909,27 @@ public class   RiskModel {
 
     public void AIFortifyProcess(){
 
+    }
+
+    public ArrayList<Territory>getMaxTroopsAttackTerritoryList(){
+        ArrayList<Territory> maxTroopsTerritories = new ArrayList<>();
+        ArrayList<Territory> attackTerritories = getAttackTerritoriesList(currentPlayer);
+        int maxTroops = getMaxTroopsInTerritoryList(attackTerritories);
+        for(Territory territory:attackTerritories){
+            if(territory.getTroops()==maxTroops){
+                maxTroopsTerritories.add(territory);
+            }
+        }
+        return maxTroopsTerritories;
+    }
+
+    public int getMaxTroopsInTerritoryList(ArrayList<Territory> territories){
+        int maxTroops = territories.get(0).getTroops();
+        for(Territory territory:territories){
+            if(territory.getTroops()>maxTroops){
+                maxTroops = territory.getTroops();
+            }
+        }
+        return maxTroops;
     }
 }
