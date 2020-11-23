@@ -396,7 +396,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Get the operating JButton
-     * @param buttonText
+     *
+     * @param buttonText the button text
      * @return the JButton that contain the buttonText
      */
     public JButton getJButton(String buttonText) {
@@ -441,6 +442,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Set the JComboBox with troops available in different stage.
+     *
      * @param troops set the numbers in troops box
      */
     public void setTroopsBox(int troops){
@@ -453,6 +455,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Set the JComboBox with ways to attack.
+     *
      * @param troops set the way to attack:one,two,three, and blitz
      */
     public void setAttackTroopsBox(int troops){
@@ -601,7 +604,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Enable one territory button without disable others
-     * @param territoryName
+     *
+     * @param territoryName the territory name
      */
     public void enableTerritoryButton(String territoryName){
         for(JButton button:territoryButtons){
@@ -614,8 +618,9 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Enable the target territories buttons
-     * @param territories
-     * @param originTerritory
+     *
+     * @param territories     the territories
+     * @param originTerritory the origin territory
      */
     public void enableTargetTerritories(ArrayList<Territory>territories, String originTerritory){
         onlyEnableOriginTerritory(originTerritory);
@@ -629,6 +634,12 @@ public class RiskView extends JFrame implements RiskViewInterface{
         }
     }
 
+    /**
+     * Get territory button by string j button.
+     *
+     * @param territoryName the territory name
+     * @return the j button
+     */
     public JButton getTerritoryButtonByString(String territoryName){
         for(JButton button:territoryButtons){
             if(button.getActionCommand().equals(territoryName))return button;
@@ -744,7 +755,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for newGame button
-     * @param newGameListener
+     *
+     * @param newGameListener the new game listener
      */
     public void addNewGameMenuListener(ActionListener newGameListener){
         newGameItem.addActionListener(newGameListener);
@@ -752,7 +764,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for draft button
-     * @param draftButtonListener
+     *
+     * @param draftButtonListener the draft button listener
      */
     public void addDraftButtonListener(ActionListener draftButtonListener){
         draft.addActionListener(draftButtonListener);
@@ -760,7 +773,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for attack button
-     * @param attackButtonListener
+     *
+     * @param attackButtonListener the attack button listener
      */
     public void addAttackButtonListener(ActionListener attackButtonListener){
         attack.addActionListener(attackButtonListener);
