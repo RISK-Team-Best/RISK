@@ -16,6 +16,12 @@ A text-based playable version of the game, the players could use console to play
 ### Milestone 2:     
 A GUI-based version, now adding the View and the Controller of the game. Display in a JFrame, and user input is via the mouse. 
 
+### Milestone 3:
+Add features: bonus army placement, fortify phase, and AI player
+
+
+
+
 
 #### Instruction:    
 Use cmd  to run this program: java -jar RiskGame.jar      
@@ -27,7 +33,8 @@ In the game:
 
 1.Click File->New to create a new game<br>
 2.Enter the number of player(2 to 6)<br>
-3.Enter players'name, please note that the players name can't be the same, or will pop window to enter again<br>     
+3.Enter players'name on the Textbox(There already have some default name), please note that the players name can't be the same, or will pop window to enter again.             
+Then choose the player is AI or not.<br>     
 Then the map will automatically generate territories and troops for you.<br>                                                              
 4.Click draft button（This step cannot skip):<br>           
 &emsp;(1)choose the territory button on the map that you want send troops to(click again to cancel and reselect)            
@@ -48,6 +55,11 @@ Then the map will automatically generate territories and troops for you.<br>
 8.Once there is a player lost all territory or there is a player win the game, the Frame will pop window to show the result<br>
 9.If you need start again, please click File->New to start a new game<br>
 
+Note for AI player: AI player will pop result window in each stage:Draft,Attack,Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops)        
+User click the "OK" button to allow AI player enter the next stage.<br>
+
+
+
 #### Deliverables:   
 readme file         
 source code                 
@@ -60,10 +72,10 @@ documentation
 Board.java,Continent.java:Guanqun Dong                                  
 RiskModel.java:Jiawei Ma                                 
 RiskView.java:Guanqun Dong,Jiawei Ma,Jiatong Han,Tiantian Lin                                              
-RiskController.java, ReadMe File:Jiawei Ma,Tiantian Lin                                    
-RiskGame.java,MapPanel.java,Sequence Diagram:Jiawei Ma                                                    
-Territory.java,AttackWay.java,Stage.java:Jiatong Han                                                                     
-Dices.java,Player.java,RiskModelTest.java,UML Class Diagram:Tiantian Lin                                                 
+RiskController.java, ReadMe File: Jiawei Ma,Tiantian Lin                                    
+RiskGame.java,MapPanel.java,Sequence Diagram,PlayerSettingDialog.java,RiskViewInterface.java:Jiawei Ma                                                                           
+Territory.java,AttackWay.java,Stage.java:Jiatong Han                                                                    
+Dices.java,Player.java,RiskModelTest.java,UML Class Diagram:Tiantian Lin                                                
 
 
 
@@ -90,16 +102,17 @@ LinkedHashSet -- Store one type of infos, prevent duplication and can be trace i
 ### Known Issue:     
 1. Only one extreme condition issue exists during attack stage: 
 If the player has no available territory to attack (All of the player's territories' troops are 1), should directly pass to fortify (not sure). Currently, we allow player to click skip to get rid of the attack stage and move into Fortify stage.
-2. Load Game and Save Game Button did not be developed because they are the features for future.
+2.Load Game and Save Game Button did not be developed because they are the features for future.
+3.Allow all players be the AI players and in this case, the game has no option to exit.                                                                              
 
 ### Changes:        
-1.We've updated the method to assign troops to players, using a hashmap instead to map the player amount to troup amounts.                              
-2.We've updated the method to read txt file from remote URL to local resource.                                
-3.We've added a new attribute: ID to each player for assign color and easy for model to get next player.                            
-4.We've added two enum class: Stage and AttackWay.                              
+1.We've refactor the code in Controller to avoid smelly                                                  
+2.We've added a View Interface to implement differrent update view methods                                     
+3.We've added default names for user to choose when add players                                                               
+4.We've fixed the error that MAC OS does't shows the button color                                                                
 
 ### Roadmap Ahead:                  
-Currently, our team already finished part of the requirement in M3：bonus army placement and troops movement phase.We are still working on "AI Player" and part of M4.Some of the java files relate to XML have already upload on Github,these code related to the M4 Save/Load feature. Please only have a look at the src file at this point.              
+Currently,we have save and load buttons on the menu. These two options are for M4, and no yet developed.There are code for XML Writer and Reader in branch AIPlayer, which are some preparation for M4 development.
 
 
 
