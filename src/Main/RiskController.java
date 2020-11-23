@@ -124,6 +124,7 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e){
             model.territoryButtonClickProcess(e.getActionCommand(),(JButton)e.getSource());
+
         }
     }
 }
