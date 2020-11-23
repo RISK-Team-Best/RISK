@@ -687,7 +687,7 @@ public class   RiskModel {
     }
 
     /**
-     * Update the view when user click the button on the map(reset)
+     * This method is updating the view when user click the button on the map(reset)
      */
     public void resetButtonsAndBoxProcedure(){
         if(!originTerritoryName.equals("")){
