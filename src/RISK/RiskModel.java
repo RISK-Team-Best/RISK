@@ -114,7 +114,7 @@ public class   RiskModel {
     }
 
     /**
-     * set initial troops based on player number
+     * This method is setting initial troops based on player number
      */
     public void setInitialTroopHashMap() {
         initialTroopHashMap.put(2, TWO_PLAYERS_TROOPS);
@@ -125,7 +125,7 @@ public class   RiskModel {
     }
 
     /**
-     * assign the troops randomly for each player
+     * This method is assigning the troops randomly for each player
      */
     public void setTroopsInitially() {
         int troops = initialTroopHashMap.get(numberPlayers);
@@ -135,7 +135,7 @@ public class   RiskModel {
     }
 
     /**
-     * Assign countries randomly.
+     * This method is assigning countries randomly.
      */
     public void assignCountriesRandomly(){
         ArrayList<Territory> tempAllCountries = tempBoard.getAllCountries();
