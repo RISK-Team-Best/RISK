@@ -541,9 +541,7 @@ public class   RiskModel {
         }
         return null;
     }
-    public void setCurrentPlayer(Player player){
-        currentPlayer = player;
-    }
+
     /**
      * Getter for battleStatusString, used in GUI.
      *
@@ -1026,12 +1024,12 @@ public class   RiskModel {
     /**
      * Determine if the currentPlayer is AI, and do the corresponding actions
      */
-    public boolean jumpToAIProcess(){
+    public void jumpToAIProcess(){
         if(currentPlayer.isAI()){
             AIProcess();
-            return true;
+            return;
         }
-        return false;
+
     }
 
     /**

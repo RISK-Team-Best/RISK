@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 public class RiskModelTest {
     private RiskModel riskModel;
     private Territory country1,country2;
-    private Player player1,player2,player3;
-    private String country1Name,country2Name;
+    private Player player1,player2;
+    private String country1Name;
 
 
     /**
@@ -22,19 +22,19 @@ public class RiskModelTest {
     public void setUp() throws Exception {
         riskModel = new RiskModel();
         riskModel.setPlayerNum(3);
-        riskModel.addPlayersName(new String[]{"Player_1", "Player_2","Player_3"},new Boolean[]{false,false,true});
+        riskModel.addPlayersName(new String[]{"Player_1", "Player_2"},new Boolean[]{false,false});
         riskModel.initialGame();
 
 
         player1 = riskModel.getCurrentPlayer();
         player2 = riskModel.getNextPlayer(player1.getID());
-        player3 = riskModel.getNextPlayer(player2.getID());
+
 
         country1 = player1.getTerritories().get(0);
         country2 = player2.getTerritories().get(0);
 
         country1Name = country1.getName();
-        country2Name = country2.getName();
+
 
 
 
@@ -151,19 +151,7 @@ public class RiskModelTest {
         assertEquals(origianlCountry2troops+moveCountry2troops,fortifiedcountry2.getTroops());
         //destination country troops increase
     }
-    @Test
-    public void testJumpToAIProcess(){
 
-       riskModel.setCurrentPlayer(player3);
-       assertEquals(true,riskModel.jumpToAIProcess());
-
-       riskModel.setCurrentPlayer(player2);
-       assertEquals(false,riskModel.jumpToAIProcess());
-
-        riskModel.setCurrentPlayer(player1);
-        assertEquals(false,riskModel.jumpToAIProcess());
-
-    }
 
 
 
