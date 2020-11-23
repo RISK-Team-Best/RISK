@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 /**
  * AttackWay include one,two,three, and blitz

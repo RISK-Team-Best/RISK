@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 import java.util.ArrayList;
 import java.util.Collections;

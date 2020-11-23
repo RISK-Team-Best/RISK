@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 
 import javax.swing.*;
@@ -6,6 +6,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+/**
+ * This class is for setting player
+ */
 public class PlayerSettingDialog{
     private JPanel settingPanel = new JPanel();
 
@@ -18,6 +21,9 @@ public class PlayerSettingDialog{
 
     private LinkedHashMap<JTextField,JComboBox> namesAndTypes = new LinkedHashMap<>();
 
+    /**
+     * @param playerNumbers
+     */
     public PlayerSettingDialog(int playerNumbers){
         this.row = playerNumbers;
 
@@ -43,6 +49,9 @@ public class PlayerSettingDialog{
         }while(!checkAvailability());
     }
 
+    /**
+     * @return the hashmap contain the name and AI player or not
+     */
     public LinkedHashMap<String, Boolean> getFinalNamesAndIsAI() {
         LinkedHashMap<String,Boolean> finalNamesAndIsAI = new LinkedHashMap<>();
 
@@ -56,6 +65,10 @@ public class PlayerSettingDialog{
         return finalNamesAndIsAI;
     }
 
+    /**
+     * @return true if there is no name repeat or empty name
+     *         false there has repeat name or empty name, ask for new input
+     */
     private boolean checkAvailability(){
         LinkedHashMap<String,String> finalNamesAndType = new LinkedHashMap<>();
         for(JTextField key: namesAndTypes.keySet()){

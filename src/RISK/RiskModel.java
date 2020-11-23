@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 import javax.swing.*;
 import java.awt.*;
@@ -468,13 +468,6 @@ public class   RiskModel {
         this.numberPlayers = playerNum;
     }
 
-    /**
-     * Getter of playerNum
-     * @return the number of players
-     */
-    public int getPlayerNum(){
-        return this.numberPlayers;
-    }
 
     /**
      * Getter for allCountries in arraylist
@@ -503,14 +496,6 @@ public class   RiskModel {
         return playerIDHashMap.get(nextPlayerID);
     }
 
-    /**
-     * setter for Current player
-     *
-     * @param player set the current Player
-     */
-    public void setCurrentPlayer(Player player){
-        this.currentPlayer = player;
-    }
 
     /**
      * The Continent and Territory info. Write it in html and print out on ContinentInfo Panel
@@ -612,6 +597,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * @return the list of the Continent name if the player own continents
+     */
     public String getContinentBonusString(){
         String continentBonus = "";
         if(currentPlayer.haveContinent()) {
@@ -698,6 +686,9 @@ public class   RiskModel {
         }
     }
 
+    /**
+     * Update the view when user click the button on the map(reset)
+     */
     public void resetButtonsAndBoxProcedure(){
         if(!originTerritoryName.equals("")){
             originTerritoryButtonPressed = true;
@@ -1036,6 +1027,7 @@ public class   RiskModel {
             AIProcess();
             return;
         }
+
     }
 
     /**

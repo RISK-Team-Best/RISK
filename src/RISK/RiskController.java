@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,6 +36,7 @@ public class RiskController {
 
 
     }
+
 
     /**
      * Inner class implement NewGame function

@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 import java.io.IOException;
 

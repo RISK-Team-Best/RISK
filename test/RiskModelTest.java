@@ -1,7 +1,7 @@
 
 import org.junit.Before;
 import org.junit.Test;
-import Main.*;
+import RISK.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,9 +10,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class RiskModelTest {
     private RiskModel riskModel;
-    private Territory country1,country2;
+    private Territory country1;
     private Player player1,player2;
-    private String country1Name,country2Name;
+    private String country1Name;
 
 
     /**
@@ -29,11 +29,12 @@ public class RiskModelTest {
         player1 = riskModel.getCurrentPlayer();
         player2 = riskModel.getNextPlayer(player1.getID());
 
+
         country1 = player1.getTerritories().get(0);
-        country2 = player2.getTerritories().get(0);
+
 
         country1Name = country1.getName();
-        country2Name = country2.getName();
+
 
 
 
@@ -153,9 +154,8 @@ public class RiskModelTest {
 
 
 
-    //@Test
-    //public void testCheckWinner() {
-    //}
+
+
 
 
 
