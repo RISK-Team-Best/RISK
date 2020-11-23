@@ -468,13 +468,6 @@ public class   RiskModel {
         this.numberPlayers = playerNum;
     }
 
-    /**
-     * Getter of playerNum
-     * @return the number of players
-     */
-    //public int getPlayerNum(){
-        //return this.numberPlayers;
-    //}
 
     /**
      * Getter for allCountries in arraylist
@@ -503,14 +496,6 @@ public class   RiskModel {
         return playerIDHashMap.get(nextPlayerID);
     }
 
-    /**
-     * setter for Current player
-     *
-     * @param player set the current Player
-     */
-    //public void setCurrentPlayer(Player player){
-        //this.currentPlayer = player;
-    //}
 
     /**
      * The Continent and Territory info. Write it in html and print out on ContinentInfo Panel
