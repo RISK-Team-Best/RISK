@@ -31,7 +31,7 @@ public class Player {
     }
 
     /**
-     * Set troops.
+     * This method is setting troops.
      *
      * @param troops the troops
      */
@@ -40,7 +40,7 @@ public class Player {
     }
 
     /**
-     * Gets name.
+     * This method is getting name.
      *
      * @return the player's name
      */
