@@ -31,7 +31,7 @@ public class Player {
     }
 
     /**
-     * Set troops.
+     * This method is setting troops.
      *
      * @param troops the troops
      */
@@ -40,7 +40,7 @@ public class Player {
     }
 
     /**
-     * Gets name.
+     * This method is getting name.
      *
      * @return the player's name
      */
@@ -49,7 +49,7 @@ public class Player {
     }
 
     /**
-     * Gets troops.
+     * This method is getting troops.
      *
      * @return the troops
      */
@@ -58,7 +58,7 @@ public class Player {
     }
 
     /**
-     * Gets all territories of this player.
+     * This method is getting all territories of this player.
      *
      * @return the territories of this player in an arraylist
      */
@@ -72,7 +72,7 @@ public class Player {
     }
 
     /**
-     * Gets all continents of this player.
+     * This method is getting all continents of this player.
      *
      * @return the continents of this player in array list
      */
@@ -81,7 +81,7 @@ public class Player {
     }
 
     /**
-     * Add territory which belongs to this player.
+     * This method is adding territory which belongs to this player.
      *
      * @param territory the territory
      */
@@ -90,7 +90,7 @@ public class Player {
     }
 
     /**
-     * Add continent which belongs to this player.
+     * This method is adding continent which belongs to this player.
      *
      * @param continent the continent
      */
@@ -99,7 +99,7 @@ public class Player {
     }
 
     /**
-     * Remove territory.
+     * This method is removing territory.
      *
      * @param territory the territory
      */
@@ -108,7 +108,7 @@ public class Player {
     }
 
     /**
-     * Remove continent.
+     * This method is removing continent.
      *
      * @param continent the continent
      */
@@ -117,7 +117,7 @@ public class Player {
     }
 
     /**
-     * Increase troop.
+     * This method is increasing the troops.
      *
      * @param increase the increase of troops
      */
@@ -126,7 +126,7 @@ public class Player {
     }
 
     /**
-     * Decrease troops.
+     * This method is decreasing the troops.
      *
      * @param decrease the decrease of troops
      */
@@ -135,7 +135,7 @@ public class Player {
     }
 
     /**
-     * Check this player has continent(s) or not.
+     * This methods is checking this player has continent(s) or not.
      *
      * @return the boolean, true if have continent.
      */
@@ -144,7 +144,7 @@ public class Player {
     }
 
     /**
-     * Check territory by string boolean. Check player has this country or not.
+     * This method is checking territory by string boolean. Check player has this country or not.
      *
      * @param countryName, the string of country to be checked
      * @return whether player has the territory by name, true if contains
@@ -154,7 +154,7 @@ public class Player {
     }
 
     /**
-     * Get territory by string territory.
+     * This method is getting territory by string territory.
      *
      * @param str, the territory's name
      * @return the territory found by its name;
@@ -164,7 +164,7 @@ public class Player {
     }
 
     /**
-     * Print player info include name, troops on hand, number of territories and continents.
+     * This method is printing player info include name, troops on hand, number of territories and continents.
      */
     public void printPlayerInfo(){
         System.out.println("The player "+this.name+" has "+getTroops()+" troops and has "+territories.size()+" territories: ");
@@ -181,7 +181,7 @@ public class Player {
     }
 
     /**
-     * Gain troops from territories.
+     * This method is gaining troops from territories.
      * At least gain three troops, the number of gained troops is number of territories / 3. Always round down
      */
     public void gainTroopsFromTerritory(){
@@ -193,7 +193,7 @@ public class Player {
     }
 
     /**
-     * Add continent bonus. Each continent will have different bonus troops, depending on different maps and rules.
+     * This methos is adding continent bonus. Each continent will have different bonus troops, depending on different maps and rules.
      */
     public void addContinentBonus(){
         if(!getContinents().isEmpty()){
@@ -207,7 +207,7 @@ public class Player {
 
 
      /**
-      * Setter for player id
+      * The method is a setter for player id
       *
       * @param i set the id of the player
       */
@@ -216,13 +216,14 @@ public class Player {
     }
 
      /**
-      * Getter for player id
+      * This method is a getter for player id
       *
       * @return the id of the player
       */
     public int getID(){
         return this.id;
     }
+
 
     public boolean isAI(){
         return this.AI;
