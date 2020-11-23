@@ -37,6 +37,7 @@ public class RiskController {
 
     }
 
+
     /**
      * Inner class implement NewGame function
      */

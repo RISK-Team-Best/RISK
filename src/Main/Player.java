@@ -205,17 +205,6 @@ public class Player {
         }
     }
 
-    /**
-     * Check ability to attack boolean.
-     *
-     * @return the boolean whether player has ability to attack. True if any territory has more than 1 troop.
-     */
-    public boolean checkAbilityToAttack(){
-        for(Territory territory:territories.values()){
-            if(territory.getTroops()!=1)return true;
-        }
-        return false;
-    }
 
      /**
       * Setter for player id
