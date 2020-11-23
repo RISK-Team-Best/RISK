@@ -100,8 +100,8 @@ LinkedHashSet -- Store one type of infos, prevent duplication and can be trace i
 
 ### Known Issue:     
 1. Only one extreme condition issue exists during attack stage: 
-If the player has no available territory to attack (All of the player's territories' troops are 1), should directly pass to fortify (not sure). Currently, we allow player to click skip to get rid of the attack stage and move into Fortify stage.                                                                                                            2.Load Game and Save Game Button did not be developed because they are the features for future.                                                                 
-3.Allow all players be the AI players and in this case, the game has no option to exit.                                                                                                                                  
+If the player has no available territory to attack (All of the player's territories' troops are 1), should directly pass to fortify (not sure). Currently, we allow player to click skip to get rid of the attack stage and move into Fortify stage.<br>                                                                                                       2.Load Game and Save Game Button did not be developed because they are the features for future.<br>                                                                 
+3.Allow all players be the AI players and in this case, the game has no option to exit.<br>                                                                                                                                  
 
 ### Changes:        
 1.We've refactor the code in Controller to avoid smelly                                                  
