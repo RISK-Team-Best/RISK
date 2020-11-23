@@ -769,13 +769,10 @@ public class RiskModel {
         }
         Territory startCountry = getTerritoryByString(originTerritoryName);
         Territory destinationCountry = getTerritoryByString(targetTerritoryName);
-        int troops = 0;
+
         for(RiskViewInterface view: viewList) {
-            troops = view.getSelectedTroops();
-        }
-        fortify(startCountry,destinationCountry,troops);
-        currentPlayer = getNextPlayer(currentPlayer.getID());
-        for(RiskViewInterface view: viewList) {
+            fortify(startCountry,destinationCountry,view.getSelectedTroops());
+            currentPlayer = getNextPlayer(currentPlayer.getID());
             view.setContinentsLabel(getMapInfoThroughContinent());
             view.setTerritoryButtonTroops(originTerritoryName, startCountry.getTroops());
             view.setTerritoryButtonTroops(targetTerritoryName, destinationCountry.getTroops());
@@ -998,7 +995,6 @@ public class RiskModel {
             view.updateFortifyFinish(currentPlayer);
             paintTerritoryButtons(view);
         }
-        return;
     }
 
     /**
@@ -1025,7 +1021,6 @@ public class RiskModel {
     public void jumpToAIProcess(){
         if(currentPlayer.isAI()){
             AIProcess();
-            return;
         }
 
     }
