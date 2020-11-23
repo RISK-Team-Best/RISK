@@ -48,7 +48,7 @@ public class Continent {
     /**
      * Member territory of continent in string array list.
      *
-     * @return the array list
+     * @return the memberString which is an Array List
      */
     public ArrayList<String> memberString(){
         ArrayList<String> memberString = new ArrayList<>();
@@ -59,8 +59,9 @@ public class Continent {
     }
 
     /**
+     * This method get the member of territory
      * @param territory
-     * @return
+     * @return a null
      */
     public Territory getMemberTerritory(Territory territory){
         for(Territory territory1:members){
