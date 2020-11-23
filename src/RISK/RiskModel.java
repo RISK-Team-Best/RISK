@@ -104,7 +104,7 @@ public class   RiskModel {
     }
 
     /**
-     * Add player names into the game
+     * This method is adding player names into the game
      */
     public void addPlayersName(String[] playerNameList,Boolean[] AITypeList) {
         players.clear();
