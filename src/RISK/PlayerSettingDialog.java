@@ -87,6 +87,15 @@ public class PlayerSettingDialog{
                 return false;
             }
         }
-        return true;
+        boolean allPlayersAreAI = true;
+        for(JComboBox box:namesAndTypes.values()){
+            if(box.getSelectedItem().equals("Player")){
+                allPlayersAreAI = false ;
+                continue;
+            }
+        }
+        if(allPlayersAreAI) JOptionPane.showMessageDialog(null,"Please have at least one player in the Game","NO HUMAN PLAYER",JOptionPane.ERROR_MESSAGE);
+        return !allPlayersAreAI;
     }
+
 }
