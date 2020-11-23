@@ -347,7 +347,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     /**
-     * Prompt to get the number of players.
+     * This method is prompting to get the number of players.
      * @return the number of player
      */
     @Override
