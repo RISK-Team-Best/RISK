@@ -71,6 +71,7 @@ public class Continent {
     }
 
     /**
+     * This method is using an ArrayList to get Members
      * @return the territory list in this continent
      */
     public ArrayList<Territory> getMembers() {
