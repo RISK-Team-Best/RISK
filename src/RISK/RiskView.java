@@ -366,7 +366,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
 
     /**
-     * Prompt to get each player's name
+     * This method is prompting to get each player's name
      * @return the player's name string list
      */
     @Override
