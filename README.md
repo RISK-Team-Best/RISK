@@ -33,8 +33,7 @@ In the game:
 
 1.Click File->New to create a new game<br>
 2.Enter the number of player(2 to 6)<br>
-3.Enter players'name on the Textbox(There already have some default name), please note that the players name can't be the same, or will pop window to enter again.             
-Then choose the player is AI or not.<br>     
+3.Enter players'name on the Textbox(There already have some default name), please note that the players name can't be the same, or will pop window to enter again.Then choose the player is AI or not.<br>     
 Then the map will automatically generate territories and troops for you.<br>                                                              
 4.Click draft button（This step cannot skip):<br>           
 &emsp;(1)choose the territory button on the map that you want send troops to(click again to cancel and reselect)            
@@ -101,9 +100,8 @@ LinkedHashSet -- Store one type of infos, prevent duplication and can be trace i
 
 ### Known Issue:     
 1. Only one extreme condition issue exists during attack stage: 
-If the player has no available territory to attack (All of the player's territories' troops are 1), should directly pass to fortify (not sure). Currently, we allow player to click skip to get rid of the attack stage and move into Fortify stage.
-2.Load Game and Save Game Button did not be developed because they are the features for future.
-3.Allow all players be the AI players and in this case, the game has no option to exit.                                                                              
+If the player has no available territory to attack (All of the player's territories' troops are 1), should directly pass to fortify (not sure). Currently, we allow player to click skip to get rid of the attack stage and move into Fortify stage.                                                                                                            2.Load Game and Save Game Button did not be developed because they are the features for future.                                                                 
+3.Allow all players be the AI players and in this case, the game has no option to exit.                                                                                                                                  
 
 ### Changes:        
 1.We've refactor the code in Controller to avoid smelly                                                  
