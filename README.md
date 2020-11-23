@@ -33,7 +33,7 @@ In the game:
 
 1.Click File->New to create a new game<br>
 2.Enter the number of player(2 to 6)<br>
-3.Enter players'name on the Textbox(There already have some default name), please note that the players name can't be the same, or will pop window to enter again.Then choose the player is AI or not.<br>     
+3.Enter players'name on the Textbox(There already have some default name), please note that the players name can't be the same (or it will give error prompt and wait until you have valid input).Then choose the player is AI or not.<br>     
 Then the map will automatically generate territories and troops for you.<br>                                                              
 4.Click draft button（This step cannot skip):<br>           
 &emsp;(1)choose the territory button on the map that you want send troops to(click again to cancel and reselect)            
@@ -54,7 +54,7 @@ Then the map will automatically generate territories and troops for you.<br>
 8.Once there is a player lost all territory or there is a player win the game, the Frame will pop window to show the result<br>
 9.If you need start again, please click File->New to start a new game<br>
 
-Note for AI player: AI player will pop result window in each stage:Draft,Attack,Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops)        
+Note for AI player: AI player will pop result window in each stage:Draft,Attack(Skip when there is no territory can attack),Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops) and it will pass to next player after finished its round.
 User click the "OK" button to allow AI player enter the next stage.<br>
 
 
@@ -68,24 +68,28 @@ documentation
 
 
 #### Contribution: 
-Board.java,Continent.java:Guanqun Dong                                  
-RiskModel.java:Jiawei Ma                                 
-RiskView.java:Guanqun Dong,Jiawei Ma,Jiatong Han,Tiantian Lin                                              
+Board.java:Guanqun Dong(Figured out using outputstream to read text and map image and make it can read in jar), Jiawei Ma(All other things)                         
+RiskModel.java,Continent.java:Jiawei Ma                                 
+RiskView.java:Jiawei Ma,Jiatong Han,Tiantian Lin                                              
 RiskController.java, ReadMe File: Jiawei Ma,Tiantian Lin                                    
 RiskGame.java,MapPanel.java,Sequence Diagram,PlayerSettingDialog.java,RiskViewInterface.java:Jiawei Ma                                                                           
 Territory.java,AttackWay.java,Stage.java:Jiatong Han                                                                    
 Dices.java,Player.java,RiskModelTest.java,UML Class Diagram:Tiantian Lin                                                
-
+Map info text files: Jiawei Ma
+Map image file: Tiantian Lin
 
 
 ### Design Decisions: 
-1. For MVC part, we seperate model, view and controller as much seperate as possible. So that it could be easy for TA and prof to mark and easy for us to maintain for the future. We divided Model,View and Controller into three different classes. The model class just need process the data in the backend. View class provides the front-end of the program and interact with users. And the controller class is the "bridge" to connect and communicate with back-end(Model) and front-end(View).
+1.  (1)For MVC part, we seperate model, view and controller as much seperate as possible. So that it could be easy for TA and prof to mark and easy for us to maintain for the future. We divided Model,View and Controller into three different classes. The model class need process the data in the backend. View class provides the front-end of the program and interact with users.
+    (2)We also refactored MVC which got deduction in the Milleston2. Added view as listener and announce view to update once we are processing to next stage.
 
 2. (1)For GUI part, we don't want tons of prompt shows when processing the game include warning message, operating steps message, information messages and so on. So we create the operation panel with several JButtons and one JComboBox. Player can use the operation panel to set command. 
 
    (2)At first, we don't want to use buttons to instead territories, because it's so ugly and hard to maintain(For Milestone4, we may change another map). So we had two JLists as the choosing place for origin and target territories. And it also correspond to the lab that we took for MVC. We also placed a graph map only as a reference, and all info of the map showed on the info panel (the most right side of the GUI). However, Prof Babak wants the buttons which we don't like, so we combined the two ideas: replace JLists with JButtons. 
 
    (3)<i>Finally, we placed the buttons on the graph map and make button shows the troops on the territory. It will only enable the avaiable buttons for different steps, different requirement. And we also want the button shows the different players. So we added the color on buttons according to player's ID. Also the player's id used on change to next player. And the Info panel still shows the whole map's info (Continent-Territory-Holder-troops).</i>
+   
+   (4)AI will show message through prompt. And the territory button will also shows the color for each stage. i.e. Red is the selected origin territory. Orange is the selected target territory. Same color and process as human players.
 
 3. Fortify part, used recursion method to visit all availble territory that can be fortified.
 
@@ -99,13 +103,10 @@ LinkedHashSet -- Store one type of infos, prevent duplication and can be trace i
 
 
 ### Known Issue:     
-1.Only one extreme condition issue exists during attack stage:<br> 
-&emsp;If the player has no available territory to attack (All of the player's territories' troops are 1), should directly pass to fortify (not sure). Currently, we allow player to click skip to get rid of the attack stage and move into Fortify stage.<br>
-2.Load Game and Save Game Button did not be developed because they are the features for future.<br>
-3.Allow all players be the AI players and in this case, the game has no option to exit.<br>                                                                                                                                  
+1.Load Game and Save Game Button did not be developed because they are the features for future.<br>                                                                                                                    
 
 ### Changes:        
-1.We've refactor the code in Controller to avoid smelly                                                  
+1.We've refactor the code in Controller, Model and added viewInterface as listener to avoid smelly                                                  
 2.We've added a View Interface to implement differrent update view methods                                     
 3.We've added default names for user to choose when add players                                                               
 4.We've fixed the error that MAC OS does't shows the button color                                                                
