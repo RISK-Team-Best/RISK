@@ -75,7 +75,7 @@ RiskController.java, ReadMe File: Jiawei Ma,Tiantian Lin
 RiskGame.java,MapPanel.java,Sequence Diagram,PlayerSettingDialog.java,RiskViewInterface.java:Jiawei Ma                                                                           
 Territory.java,AttackWay.java,Stage.java:Jiatong Han                                                                    
 Dices.java,Player.java,RiskModelTest.java,UML Class Diagram:Tiantian Lin                                                
-Map info text files: Jiawei Ma
+Map info text files: Jiawei Ma<br>
 Map image file: Tiantian Lin
 
 
