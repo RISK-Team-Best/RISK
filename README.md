@@ -100,6 +100,7 @@ HashMap with ArrayList in value -- Store one key and a bunch of infos related to
 Enum -- Prevent Typo and easy to get thorugh IntelliJ's suggestion. -- AttackWay, Stage<br>
 ArrayList -- Instantiate of List to store same type infos -- Continent, Dices, RiskModel<br>
 LinkedHashSet -- Store one type of infos, prevent duplication and can be trace in order -- RiskModel
+LinkedHashMap -- Store the corresponding player's name and type. Also can iterate to get each player in sequence.-- PlayerSettingDialog
 
 
 ### Known Issue:     
