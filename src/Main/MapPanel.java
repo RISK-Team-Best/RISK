@@ -19,7 +19,7 @@ public class MapPanel extends JPanel{
      */
     public MapPanel() {
         try {
-            //image = ImageIO.read(new File("src/RiskMap.jpg"));
+
             image = ImageIO.read(getClass().getResource("RiskMap.jpg"));
         } catch (IOException ex) {
             // handle exception...

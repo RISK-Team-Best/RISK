@@ -231,7 +231,6 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
 
         continentInfoPane = new JScrollPane(continentsLabel);
-        //continentInfoPane.add(continentsLabel);
         continentInfoPane.setPreferredSize(new Dimension(200,600));
         continentsLabel.setFont(new Font("Arial",0,12));
 
