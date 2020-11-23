@@ -887,8 +887,6 @@ public class   RiskModel {
     }
 
     /**
-     * re-paint all territories' button colors
-     *
      * @param view Update the map view using after each action
      */
     public void paintTerritoryButtons(RiskViewInterface view){
@@ -1000,9 +998,6 @@ public class   RiskModel {
     }
 
     /**
-     *
-     * Deploy process for AI player
-     *
      * @param tempAttackTerritory
      * @param tempDefenceTerritory
      */
@@ -1031,9 +1026,6 @@ public class   RiskModel {
     }
 
     /**
-     * Get the attack territories with maximum number of troops.
-     * Use arraylist coz it may contain more than one territories with the greatest troops
-     *
      * @return the territory list that have the max num of troops
      */
     public ArrayList<Territory>getMaxTroopsAttackTerritoryList(){
@@ -1049,8 +1041,6 @@ public class   RiskModel {
     }
 
     /**
-     * Get the maximum number of troops of territories.
-     *
      * @param territories
      * @return the max num of troops in one territory list
      */
@@ -1065,9 +1055,6 @@ public class   RiskModel {
     }
 
     /**
-     * Get the defence territories with minimum number of troops.
-     * Use arraylist coz it may contain more than one territories with least troops
-     *
      * @param attackTerritory
      * @return the territory list that has the minimum num of troops
      */
@@ -1084,8 +1071,6 @@ public class   RiskModel {
     }
 
     /**
-     * get the minimum troops in the territory list
-     *
      * @param territories
      * @return get the minimum num of troops in one territory list
      */
