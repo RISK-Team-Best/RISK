@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * The main Game.
  */
-public class RiskModel {
+public class   RiskModel {
 
     private final List<RiskViewInterface> viewList;
 
@@ -1055,7 +1055,6 @@ public class RiskModel {
     }
 
     /**
-     * This method is using arraylist to get minimum troops defence territory
      * @param attackTerritory
      * @return the territory list that has the minimum num of troops
      */
@@ -1072,7 +1071,6 @@ public class RiskModel {
     }
 
     /**
-     * This method is getting minimum troops in territory list
      * @param territories
      * @return get the minimum num of troops in one territory list
      */

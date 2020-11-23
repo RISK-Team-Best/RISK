@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
- /**
+/**
  * The class Player store the information of the player's territory and calculate the troops each turn.
- *
  *
  * @Author: Tiantian Lin, 101095243
  */
@@ -22,6 +21,7 @@ public class Player {
      * Instantiates a new Player.
      *
      * @param name the player's name
+     * @param AI   the ai
      */
     public Player(String name,boolean AI){
         this.name = name;
@@ -66,6 +66,11 @@ public class Player {
         return new ArrayList<>(territories.values());
     }
 
+    /**
+     * Get territories string array list.
+     *
+     * @return the array list
+     */
     public ArrayList<String> getTerritoriesString(){
         ArrayList<String> territoriesString = new ArrayList<>(territories.keySet());
         return territoriesString;
@@ -146,7 +151,7 @@ public class Player {
     /**
      * This method is checking territory by string boolean. Check player has this country or not.
      *
-     * @param countryName, the string of country to be checked
+     * @param countryName the country name
      * @return whether player has the territory by name, true if contains
      */
     public boolean checkTerritoryByString(String countryName){
@@ -156,7 +161,7 @@ public class Player {
     /**
      * This method is getting territory by string territory.
      *
-     * @param str, the territory's name
+     * @param str the str
      * @return the territory found by its name;
      */
     public Territory getTerritoryByString(String str){
@@ -206,25 +211,30 @@ public class Player {
     }
 
 
-     /**
-      * The method is a setter for player id
-      *
-      * @param i set the id of the player
-      */
+    /**
+     * The method is a setter for player id
+     *
+     * @param i set the id of the player
+     */
     public void setID(int i){
         this.id = i;
     }
 
-     /**
-      * This method is a getter for player id
-      *
-      * @return the id of the player
-      */
+    /**
+     * This method is a getter for player id
+     *
+     * @return the id of the player
+     */
     public int getID(){
         return this.id;
     }
 
 
+    /**
+     * Determine this player is AI or not
+     *
+     * @return the boolean
+     */
     public boolean isAI(){
         return this.AI;
      }

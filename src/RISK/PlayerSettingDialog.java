@@ -22,6 +22,9 @@ public class PlayerSettingDialog{
     private LinkedHashMap<JTextField,JComboBox> namesAndTypes = new LinkedHashMap<>();
 
     /**
+     * Constructor of this Dialog
+     * Allow user to choose name and type(AI or not) in this prompt
+     *
      * @param playerNumbers
      */
     public PlayerSettingDialog(int playerNumbers){
@@ -50,6 +53,8 @@ public class PlayerSettingDialog{
     }
 
     /**
+     * Get linkedHashMap wich store the final names and AI player types
+     *
      * @return the hashmap contain the name and AI player or not
      */
     public LinkedHashMap<String, Boolean> getFinalNamesAndIsAI() {
@@ -66,6 +71,8 @@ public class PlayerSettingDialog{
     }
 
     /**
+     * Check whether have user with same name or no name.
+     *
      * @return true if there is no name repeat or empty name
      *         false there has repeat name or empty name, ask for new input
      */
