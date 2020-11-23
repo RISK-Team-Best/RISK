@@ -46,7 +46,6 @@ public class RiskController {
         public void actionPerformed(ActionEvent e) {
             model.newGameProcess();
             }
-
         }
 
     /**

@@ -592,8 +592,6 @@ public class   RiskModel {
             for(Territory territory:getAllCountries()){
                 view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
             }
-        }
-        for(RiskViewInterface view: viewList){
             view.updateNewGameProcess(getMapInfoThroughContinent(),getCurrentPlayer().getName());
             paintTerritoryButtons(view);
         }
