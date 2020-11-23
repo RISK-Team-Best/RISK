@@ -84,7 +84,7 @@ public class   RiskModel {
     }
 
     /**
-     * Initialize the game include add number of players, add troops to players depending on player numbers,
+     * This method is initializing the game include add number of players, add troops to players depending on player numbers,
      * assign randomly territories with randomly troops to each player.
      */
     public void initialGame() {
