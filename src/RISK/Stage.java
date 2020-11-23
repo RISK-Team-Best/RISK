@@ -17,7 +17,7 @@ public enum Stage {
     }
 
     /**
-     * Get name of the Stage type
+     * This method is getting name of the Stage type
      * @return Stage's name
      */
     public String getName() {

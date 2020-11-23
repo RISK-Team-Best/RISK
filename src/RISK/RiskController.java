@@ -47,7 +47,6 @@ public class RiskController {
         public void actionPerformed(ActionEvent e) {
             model.newGameProcess();
             }
-
         }
 
     /**
@@ -126,6 +125,7 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e){
             model.territoryButtonClickProcess(e.getActionCommand(),(JButton)e.getSource());
+
         }
     }
 }

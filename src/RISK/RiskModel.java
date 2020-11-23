@@ -84,7 +84,7 @@ public class   RiskModel {
     }
 
     /**
-     * Initialize the game include add number of players, add troops to players depending on player numbers,
+     * This method is initializing the game include add number of players, add troops to players depending on player numbers,
      * assign randomly territories with randomly troops to each player.
      */
     public void initialGame() {
@@ -104,7 +104,7 @@ public class   RiskModel {
     }
 
     /**
-     * Add player names into the game
+     * This method is adding player names into the game
      */
     public void addPlayersName(String[] playerNameList,Boolean[] AITypeList) {
         players.clear();
@@ -114,7 +114,7 @@ public class   RiskModel {
     }
 
     /**
-     * set initial troops based on player number
+     * This method is setting initial troops based on player number
      */
     public void setInitialTroopHashMap() {
         initialTroopHashMap.put(2, TWO_PLAYERS_TROOPS);
@@ -125,7 +125,7 @@ public class   RiskModel {
     }
 
     /**
-     * assign the troops randomly for each player
+     * This method is assigning the troops randomly for each player
      */
     public void setTroopsInitially() {
         int troops = initialTroopHashMap.get(numberPlayers);
@@ -135,7 +135,7 @@ public class   RiskModel {
     }
 
     /**
-     * Assign countries randomly.
+     * This method is assigning countries randomly.
      */
     public void assignCountriesRandomly(){
         ArrayList<Territory> tempAllCountries = tempBoard.getAllCountries();
@@ -161,7 +161,7 @@ public class   RiskModel {
     }
 
     /**
-     * Check whether the player has continent.
+     * This method is checking whether the player has continent.
      *
      * @param player the player to be checked continent
      */
@@ -179,7 +179,7 @@ public class   RiskModel {
     }
 
     /**
-     * Assign random troops initially to all territories of this player.
+     * This method is assigning random troops initially to all territories of this player.
      *
      * @param player the player that assign troops to all territories  randomly
      */
@@ -200,7 +200,7 @@ public class   RiskModel {
     }
 
     /**
-     * Draft stage.
+     * This method is for Draft stage.
      * Assign troops in player to his/her territories until the player has no troops in hand.
      *
      * @param player the player process draft stage
@@ -213,7 +213,7 @@ public class   RiskModel {
 
 
     /**
-     * Get the player's territories which are available to attack
+     * This method is getting the player's territories which are available to attack
      * @param player
      * @return the attack territory list
      */
@@ -226,7 +226,7 @@ public class   RiskModel {
     }
 
     /**
-     * Get the enemy's territories which are surrounded this player's this territory
+     * This method is getting the enemy's territories which are surrounded this player's this territory
      *
      * @param player
      * @param territory
@@ -319,7 +319,7 @@ public class   RiskModel {
     }
 
     /**
-     * Deploy troops to the defeated territory after the attack player wins the battle.
+     * This method is deploying troops to the defeated territory after the attack player wins the battle.
      *
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
@@ -334,7 +334,7 @@ public class   RiskModel {
 
 
     /**
-     * Get the player's available territories for fortify
+     * This method is getting the player's available territories for fortify
      *
      * @param player
      * @return the fortify territory list
@@ -352,7 +352,7 @@ public class   RiskModel {
     }
 
     /**
-     * Get the territories connect to the fortifyCountry and can be fortified
+     * This method is getting the territories connect to the fortifyCountry and can be fortified
      *
      * @param fortifyCountry
      * @param player
@@ -384,7 +384,7 @@ public class   RiskModel {
 
 
     /**
-     * Add all connected countries.
+     * This method is adding all connected countries.
      * Used recursion to visit all connected territories and those which holder is this player to HashSet.
      *
      * @param territory the territory
@@ -406,7 +406,7 @@ public class   RiskModel {
     }
 
     /**
-     * Check whether the territory has the enemy neighbors.
+     * This method is checking whether the territory has the enemy neighbors.
      *
      * @param territory
      * @param player
@@ -425,7 +425,7 @@ public class   RiskModel {
     }
 
     /**
-     * Check winner and print out congratulation message.
+     * This method is checking winner and print out congratulation message.
      * If only any player lost all territories. Prompt to show his failure.
      */
     public void checkWinner(){
@@ -444,7 +444,7 @@ public class   RiskModel {
     }
 
     /**
-     * Update any player has the continent or lose
+     * This method is for updating any player has the continent or lose
      */
     public void updateContinentListInfo(){
         for(Continent continent:allContinents){
@@ -461,7 +461,7 @@ public class   RiskModel {
     }
 
     /**
-     * Set the number of players
+     * This method is setting the number of players
      *
      */
     public void setPlayerNum(int playerNum){
@@ -577,8 +577,6 @@ public class   RiskModel {
             for(Territory territory:getAllCountries()){
                 view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
             }
-        }
-        for(RiskViewInterface view: viewList){
             view.updateNewGameProcess(getMapInfoThroughContinent(),getCurrentPlayer().getName());
             paintTerritoryButtons(view);
         }
@@ -645,7 +643,7 @@ public class   RiskModel {
     }
 
     /**
-     * Model do the skip process and update the view
+     *This method is modeling to do the skip process and update the view
      */
     public void skipProcess(){
         if(currentStage==Stage.ATTACK){
@@ -689,7 +687,7 @@ public class   RiskModel {
     }
 
     /**
-     * Update the view when user click the button on the map(reset)
+     * This method is updating the view when user click the button on the map(reset)
      */
     public void resetButtonsAndBoxProcedure(){
         if(!originTerritoryName.equals("")){
@@ -771,13 +769,10 @@ public class   RiskModel {
         }
         Territory startCountry = getTerritoryByString(originTerritoryName);
         Territory destinationCountry = getTerritoryByString(targetTerritoryName);
-        int troops = 0;
+
         for(RiskViewInterface view: viewList) {
-            troops = view.getSelectedTroops();
-        }
-        fortify(startCountry,destinationCountry,troops);
-        currentPlayer = getNextPlayer(currentPlayer.getID());
-        for(RiskViewInterface view: viewList) {
+            fortify(startCountry,destinationCountry,view.getSelectedTroops());
+            currentPlayer = getNextPlayer(currentPlayer.getID());
             view.setContinentsLabel(getMapInfoThroughContinent());
             view.setTerritoryButtonTroops(originTerritoryName, startCountry.getTroops());
             view.setTerritoryButtonTroops(targetTerritoryName, destinationCountry.getTroops());
@@ -1000,7 +995,6 @@ public class   RiskModel {
             view.updateFortifyFinish(currentPlayer);
             paintTerritoryButtons(view);
         }
-        return;
     }
 
     /**
@@ -1027,7 +1021,6 @@ public class   RiskModel {
     public void jumpToAIProcess(){
         if(currentPlayer.isAI()){
             AIProcess();
-            return;
         }
 
     }

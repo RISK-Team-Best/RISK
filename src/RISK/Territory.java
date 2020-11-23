@@ -23,7 +23,7 @@ public class Territory {
     }
 
     /**
-     * Sets troops in this territory.
+     * This method is setting troops in this territory.
      *
      * @param troops the troops in territory
      */
