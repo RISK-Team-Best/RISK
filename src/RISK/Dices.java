@@ -26,7 +26,9 @@ public class Dices {
     }
 
     /**
-     * Dice rolling. add dice amount number of random numbers into arraylist
+     * Dice rolling.
+     * Add the random number of dice to the arraylist
+     * add dice amount number of random numbers into arraylist
      */
     public void diceRolling(){
         for(int i = 0; i < dicesAmount; i++){
