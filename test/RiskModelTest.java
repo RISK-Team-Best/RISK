@@ -1,7 +1,7 @@
 
 import org.junit.Before;
 import org.junit.Test;
-import Main.*;
+import RISK.*;
 
 import static org.junit.Assert.assertEquals;
 

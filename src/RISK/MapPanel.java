@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

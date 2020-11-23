@@ -1,12 +1,10 @@
-package Main;
+package RISK;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * The type Board which read the files and create map informations.

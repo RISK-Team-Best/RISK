@@ -1,4 +1,4 @@
-package Main;
+package RISK;
 
 /**
  * Enum Stage is for record the stage of the game
