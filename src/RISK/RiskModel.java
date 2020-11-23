@@ -1072,6 +1072,7 @@ public class RiskModel {
     }
 
     /**
+     * This method is getting minimum troops in territory list
      * @param territories
      * @return get the minimum num of troops in one territory list
      */
