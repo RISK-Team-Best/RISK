@@ -16,6 +16,8 @@ public class Player {
     private HashMap<String,Continent> continents;
     private int id;
     private boolean AI;
+    private final int leastBonusTroops = 3;
+    private final int bonusUnits = 3;
 
     /**
      * Instantiates a new Player.
@@ -190,8 +192,8 @@ public class Player {
      * At least gain three troops, the number of gained troops is number of territories / 3. Always round down
      */
     public void gainTroopsFromTerritory(){
-        int bonus = this.getTerritories().size()/3;
-        if(bonus < 3){bonus = 3;}
+        int bonus = this.getTerritories().size()/bonusUnits;
+        if(bonus < leastBonusTroops){bonus = leastBonusTroops;}
         System.out.println("Player " + this.getName()+" has "+this.getTerritories().size()+" territories, add "+bonus+" troops.");
         this.increaseTroop(bonus);
         addContinentBonus();
