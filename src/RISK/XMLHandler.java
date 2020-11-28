@@ -44,7 +44,7 @@ public class XMLHandler extends DefaultHandler {
         isTroops = false;
         isAI = false;
         isOwnTerritory = false;
-        isID=false;
+        isID = false;
 
 
     }

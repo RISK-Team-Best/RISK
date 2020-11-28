@@ -21,8 +21,6 @@ public class XMLDOMReader implements LoadingStrategy{
             DocumentBuilder builder = factory.newDocumentBuilder();
             File f = new File(path);
             doc = builder.parse(f);
-
-
         }catch (Exception e){}
 
     }

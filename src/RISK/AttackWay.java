@@ -17,7 +17,7 @@ public enum AttackWay {
     }
 
     /**
-     * Getter the troops of attackWay
+     * This is a getter for troops of attackWay
      * @return the number of attack troops
      */
     public int getAttackTroops() {
