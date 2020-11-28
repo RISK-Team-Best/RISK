@@ -27,7 +27,7 @@ public class XMLDOMReader {
 
     }
 
-    public void recoverGame(RiskModel riskModel) {
+    public void recoverGame(RiskModel riskModel) {//break down to small methods
         NodeList players = doc.getElementsByTagName("Player");//get all Players
         for (int i = 0;i<players.getLength();i++)
         {
@@ -35,10 +35,34 @@ public class XMLDOMReader {
             Element player = (Element) node;
             String id = player.getAttribute("ID");
             NodeList name = player.getElementsByTagName("name");//other information
-            String s = name.item(0).getTextContent();
-            System.out.println(s);
+            String n = name.item(0).getTextContent();
+            NodeList ai = player.getElementsByTagName("AI");//other information
+            String a = ai.item(0).getTextContent();
+            NodeList troops = player.getElementsByTagName("troops");//other information
+            String t = troops.item(0).getTextContent();
+            NodeList ownTerritory = player.getElementsByTagName("ownTerritory");//other information
+            String o = ownTerritory.item(0).getTextContent();
+
+            riskModel.ImportPlayer(n,Boolean.valueOf(a),Integer.parseInt(t),Integer.parseInt(id),o);
 
         }
+        NodeList territories = doc.getElementsByTagName("Territory");//get all Players
+        for (int i = 0;i<territories.getLength();i++)
+        {
+            Node node = territories.item(i);//Player i
+            Element territory = (Element) node;
+            //String territoryId = territory.getAttribute("ID");
+            NodeList name = territory.getElementsByTagName("name");//other information
+            String n = name.item(0).getTextContent();
+            NodeList holder = territory.getElementsByTagName("holder");//other information
+            String h = holder.item(0).getTextContent();
+            NodeList troops = territory.getElementsByTagName("troops");//other information
+            String t = troops.item(0).getTextContent();
+
+            riskModel.ImportTerritory(n,Integer.parseInt(t),h);
+
+        }
+
     }
 
 
