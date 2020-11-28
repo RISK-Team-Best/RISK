@@ -797,92 +797,98 @@ public class   RiskModel {
 
     /** This method update the view when user click the button on the map
      * @param territoryName
-     * @param button
      */
-    public void territoryButtonClickProcess(String territoryName,JButton button){
+    public void territoryButtonClickProcess(String territoryName){
         if(currentStage==Stage.DRAFT){
-            if(originTerritoryButtonPressed){
-                originTerritoryName = territoryName;
-                for(RiskViewInterface view: viewList) {
-                    view.onlyEnableOriginTerritory(territoryName);
-                }
-                button.setBackground(Color.RED);
-            }else{
-                originTerritoryName = "";
-                for(RiskViewInterface view: viewList) {
-                    view.enableOriginalTerritories(currentPlayer.getTerritories());
-                    paintTerritoryButtons(view);
-                }
-            }
-            originTerritoryButtonPressed = !originTerritoryButtonPressed;
+            draftStageTerritoryButtonAction(territoryName);
         }
         if(currentStage==Stage.ATTACK){
-            if (originTerritoryButtonPressed) {
-                originTerritoryName = territoryName;
-                button.setBackground(Color.RED);
-                for(RiskViewInterface view: viewList) {
-                    view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(),getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
-                }
-                originTerritoryButtonPressed =! originTerritoryButtonPressed;
-            }else if(territoryName.equals(originTerritoryName)){
-                originTerritoryName = "";
-                if(!targetTerritoryName.equals("")){
-                    targetTerritoryButtonPressed = true;
-                }
-                for(RiskViewInterface view: viewList) {
-                    view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
-                    paintTerritoryButtons(view);
-                }
-                originTerritoryButtonPressed =! originTerritoryButtonPressed;
-            }else if(targetTerritoryButtonPressed){
-                targetTerritoryName = territoryName;
-                button.setBackground(Color.ORANGE);
-                for(RiskViewInterface view: viewList) {
-                    view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
-                }
-                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
-            }else if(!targetTerritoryButtonPressed){
-                button.setBackground(colorIDHashMap.get(getTerritoryByString(targetTerritoryName).getHolder().getID()));
-                targetTerritoryName = "";
-                for(RiskViewInterface view: viewList) {
-                    view.updateCancelDefenceTerritoryButton(originTerritoryName,getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)));
-                }
-                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
-            }
+            attackStageTerritoryButtonAction(territoryName);
         }
         if(currentStage==Stage.FORTIFY){
-            if (originTerritoryButtonPressed) {
-                originTerritoryName = territoryName;
-                button.setBackground(Color.RED);
-                for(RiskViewInterface view:viewList) {
-                    view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1,getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
-                }
-                originTerritoryButtonPressed =! originTerritoryButtonPressed;
-            }else if(territoryName.equals(originTerritoryName)){
-                originTerritoryName = "";
-                if(!targetTerritoryName.equals("")){
-                    targetTerritoryButtonPressed = true;
-                }
-                for(RiskViewInterface view:viewList) {
-                    paintTerritoryButtons(view);
-                    view.resetButtonsAndBox(getFortifyTerritories(currentPlayer));
-                }
-                originTerritoryButtonPressed =! originTerritoryButtonPressed;
-            }else if(targetTerritoryButtonPressed){
-                targetTerritoryName = territoryName;
-                button.setBackground(Color.ORANGE);
-                for(RiskViewInterface view: viewList) {
-                    view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
-                }
-                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
-            }else if(!targetTerritoryButtonPressed){
-                button.setBackground(colorIDHashMap.get(getTerritoryByString(targetTerritoryName).getHolder().getID()));
-                targetTerritoryName = "";
-                for(RiskViewInterface view: viewList) {
-                    view.updateCancelFortifyTerritoryButton(originTerritoryName,getFortifiedTerritory(getTerritoryByString(originTerritoryName),currentPlayer));
-                }
-                targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+            fortifyStageTerritoryButtonAction(territoryName);
+        }
+    }
+
+    public void draftStageTerritoryButtonAction(String territoryName){
+        if(originTerritoryButtonPressed){
+            originTerritoryName = territoryName;
+            for(RiskViewInterface view: viewList) {
+                view.updateDraftCountryClick(territoryName);
             }
+        }else{
+            originTerritoryName = "";
+            for(RiskViewInterface view: viewList) {
+                view.enableOriginalTerritories(currentPlayer.getTerritories());
+                paintTerritoryButtons(view);
+            }
+        }
+        originTerritoryButtonPressed = !originTerritoryButtonPressed;
+    }
+
+    public void attackStageTerritoryButtonAction(String territoryName){
+        if (originTerritoryButtonPressed) {
+            originTerritoryName = territoryName;
+            for(RiskViewInterface view: viewList) {
+                view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(),getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
+            }
+            originTerritoryButtonPressed =! originTerritoryButtonPressed;
+        }else if(territoryName.equals(originTerritoryName)){
+            originTerritoryName = "";
+            if(!targetTerritoryName.equals("")){
+                targetTerritoryButtonPressed = true;
+            }
+            for(RiskViewInterface view: viewList) {
+                view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
+                paintTerritoryButtons(view);
+            }
+            originTerritoryButtonPressed =! originTerritoryButtonPressed;
+        }else if(targetTerritoryButtonPressed){
+            targetTerritoryName = territoryName;
+            for(RiskViewInterface view: viewList) {
+                view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+            }
+            targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+        }else if(!targetTerritoryButtonPressed){
+            targetTerritoryName = "";
+            for(RiskViewInterface view: viewList) {
+                paintTerritoryButtons(view);
+                view.updateCancelDefenceTerritoryButton(originTerritoryName,getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)));
+            }
+            targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+        }
+    }
+
+    public void fortifyStageTerritoryButtonAction(String territoryName){
+        if (originTerritoryButtonPressed) {
+            originTerritoryName = territoryName;
+            for(RiskViewInterface view:viewList) {
+                view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1,getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
+            }
+            originTerritoryButtonPressed =! originTerritoryButtonPressed;
+        }else if(territoryName.equals(originTerritoryName)){
+            originTerritoryName = "";
+            if(!targetTerritoryName.equals("")){
+                targetTerritoryButtonPressed = true;
+            }
+            for(RiskViewInterface view:viewList) {
+                paintTerritoryButtons(view);
+                view.resetButtonsAndBox(getFortifyTerritories(currentPlayer));
+            }
+            originTerritoryButtonPressed =! originTerritoryButtonPressed;
+        }else if(targetTerritoryButtonPressed){
+            targetTerritoryName = territoryName;
+            for(RiskViewInterface view: viewList) {
+                view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+            }
+            targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
+        }else if(!targetTerritoryButtonPressed){
+            targetTerritoryName = "";
+            for(RiskViewInterface view: viewList) {
+                paintTerritoryButtons(view);
+                view.updateCancelFortifyTerritoryButton(originTerritoryName,getFortifiedTerritory(getTerritoryByString(originTerritoryName),currentPlayer));
+            }
+            targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
         }
     }
 

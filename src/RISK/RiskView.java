@@ -439,6 +439,12 @@ public class RiskView extends JFrame implements RiskViewInterface{
         setStatusLabel(currentPlayer.getName()+"'s turn, Fortify Stage. Move troops from "+fortifyTerritoryName+" to "+fortifiedTerritoryName+".");
     }
 
+    @Override
+    public void updateDraftCountryClick(String territoryName) {
+        onlyEnableOriginTerritory(territoryName);
+        getTerritoryButtonByString(territoryName).setBackground(Color.RED);
+    }
+
 
     /**
      * This method is setting the JComboBox with troops available in different stage.
@@ -566,12 +572,14 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     @Override
     public void updateClickAttackTerritoryButton(int attackTerritoryTroops, ArrayList<Territory> defenceTerritories, String attackTerritoryName) {
+        getTerritoryButtonByString(attackTerritoryName).setBackground(Color.RED);
         setAttackTroopsBox(attackTerritoryTroops);
         enableTargetTerritories(defenceTerritories, attackTerritoryName);
     }
 
     @Override
     public void updateClickTargetTerritoryButton(String originTerritoryName, String targetTerritoryName) {
+        getTerritoryButtonByString(targetTerritoryName).setBackground(Color.ORANGE);
         disableAllTerritoryButton();
         enableTerritoryButton(originTerritoryName);
         enableTerritoryButton(targetTerritoryName);
@@ -579,21 +587,23 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     @Override
     public void updateCancelDefenceTerritoryButton(String originTerritoryName, ArrayList<Territory> defenceTerritories) {
+        getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
         onlyEnableOriginTerritory(originTerritoryName);
         enableTargetTerritories(defenceTerritories, originTerritoryName);
     }
 
     @Override
     public void updateClickFortifyButton(int fortifyTroops, ArrayList<Territory> fortifiedTerritory, String originTerritoryName) {
+        getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
         setTroopsBox(fortifyTroops);
         enableTargetTerritories(fortifiedTerritory,originTerritoryName);
     }
 
     @Override
     public void updateCancelFortifyTerritoryButton(String originTerritoryName, ArrayList<Territory> fortifiedTerritory) {
+        getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
         onlyEnableOriginTerritory(originTerritoryName);
         enableTargetTerritories(fortifiedTerritory,originTerritoryName);
-
     }
 
     @Override
