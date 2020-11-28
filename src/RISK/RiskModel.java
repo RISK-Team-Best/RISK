@@ -1143,4 +1143,20 @@ public class   RiskModel implements Serializable{
     public void setCurrentStage(Stage stage) {
         this.currentStage = stage;
     }
+
+    public void recoverGame()
+    {
+        String path;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("src"));
+        int state = fileChooser.showOpenDialog(null);
+        if (state == JFileChooser.APPROVE_OPTION){
+            File f = fileChooser.getSelectedFile();
+            path = f.getAbsolutePath();
+            System.out.println("file loaded");
+            XMLDOMReader reader = new XMLDOMReader(path);
+            reader.recoverGame(this);
+        }
+
+    }
 }
