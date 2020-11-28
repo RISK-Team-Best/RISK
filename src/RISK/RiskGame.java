@@ -10,5 +10,7 @@ public class RiskGame {
         RiskModel riskModel = new RiskModel();
         RiskView riskView = new RiskView();
         RiskController riskController = new RiskController(riskModel,riskView);
+
+
     }
 }

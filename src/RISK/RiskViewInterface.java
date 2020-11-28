@@ -265,5 +265,7 @@ public interface RiskViewInterface {
      */
     void updateAIFortify(Player currentPlayer, String fortifyTerritoryName, String fortifiedTerritoryName);
 
+    String getFileName();
+
     void updateDraftCountryClick(String territoryName);
 }

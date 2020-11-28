@@ -1,5 +1,8 @@
 package RISK;
 
+import org.xml.sax.SAXException;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,6 +34,7 @@ public class RiskController {
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
         view.addTerritoryButtonListener(new TerritoryButtonListener());
+        view.addSaveButtonListner(new saveButtonListener());
 
 
 
@@ -45,6 +49,7 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             model.newGameProcess();
+
             }
         }
 
@@ -127,5 +132,26 @@ public class RiskController {
 
         }
     }
-}
+
+    public class saveButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            XMLHandler handler = null;
+            try {
+                handler = new XMLHandler();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            try {
+                handler.setModel(model);
+                handler.toXMLFile(view.getFileName());
+            }
+                catch (SAXException saxException) {
+                    saxException.printStackTrace();
+                }
+
+            }
+        }
+    }
+
 

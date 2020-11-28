@@ -4,14 +4,17 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MapPanel class for add map on GUI
  */
-public class MapPanel extends JPanel{
+public class MapPanel extends JPanel implements Serializable{
 
     private BufferedImage image;
+
 
 
     /**
@@ -35,5 +38,9 @@ public class MapPanel extends JPanel{
         super.paintComponent(g);
         g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters
     }
+
+
+
+
 
 }

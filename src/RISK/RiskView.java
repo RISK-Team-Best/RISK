@@ -762,6 +762,11 @@ public class RiskView extends JFrame implements RiskViewInterface{
         setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
 
     }
+    public String getFileName(){
+        String file = JOptionPane.showInputDialog( "Please enter the file name");
+        return file;
+
+    }
 
     /**
      * Add new action listener for newGame button
@@ -832,6 +837,12 @@ public class RiskView extends JFrame implements RiskViewInterface{
         for(JButton button:territoryButtons){
             button.addActionListener(territoryButtonListener);
         }
+    }
+    public void addSaveButtonListner(ActionListener saveButtonListner){
+        saveItem.addActionListener(saveButtonListner);
+    }
+    public void addImportButtonListner(ActionListener importButtonListner){
+        saveItem.addActionListener(importButtonListner);
     }
 
 

@@ -1,5 +1,6 @@
 package RISK;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
  *
  * @Author: Tiantian Lin, 101095243
  */
-public class Player {
+public class Player implements Serializable {
     private String name;
     private int troops;
     private HashMap<String,Territory> territories;
@@ -240,5 +241,6 @@ public class Player {
     public boolean isAI(){
         return this.AI;
      }
+
 
 }

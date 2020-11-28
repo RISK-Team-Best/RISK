@@ -1,5 +1,6 @@
 package RISK;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -11,7 +12,7 @@ import java.util.Random;
  *
  * @Author: Tiantian Lin, 101095243
  */
-public class Dices {
+public class Dices  {
     private ArrayList<Integer> dices;
     private int dicesAmount;
 
