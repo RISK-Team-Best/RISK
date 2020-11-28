@@ -3,6 +3,7 @@ package RISK;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ import java.util.HashMap;
  * @Author: Guanquan Dong, 101093918
  *
  */
-public class Board {
+public class Board implements Serializable{
 
     private HashMap<String,Territory> countryHashMap;
     private HashMap<String,Continent> continentHashMap;

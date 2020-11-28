@@ -264,4 +264,6 @@ public interface RiskViewInterface {
      * @param fortifiedTerritoryName the fortified territory name
      */
     void updateAIFortify(Player currentPlayer, String fortifyTerritoryName, String fortifiedTerritoryName);
+
+    String getFileName();
 }

@@ -1,15 +1,29 @@
 package RISK;
 
+import org.xml.sax.helpers.AttributesImpl;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
 /**
  * The main Game.
  */
-public class   RiskModel {
+public class   RiskModel implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private final List<RiskViewInterface> viewList;
 
@@ -1082,5 +1096,51 @@ public class   RiskModel {
             }
         }
         return minTroops;
+    }
+    public int getNumberPlayers(){
+        return this.numberPlayers;
+    }
+
+    public Stage getCurrentStage(){
+        return currentStage;
+    }
+    public void ImportPlayer(String name, boolean AI, int troops, int ID, String ownTerritory){
+        Player player = new Player(name,AI);
+        player.setID(ID);
+        player.setTroops(troops);
+
+
+        String[] territory = ownTerritory.split(",");
+        for(String str: territory){
+            Territory t = new Territory(str);
+            t.setHolder(player);
+            player.addTerritory(t);
+
+        }
+        for(Player p : this.players){
+            if(!(p.getName().equals(name))){
+                this.players.add(player);
+            }
+        }
+
+
+    }
+
+
+    public void ImportTerritory(String name,int troops,String holderName) {
+        Territory territory = new Territory(name);
+        territory.setTroops(troops);
+        for(Player p : this.players){
+            if(p.getName().equals(holderName)){
+                territory.setHolder(p);
+            }
+        }
+        this.allCountries.add(territory);
+
+
+    }
+
+    public void setCurrentStage(Stage stage) {
+        this.currentStage = stage;
     }
 }

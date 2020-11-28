@@ -3,13 +3,14 @@ package RISK;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
  * This class is for setting player
  */
-public class PlayerSettingDialog{
+public class PlayerSettingDialog  {
     private JPanel settingPanel = new JPanel();
 
     private int column = 2;
