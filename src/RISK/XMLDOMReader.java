@@ -28,6 +28,39 @@ public class XMLDOMReader {
     }
 
     public void recoverGame(RiskModel riskModel) {//break down to small methods
+        readPlayer(riskModel);
+        readTerritories(riskModel);
+        readStage(riskModel);
+
+
+    }
+
+    private void readStage(RiskModel riskModel) {
+        NodeList stage = doc.getElementsByTagName("Stage");
+        String s = stage.item(0).getTextContent();
+        riskModel.setCurrentStage(Stage.valueOf(s));
+    }
+
+    private void readTerritories(RiskModel riskModel) {
+        NodeList territories = doc.getElementsByTagName("Territory");//get all Players
+        for (int i = 0;i<territories.getLength();i++)
+        {
+            Node node = territories.item(i);//Player i
+            Element territory = (Element) node;
+            //String territoryId = territory.getAttribute("ID");
+            NodeList name = territory.getElementsByTagName("name");//other information
+            String n = name.item(0).getTextContent();
+            NodeList holder = territory.getElementsByTagName("holder");//other information
+            String h = holder.item(0).getTextContent();
+            NodeList troops = territory.getElementsByTagName("troops");//other information
+            String t = troops.item(0).getTextContent();
+
+            riskModel.ImportTerritory(n,Integer.parseInt(t),h);
+
+        }
+    }
+
+    private void readPlayer(RiskModel riskModel) {
         NodeList players = doc.getElementsByTagName("Player");//get all Players
         for (int i = 0;i<players.getLength();i++)
         {
@@ -46,23 +79,6 @@ public class XMLDOMReader {
             riskModel.ImportPlayer(n,Boolean.valueOf(a),Integer.parseInt(t),Integer.parseInt(id),o);
 
         }
-        NodeList territories = doc.getElementsByTagName("Territory");//get all Players
-        for (int i = 0;i<territories.getLength();i++)
-        {
-            Node node = territories.item(i);//Player i
-            Element territory = (Element) node;
-            //String territoryId = territory.getAttribute("ID");
-            NodeList name = territory.getElementsByTagName("name");//other information
-            String n = name.item(0).getTextContent();
-            NodeList holder = territory.getElementsByTagName("holder");//other information
-            String h = holder.item(0).getTextContent();
-            NodeList troops = territory.getElementsByTagName("troops");//other information
-            String t = troops.item(0).getTextContent();
-
-            riskModel.ImportTerritory(n,Integer.parseInt(t),h);
-
-        }
-
     }
 
 
