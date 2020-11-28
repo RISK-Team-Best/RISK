@@ -10,7 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
 
-public class XMLDOMReader {
+public class XMLDOMReader implements LoadingStrategy{
 
     private Document doc;
 

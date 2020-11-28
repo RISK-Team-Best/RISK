@@ -1154,7 +1154,7 @@ public class   RiskModel implements Serializable{
             File f = fileChooser.getSelectedFile();
             path = f.getAbsolutePath();
             System.out.println("file loaded");
-            XMLDOMReader reader = new XMLDOMReader(path);
+            LoadingStrategy reader = new XMLDOMReader(path);
             reader.recoverGame(this);
         }
 
