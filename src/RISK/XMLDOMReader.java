@@ -19,8 +19,7 @@ public class XMLDOMReader {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            File f = new File(getClass().getClassLoader().getResource(path+".xml").getFile());
-            System.out.println(f.exists());//test
+            File f = new File(path);
             doc = builder.parse(f);
 
 
@@ -29,25 +28,18 @@ public class XMLDOMReader {
     }
 
     public void recoverGame(RiskModel riskModel) {
-        NodeList result = doc.getElementsByTagName("RISK");
-        for (int i = 0;i<result.getLength();i++)
+        NodeList players = doc.getElementsByTagName("Player");//get all Players
+        for (int i = 0;i<players.getLength();i++)
         {
-            Node node = result.item(i);
-            if (node.getNodeType()==Node.ELEMENT_NODE)
-            {
-                Element element = (Element) node;
-                String category = element.getAttribute("category");
-                NodeList info = element.getChildNodes();
-                System.out.println(element.getTextContent());
-                for(int j = 0;j<info.getLength();j++)
-                {
-                    Element element1 = (Element)info.item(j);
-                    //System.out.println(element1.getTagName()+ category + element.getTextContent());
-                    System.out.println(element1.getTextContent());
-                }
+            Node node = players.item(i);//Player i
+            Element player = (Element) node;
+            String id = player.getAttribute("ID");
+            NodeList name = player.getElementsByTagName("name");//other information
+            String s = name.item(0).getTextContent();
+            System.out.println(s);
 
-            }
         }
-
     }
+
+
 }
