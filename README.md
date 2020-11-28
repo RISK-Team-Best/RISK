@@ -19,6 +19,9 @@ A GUI-based version, now adding the View and the Controller of the game. Display
 ### Milestone 3:
 Add features: bonus army placement, fortifying phases, and AI player
 
+### Milestone 4:
+
+
 
 
 
@@ -55,7 +58,7 @@ Then the map will automatically generate territories and troops for you.<br>
 9.If you need start again, please click File->New to start a new game<br>
 
 Note for AI player: AI player will pop result window in each stage:Draft,Attack(Skip when there is no territory can attack),Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops) and it will pass to next player after finished its round.
-User click the "OK" button to allow AI player enter the next stage.<br>
+User clicks the "OK" button to allow AI player enter the next stage.<br>
 
 
 
@@ -80,18 +83,18 @@ Map image file: Tiantian Lin
 
 
 ### Design Decisions: 
-1.  (1)For MVC part, we seperate model, view and controller as much seperate as possible. So that it could be easy for TA and prof to mark and easy for us to maintain for the future. We divided Model,View and Controller into three different classes. The model class need process the data in the backend. View class provides the front-end of the program and interact with users.
-    (2)We also refactored MVC which got deduction in the Milleston2. Added view as listener and announce view to update once we are processing to next stage.
+1.  (1)For MVC part, we separate the model, view and controller as much separate as possible. So that it could be easy for TA and prof to mark and easy for us to maintain for the future. We divided Model,View and Controller into three different classes. The model class need process the data in the backend. View class provides the front-end of the program and interact with users.
+    (2)We also refactored MVC which got deduction in the Milestone2. Added view as listener and announce view to update once we are processing to next stage.
 
-2. (1)For GUI part, we don't want tons of prompt shows when processing the game include warning message, operating steps message, information messages and so on. So we create the operation panel with several JButtons and one JComboBox. Player can use the operation panel to set command. 
+2. (1)For GUI part, we don't want a lot of prompt messages to appear when processing the game, including warning messages, operation steps messages, information messages and so on. So we create the operation panel with several JButtons and one JComboBox. Player can use the operation panel to set command. 
 
-   (2)At first, we don't want to use buttons to instead territories, because it's so ugly and hard to maintain(For Milestone4, we may change another map). So we had two JLists as the choosing place for origin and target territories. And it also correspond to the lab that we took for MVC. We also placed a graph map only as a reference, and all info of the map showed on the info panel (the most right side of the GUI). However, Prof Babak wants the buttons which we don't like, so we combined the two ideas: replace JLists with JButtons. 
+   (2)At first, we don't want to use buttons to instead territories, because it's so ugly and hard to maintain(For Milestone4, we may change another map). So we had two JLists as the choosing place for origin and target territories. It is also corresponds to the labs we took for MVC. We also placed a graph map only as a reference, and all info of the map showed on the info panel (the most right side of the GUI). However, Prof Babak wants the buttons which we don't like, so we combined the two ideas: replace JLists with JButtons. 
 
-   (3)<i>Finally, we placed the buttons on the graph map and make button shows the troops on the territory. It will only enable the avaiable buttons for different steps, different requirement. And we also want the button shows the different players. So we added the color on buttons according to player's ID. Also the player's id used on change to next player. And the Info panel still shows the whole map's info (Continent-Territory-Holder-troops).</i>
+   (3)<i>Finally, we placed the buttons on the graph map and make button shows the troops on the territory. It will only enable the available buttons for different steps, different requirement. We also want the button shows to the different players. So we added the color on buttons according to player's ID. Also, the player's id used on change to next player. The Info panel still shows the whole map's info (Continent-Territory-Holder-troops).</i>
    
-   (4)AI will show message through prompt. And the territory button will also shows the color for each stage. i.e. Red is the selected origin territory. Orange is the selected target territory. Same color and process as human players.
+   (4)AI will show message through prompt. In addition, the territory button will also display the color for each stage. i.e. Red is the selected origin territory. Orange is the selected target territory. Same color and process as human players.
 
-3. Fortify part, used recursion method to visit all availble territory that can be fortified.
+3. Fortify part, use recursion method to visit all available territory that can be fortified.
 
 ### Data Structure: 
 <b>Type -- Purpose -- Classes </b><br>
