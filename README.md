@@ -17,7 +17,7 @@ A text-based playable version of the game, the players could use console to play
 A GUI-based version, now adding the View and the Controller of the game. Display in a JFrame, and user input is via the mouse. 
 
 ### Milestone 3:
-Add features: bonus army placement, fortify phase, and AI player
+Add features: bonus army placement, fortifying phases, and AI player
 
 
 
