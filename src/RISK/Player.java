@@ -1,36 +1,36 @@
 package RISK;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 /**
  * The class Player store the information of the player's territory and calculate the troops each turn.
  *
- * @Author: Tiantian Lin, 101095243
  */
 public class Player implements Serializable {
-    private String name;
-    private int troops;
-    private HashMap<String,Territory> territories;
-    private HashMap<String,Continent> continents;
-    private int id;
-    private boolean AI;
-    private final int leastBonusTroops = 3;
-    private final int bonusUnits = 3;
+    protected String name;
+    protected int troops;
+    protected HashMap<String,Territory> territories;
+    protected HashMap<String,Continent> continents;
+    protected int id;
+//    private boolean AI;
+    protected final int leastBonusTroops = 3;
+    protected final int bonusUnits = 3;
+    protected RiskModel model;
 
     /**
      * Instantiates a new Player.
      *
      * @param name the player's name
-     * @param AI   the ai
      */
-    public Player(String name,boolean AI){
+    public Player(String name,RiskModel model){
         this.name = name;
         territories = new HashMap<>();
         continents = new HashMap<>();
-        this.AI = AI;
+        this.model = model;
+//        this.AI = AI;
     }
 
     /**
@@ -232,15 +232,113 @@ public class Player implements Serializable {
         return this.id;
     }
 
+    /**
+     * Model handle the draft preparation and update the view
+     */
+    public void draftPrepare(){
+        model.setCurrentStage(Stage.DRAFT);
+        model.checkContinent(this);
+        this.gainTroopsFromTerritory();
+
+        String continentBonus= model.getContinentBonusString();
+        for(RiskViewInterface view: model.getViewList()){
+            view.updateDraftPrepare(this,model.getCurrentStage(),continentBonus);
+        }
+    }
 
     /**
-     * Determine this player is AI or not
-     *
-     * @return the boolean
+     * Model handle the attack preparation and update the view
      */
-    public boolean isAI(){
-        return this.AI;
-     }
+    public void attackPrepare(){
+        model.setCurrentStage(Stage.ATTACK);
+        model.setOriginTerritoryButtonPressed(true);
+        for(RiskViewInterface view: model.getViewList()){
+            view.updateAttackPrepare(this,model.getCurrentStage(),model.getAttackTerritoriesList(this));
+        }
+    }
 
+    /**
+     * Model handle the fortify preparation and update the view
+     */
+    public void fortifyPrepare(){
+        model.setCurrentStage(Stage.FORTIFY);
+        for(RiskViewInterface view: model.getViewList()) {
+            view.updateFortifyPrepare(model.getFortifyTerritories(this),this,model.getCurrentStage());
+        }
+    }
+
+    /**
+     * Model handle the deploy preparation and update the view
+     */
+    public void deployPrepare(){
+        model.setCurrentStage(Stage.DEPLOY);
+        for(RiskViewInterface view: model.getViewList()){
+            view.updateDeployPrepare(this,model.getCurrentStage(),model.getAttackTerritory().getTroops()-1);
+        }
+    }
+
+    /**
+     * Model do the attack process and update the view
+     */
+    public void attackProcess() {
+        String originTerritoryName = model.getOriginTerritoryName();
+        String targetTerritoryName = model.getTargetTerritoryName();
+        if(originTerritoryName.isEmpty() || targetTerritoryName.isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Territory attackTerritory = model.getTerritoryByString(originTerritoryName);
+        Territory defenceTerritory = model.getTerritoryByString(targetTerritoryName);
+        model.setAttackTerritory(attackTerritory);
+        model.setDefenceTerritory(defenceTerritory);
+        AttackWay attackWay = null;
+        for(RiskViewInterface view: model.getViewList()) {
+            attackWay = view.getAttackTroopsBox();
+        }
+        boolean gainTerritory = model.battle(attackTerritory,defenceTerritory,attackWay);
+        attackProcessResult(attackTerritory,defenceTerritory,gainTerritory);
+    }
+
+    protected void attackProcessResult(Territory attackTerritory, Territory defenceTerritory,boolean gainTerritory){
+        for(RiskViewInterface view: model.getViewList()) {
+            view.setTerritoryButtonTroops(attackTerritory.getName(), attackTerritory.getTroops());
+            view.setTerritoryButtonTroops(defenceTerritory.getName(), defenceTerritory.getTroops());
+            view.setContinentsLabel(model.getMapInfoThroughContinent());
+            if(gainTerritory) {
+                JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"You conquered "+defenceTerritory.getName()+"!");
+                view.updateWinAttack(this);
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"You didn't conquered "+defenceTerritory.getName()+".");
+        model.resetButtonsAndBoxProcedure();
+        model.checkContinent(this);
+    }
+
+    protected void deployProcess(String originTerritoryName,String targetTerritoryName,int moveTroops){
+        for(RiskViewInterface view: model.getViewList()) {
+            view.setContinentsLabel(model.getMapInfoThroughContinent());
+            view.setTerritoryButtonTroops(originTerritoryName, getTerritoryByString(originTerritoryName).getTroops());
+            view.setTerritoryButtonTroops(targetTerritoryName, getTerritoryByString(targetTerritoryName).getTroops());
+            model.resetButtonsAndBoxProcedure();
+            view.updateDeployFinish(this);
+        }
+        JOptionPane.showMessageDialog(null,this.name+" deployed "+moveTroops+" troops from "+originTerritoryName+" to "+targetTerritoryName);
+        model.setCurrentStage(Stage.ATTACK);
+        model.checkWinner();
+    }
+
+
+    protected void fortifyProcessResult(Territory startCountry,Territory destinationCountry,int moveTroops){
+        for(RiskViewInterface view: model.getViewList()) {
+            JOptionPane.showMessageDialog(null,this.name +" moved "+ moveTroops+ " troops from "+startCountry.getName()+" to "+destinationCountry.getName()+".");
+            model.setCurrentPlayer(model.getNextPlayer(this.getID()));
+            view.setContinentsLabel(model.getMapInfoThroughContinent());
+            view.setTerritoryButtonTroops(startCountry.getName(), startCountry.getTroops());
+            view.setTerritoryButtonTroops(destinationCountry.getName(), destinationCountry.getTroops());
+            model.resetButtonsAndBoxProcedure();
+            view.updateFortifyFinish(this);
+        }
+    }
 
 }

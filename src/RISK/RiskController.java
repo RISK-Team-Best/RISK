@@ -2,7 +2,6 @@ package RISK;
 
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -129,7 +128,6 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e){
             model.territoryButtonClickProcess(e.getActionCommand());
-
         }
     }
 
