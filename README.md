@@ -36,28 +36,28 @@ In the game:
 
 1.Click File->New to create a new game<br>
 2.Enter the number of player(2 to 6)<br>
-3.Enter players'name on the Textbox(There already have some default name), please note that the players name can't be the same (or it will give error prompt and wait until you have valid input).Then choose the player is AI or not.<br>     
+3.Enter players' names on the text box(There already have some default names), please note that the players name can't be the same (or it will give error prompt and wait until you have valid input).Then choose the player is AI or not.<br>     
 Then the map will automatically generate territories and troops for you.<br>                                                              
 4.Click draft button（This step cannot skip):<br>           
 &emsp;(1)choose the territory button on the map that you want send troops to(click again to cancel and reselect)            
 &emsp;(2)choose the number of troops you want to send to in the troop box on the right of the map                                     
 &emsp;(3)once you choose both territory and troops, click confirm to process<br>   
-5.Click attack button（This step could choose skip, if you click skip, then move to fortify):<br>         
+5.Click attack button（This step could choose to skip, if you click skip, then move to fortify):<br>         
 &emsp;(1)choose the territory button on the map that you want to launch attack(click the territory button again to cancel and reselect)        
-&emsp;(2)choose the territory button on the map that you want to attack(click the territory button again to cancel and reselect) &emsp;(3)choose the attackway in the attackWay box on the right of the map to attack (one/two/three/blitz)                           
+&emsp;(2)choose the territory button on the map that you want to attack(click the territory button again to cancel and reselect) &emsp;(3)choose the attack way in the attackWay box on the right of the map to attack (one/two/three/blitz)                           
 &emsp;(4)once you choose the territories and attackWay, click confirm to process                                                       
 &emsp;(5)the game will pop the battle result.If you win, click deploy to deploy troops.If you lose, choose another territory button on the map to launch attack or click skip to move to fortify                                                                     
 &emsp;(6)Deploy(only you win in the battle):choose the number of troops that you want to send to the territory that you just win,then click confirm to process<br>      
-6.Click fortify button (This step could choose skip, if you click skip, then move to next player):     <br>          
+6.Click fortify button (This step could choose to skip, if you click skip, then move to next player):     <br>          
 &emsp;(1)choose the territory button you want move troops from (click again to cancel and reselect)         
 &emsp;(2)choose the territory button you want move troops to(click again to cancel and reselect)          
-&emsp;(3)choose the number of troops you want to send to destination territory on the troopbox    
+&emsp;(3)choose the number of troops you want to send to destination territory on the troop Box    
 &emsp;(4)once you choose the territories and troops number, click confirm to process<br>       
-7.After the steps above, the program will automatically pass to next player until one of the player owns all of the territory<br>
+7.After the steps above, the program will automatically pass to next player until one of the player owns all the territories<br>
 8.Once there is a player lost all territory or there is a player win the game, the Frame will pop window to show the result<br>
 9.If you need start again, please click File->New to start a new game<br>
 
-Note for AI player: AI player will pop result window in each stage:Draft,Attack(Skip when there is no territory can attack),Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops) and it will pass to next player after finished its round.
+Note for AI player: AI player will pop result window in each stage:Draft,Attack(Skip when there is no territory can attack),Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops). It will also pass to next player after finished its round.
 User clicks the "OK" button to allow AI player enter the next stage.<br>
 
 
@@ -71,7 +71,7 @@ documentation
 
 
 #### Contribution: 
-Board.java:Guanqun Dong(Figured out using outputstream to read text and map image and make it can read in jar), Jiawei Ma(All other things)                         
+Board.java:Guanqun Dong(Figured out using outputstream to read text and map image and make it can read in Jar), Jiawei Ma(All other things)                         
 RiskModel.java,Continent.java:Jiawei Ma                                 
 RiskView.java:Jiawei Ma,Jiatong Han,Tiantian Lin                                              
 RiskController.java, ReadMe File: Jiawei Ma,Tiantian Lin                                    
@@ -98,12 +98,12 @@ Map image file: Tiantian Lin
 
 ### Data Structure: 
 <b>Type -- Purpose -- Classes </b><br>
-HashMap -- Store a pair of informations and prevent duplication -- Player, Board, RiskController, RiskModel<br>
-HashMap with ArrayList in value -- Store one key and a bunch of infos related to the Key -- Board<br>
-Enum -- Prevent Typo and easy to get thorugh IntelliJ's suggestion. -- AttackWay, Stage<br>
-ArrayList -- Instantiate of List to store same type infos -- Continent, Dices, RiskModel<br>
-LinkedHashSet -- Store one type of infos, prevent duplication and can be trace in order -- RiskModel
-LinkedHashMap -- Store the corresponding player's name and type. Also can iterate to get each player in sequence.-- PlayerSettingDialog
+HashMap -- Store a pair of information and prevent duplication -- Player, Board, RiskController, RiskModel<br>
+HashMap with ArrayList in value -- Store a key and store a bunch of info related to the Key -- Board<br>
+Enum -- Prevent Typo and easy to get through IntelliJ's suggestion. -- AttackWay, Stage<br>
+ArrayList -- Instantiate of List to store same type info -- Continent, Dices, RiskModel<br>
+LinkedHashSet -- Store one type of info, prevent duplication and can be trace in order -- RiskModel
+LinkedHashMap -- Store the corresponding player's name and type. Also, can iterate to get each player in sequence.-- PlayerSettingDialog
 
 
 ### Known Issue:     
@@ -111,12 +111,12 @@ LinkedHashMap -- Store the corresponding player's name and type. Also can iterat
 
 ### Changes:        
 1.We've refactor the code in Controller, Model and added viewInterface as listener to avoid smelly                                                  
-2.We've added a View Interface to implement differrent update view methods                                     
+2.We've added a View Interface to implement different update view methods                                     
 3.We've added default names for user to choose when add players                                                               
-4.We've fixed the error that MAC OS does't shows the button color                                                                
+4.We've fixed the error that MAC OS don't show the button color                                                            
 
 ### Roadmap Ahead:                  
-Currently,we have save and load buttons on the menu. These two options are for M4, and no yet developed.There are code for XML Writer and Reader in branch AIPlayer, which are some preparation for M4 development.
+Currently,we have saved and load buttons on the menu. These two options are for M4, and not yet developed.There are code for XML Writer and Reader in branch AIPlayer, which are some preparation for M4 development.
 
 
 
