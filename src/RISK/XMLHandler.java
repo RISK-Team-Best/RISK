@@ -97,8 +97,8 @@ public class XMLHandler extends DefaultHandler {
 
                 attr.clear();
                 handler.startElement("", "", "AI", attr);
-                String ai = model.getPlayerById(i).isAI() + "";
-                handler.characters(ai.toCharArray(), 0, ai.length());
+                //String ai = model.getPlayerById(i).isAI() + "";
+                //handler.characters(ai.toCharArray(), 0, ai.length());
                 handler.endElement("", "", "AI");
 
                 attr.clear();
