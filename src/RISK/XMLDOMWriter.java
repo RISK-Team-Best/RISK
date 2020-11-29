@@ -14,7 +14,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
-public class XMLDOMWriter {
+public class XMLDOMWriter implements SavingStrategy{
     private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     private DocumentBuilder documentBuilder;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -67,6 +67,50 @@ public class XMLDOMWriter {
         }
         DOMSource source = new DOMSource(map);
         Result result = new StreamResult(new File("res//mapResult.xml"));
+        try {
+            transformer.transform(source,result);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+    }
+
+    public void saveGame(RiskModel model,String path) {
+        Document game = documentBuilder.newDocument();
+        Element root = game.createElement("RISK");
+        game.appendChild(root);
+        Element currentStage = game.createElement("currentStage");
+        currentStage.setTextContent(model.getCurrentStage().getName());
+        root.appendChild(currentStage);
+        for(Player p : model.getPlayers())
+        {
+            Element player = game.createElement("Player");
+            player.setAttribute("name",p.getName());
+            player.setAttribute("ID",String.valueOf(p.getID()));
+            player.setAttribute("troops",String.valueOf(p.getTroops()));
+            player.setAttribute("isAI",String.valueOf(p instanceof AIPlayer));
+            for (Continent c : p.getContinents())
+            {
+                Element ownContinent = game.createElement("ownContinent");
+                ownContinent.setAttribute("continentName",c.getName());
+                ownContinent.setAttribute("Bonus",String.valueOf(c.getBonusTroops()));
+                player.appendChild(ownContinent);
+            }
+            for (Territory t : p.getTerritories())
+            {
+                Element ownTerritory = game.createElement("ownTerritory");
+                ownTerritory.setAttribute("territoryName",t.getName());
+                ownTerritory.setAttribute("troops",String.valueOf(t.getTroops()));
+                player.appendChild(ownTerritory);
+            }
+
+            root.appendChild(player);
+
+        }
+        Element currentPlayer = game.createElement("currentPlayer");
+        currentPlayer.setTextContent(model.getCurrentPlayer().getName());
+        DOMSource source = new DOMSource(game);
+        Result result = new StreamResult(new File(path));
         try {
             transformer.transform(source,result);
         }catch (Exception e){

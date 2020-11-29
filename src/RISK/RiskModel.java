@@ -547,6 +547,14 @@ public class   RiskModel implements Serializable{
     }
 
     /**
+     * Get all Players
+     * @return all Players
+     */
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    /**
      * Getter for battleStatusString, used in GUI.
      *
      * @return the status of the battle
@@ -998,7 +1006,7 @@ public class   RiskModel implements Serializable{
 
     public void recoverGame()
     {
-        String path;
+        /*String path;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File("src"));
         int state = fileChooser.showOpenDialog(null);
@@ -1008,7 +1016,7 @@ public class   RiskModel implements Serializable{
             System.out.println("file loaded");
             LoadingStrategy reader = new XMLDOMReader(path);
             reader.recoverGame(this);
-        }
+        }*/
 
     }
 }

@@ -74,7 +74,7 @@ public class XMLDOMReader implements LoadingStrategy{
             NodeList ownTerritory = player.getElementsByTagName("ownTerritory");//other information
             String o = ownTerritory.item(0).getTextContent();
 
-            riskModel.ImportPlayer(n,Boolean.valueOf(a),Integer.parseInt(t),Integer.parseInt(id),o);
+            //riskModel.ImportPlayer(n,Boolean.valueOf(a),Integer.parseInt(t),Integer.parseInt(id),o);
 
         }
     }

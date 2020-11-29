@@ -135,7 +135,7 @@ public class RiskController {
     public class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            XMLHandler handler = null;
+            /*XMLHandler handler = null;
             try {
                 handler = new XMLHandler();
             } catch (IOException ioException) {
@@ -147,7 +147,9 @@ public class RiskController {
             }
                 catch (SAXException saxException) {
                     saxException.printStackTrace();
-                }
+                }*/
+            SavingStrategy strategy = new XMLDOMWriter();
+            strategy.saveGame(model,"testFile.xml");
 
         }
     }
