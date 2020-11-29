@@ -170,19 +170,13 @@ public interface RiskViewInterface {
      */
     void enableOriginalTerritories(ArrayList<Territory> territories);
 
+
     /**
      * Update deploy finish.
      *
      * @param currentPlayer the current player
      */
     void updateDeployFinish(Player currentPlayer);
-
-    /**
-     * Only enable origin territory.
-     *
-     * @param territoryName the territory name
-     */
-    void onlyEnableOriginTerritory(String territoryName);
 
     /**
      * Update click attack territory button.
@@ -266,4 +260,12 @@ public interface RiskViewInterface {
     void updateAIFortify(Player currentPlayer, String fortifyTerritoryName, String fortifiedTerritoryName);
 
     String getFileName();
+
+    void updateDraftCountryClick(String territoryName);
+
+    void updateAIDeploy(String statuslabel);
+
+    void updateAIWinAttack();
+
+    void disableAllTerritoryButton();
 }

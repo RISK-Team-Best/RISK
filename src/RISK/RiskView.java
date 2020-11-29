@@ -423,6 +423,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
         setStatusLabel(currentPlayer.getName()+"'s turn, Attack Stage. "+tempAttackTerritory.getName()+" attacks "+tempDefenceTerritory.getName()+".");
         getTerritoryButtonByString(tempAttackTerritory.getName()).setBackground(Color.RED);
         getTerritoryButtonByString(tempDefenceTerritory.getName()).setBackground(Color.ORANGE);
+        disableAllCommandButtons();
     }
 
     @Override
@@ -437,6 +438,25 @@ public class RiskView extends JFrame implements RiskViewInterface{
         getTerritoryButtonByString(fortifyTerritoryName).setBackground(Color.RED);
         getTerritoryButtonByString(fortifiedTerritoryName).setBackground(Color.ORANGE);
         setStatusLabel(currentPlayer.getName()+"'s turn, Fortify Stage. Move troops from "+fortifyTerritoryName+" to "+fortifiedTerritoryName+".");
+        disableAllTerritoryButton();
+    }
+
+    @Override
+    public void updateDraftCountryClick(String territoryName) {
+        onlyEnableOriginTerritory(territoryName);
+        getTerritoryButtonByString(territoryName).setBackground(Color.RED);
+    }
+
+    @Override
+    public void updateAIDeploy(String statusLabel) {
+        disableAllCommandButtons();
+        setStatusLabel(statusLabel);
+        fortify.setEnabled(true);
+    }
+
+    @Override
+    public void updateAIWinAttack() {
+        deploy.setEnabled(true);
     }
 
 
@@ -508,6 +528,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
     /**
      * This method is for Disable all territory buttons
      */
+    @Override
     public void disableAllTerritoryButton(){
         for(JButton button:territoryButtons){
             button.setEnabled(false);
@@ -541,10 +562,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     @Override
     public void updateFortifyFinish(Player currentPlayer) {
+        disableAllCommandButtons();
         draft.setEnabled(true);
-        confirmButton.setEnabled(false);
-        skipButton.setEnabled(false);
-        attack.setEnabled(false);
         setStatusLabel(currentPlayer.getName()+ "'s turn, please click \"Draft\" button to start DRAFT stage.");
         disableAllTerritoryButton();
     }
@@ -553,7 +572,6 @@ public class RiskView extends JFrame implements RiskViewInterface{
      * Only enable one territory button and disable all others
      * @param territoryName
      */
-    @Override
     public void onlyEnableOriginTerritory(String territoryName){
         disableAllTerritoryButton();
         for(JButton button:territoryButtons){
@@ -566,12 +584,14 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     @Override
     public void updateClickAttackTerritoryButton(int attackTerritoryTroops, ArrayList<Territory> defenceTerritories, String attackTerritoryName) {
+        getTerritoryButtonByString(attackTerritoryName).setBackground(Color.RED);
         setAttackTroopsBox(attackTerritoryTroops);
         enableTargetTerritories(defenceTerritories, attackTerritoryName);
     }
 
     @Override
     public void updateClickTargetTerritoryButton(String originTerritoryName, String targetTerritoryName) {
+        getTerritoryButtonByString(targetTerritoryName).setBackground(Color.ORANGE);
         disableAllTerritoryButton();
         enableTerritoryButton(originTerritoryName);
         enableTerritoryButton(targetTerritoryName);
@@ -579,27 +599,31 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     @Override
     public void updateCancelDefenceTerritoryButton(String originTerritoryName, ArrayList<Territory> defenceTerritories) {
+        getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
         onlyEnableOriginTerritory(originTerritoryName);
         enableTargetTerritories(defenceTerritories, originTerritoryName);
     }
 
     @Override
     public void updateClickFortifyButton(int fortifyTroops, ArrayList<Territory> fortifiedTerritory, String originTerritoryName) {
+        getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
         setTroopsBox(fortifyTroops);
         enableTargetTerritories(fortifiedTerritory,originTerritoryName);
     }
 
     @Override
     public void updateCancelFortifyTerritoryButton(String originTerritoryName, ArrayList<Territory> fortifiedTerritory) {
+        getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
         onlyEnableOriginTerritory(originTerritoryName);
         enableTargetTerritories(fortifiedTerritory,originTerritoryName);
-
     }
 
     @Override
     public void updateAIDraft(Player currentPlayer, String continentBonusString, Territory draftTerritory) {
         setStatusLabel(currentPlayer.getName() + "'s turn, Draft stage. You have " + currentPlayer.getTroops() + " troops can be sent."+continentBonusString);
         getTerritoryButtonByString(draftTerritory.getName()).setBackground(Color.RED);
+        disableAllCommandButtons();
+        getJButton("Attack").setEnabled(true);
     }
 
     /**
