@@ -332,7 +332,7 @@ public class Player implements Serializable {
     protected void fortifyProcessResult(Territory startCountry,Territory destinationCountry,int moveTroops){
         for(RiskViewInterface view: model.getViewList()) {
             model.setCurrentPlayer(model.getNextPlayer(this.getID()));
-            JOptionPane.showMessageDialog(null,this.name +" moved "+ moveTroops+ " troops from "+startCountry.getName()+" to "+destinationCountry.getName()+".");
+            JOptionPane.showMessageDialog(null,model.getCurrentPlayer().getName() +" moved "+ moveTroops+ " troops from "+startCountry.getName()+" to "+destinationCountry.getName()+".");
             view.setContinentsLabel(model.getMapInfoThroughContinent());
             view.setTerritoryButtonTroops(startCountry.getName(), startCountry.getTroops());
             view.setTerritoryButtonTroops(destinationCountry.getName(), destinationCountry.getTroops());
