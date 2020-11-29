@@ -35,12 +35,18 @@ public class GameComponentFactory {
         }
     }
 
-    public static Territory createTerritory(String name,String troops,Player holder)
+    public static Territory createTerritory(String name,String troops,Player holder,RiskModel model)
     {
-        Territory newTerritory = new Territory(name);
+        Territory newTerritory = model.getTerritoryByString(name);
         newTerritory.setTroops(Integer.parseInt(troops));
         newTerritory.setHolder(holder);
         return newTerritory;
+
+    }
+
+    public static Continent createContinent(String name,String bonus,RiskModel model)
+    {
+        return null;
 
     }
 }
