@@ -16,6 +16,7 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -45,8 +46,6 @@ public class XMLHandler extends DefaultHandler {
         isAI = false;
         isOwnTerritory = false;
         isID = false;
-
-
     }
 
     /**
@@ -155,6 +154,18 @@ public class XMLHandler extends DefaultHandler {
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         }
+    }  
+    //export saved games with name
+    public void exportXMLFileByName(String filename) throws IOException {
+        FileWriter fileWriter =new FileWriter(filename+".xml");
+        fileWriter.write(toXMLFile());
+        fileWriter.close();
+    }
+
+    private String toXMLFile() {
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("<>\n");
+        return stringBuilder.toString();
     }
 
 
