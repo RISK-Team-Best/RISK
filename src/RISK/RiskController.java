@@ -33,7 +33,8 @@ public class RiskController {
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
         view.addTerritoryButtonListener(new TerritoryButtonListener());
-        view.addSaveButtonListner(new saveButtonListener());
+        view.addSaveButtonListner(new SaveButtonListener());
+        view.addImportButtonListner(new LoadButtonListener());
 
 
 
@@ -131,7 +132,7 @@ public class RiskController {
         }
     }
 
-    public class saveButtonListener implements ActionListener {
+    public class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             XMLHandler handler = null;
@@ -148,8 +149,16 @@ public class RiskController {
                     saxException.printStackTrace();
                 }
 
-            }
         }
+    }
+    public class LoadButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            model.recoverGame();
+        }
+    }
+
     }
 
 

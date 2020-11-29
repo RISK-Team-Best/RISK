@@ -856,11 +856,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
         saveItem.addActionListener(saveButtonListner);
     }
     public void addImportButtonListner(ActionListener importButtonListner){
-        saveItem.addActionListener(importButtonListner);
+        loadItem.addActionListener(importButtonListner);
     }
-
-
-
 
 }
 
