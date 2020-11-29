@@ -30,6 +30,10 @@ public class XMLHandler extends DefaultHandler {
     private int troops,id;
     private String holder;
     private String ownTerritory;
+    private Player player = null;
+    private Territory territory = null;
+    private StringBuilder sb = null;
+
 
     //private BufferedImage image;
 
@@ -70,8 +74,9 @@ public class XMLHandler extends DefaultHandler {
             AttributesImpl attr = new AttributesImpl();
 
             handler.startDocument();
-            handler.startElement("", "", "RISK", attr);
             attr.clear();
+            handler.startElement("", "", "RISK", attr);
+
 
             //store player in XML
             for (int i = 0; i < model.getNumberPlayers(); i++) {
@@ -138,12 +143,17 @@ public class XMLHandler extends DefaultHandler {
                 handler.endElement("", "", "Territory");
             }
 
-            attr.addAttribute("", "", "", "ID", "");
+            attr.clear();
             handler.startElement("", "", "Stage", attr);
             String stage = model.getCurrentStage().getName() + "";
             handler.characters(stage.toCharArray(), 0, stage.length());
             handler.endElement("", "", "Stage");
 
+            attr.clear();
+            handler.startElement("", "", "CurrentPlayer", attr);
+            String currentplayer = model.getCurrentPlayer().getName() + "";
+            handler.characters(currentplayer.toCharArray(), 0, currentplayer.length());
+            handler.endElement("", "", "CurrentPlayer");
 
             handler.endElement("", "", "RISK");
             handler.endDocument();
@@ -156,18 +166,7 @@ public class XMLHandler extends DefaultHandler {
         }
     }
 
-    //export saved games with name
-    public void exportXMLFileByName(String filename) throws IOException {
-        FileWriter fileWriter =new FileWriter(filename+".xml");
-        fileWriter.write(toXMLFile());
-        fileWriter.close();
-    }
 
-    private String toXMLFile() {
-        StringBuilder stringBuilder=new StringBuilder();
-        stringBuilder.append("<>\n");
-        return stringBuilder.toString();
-    }
 
 
     //import saved games with name
@@ -188,14 +187,20 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void startElement(String u, String in, String qName, Attributes a) throws SAXException {
 
-        super.startElement(u, in, qName, a);
+        /*super.startElement(u, in, qName, a);
 
-        if ("Player".equals(qName)) {
-            isPlayer = true;
-        } else if ("Territory".equals(qName)) {
+        //if ("Player".equals(qName)) {
+            //isPlayer = true;
+       // }
+        if("Player".equals(qName)){
+            player = new Player("",false);
+            //isPlayer = true;
+        }
+        else if ("Territory".equals(qName)) {
             isTerritory = true;
         } else if ("name".equals(qName)) {
             isName = true;
+
         } else if ("holder".equals(qName)) {
             isHolder = true;
         } else if ("troops".equals(qName)) {
@@ -206,16 +211,21 @@ public class XMLHandler extends DefaultHandler {
             isStage = true;
         } else if ("ownTerritory".equals(qName)) {
             isOwnTerritory = true;
+
         }
         else if ("id".equals(qName)){
             isID = true;
         }
-
+        sb = new StringBuilder();
+*/
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException{
-        if(qName.equals("Player") && isPlayer) {
+
+
+        /*if(qName.equals("Player") && isPlayer) {
+
             this.model.ImportPlayer(name,AI,troops,id,ownTerritory);
             isPlayer = false;
         }
@@ -227,13 +237,13 @@ public class XMLHandler extends DefaultHandler {
             this.model.setCurrentStage(stage);
             isStage = false;
         }
-
+*/
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
 
-        super.characters(ch, start, length);
+        /*super.characters(ch, start, length);
 
         String text = new String(ch, start, length);
 
@@ -263,7 +273,7 @@ public class XMLHandler extends DefaultHandler {
         else if (isHolder){
             holder = text;
             isHolder = false;
-        }
+        }*/
     }
 
     public RiskModel getModel() {
@@ -271,6 +281,7 @@ public class XMLHandler extends DefaultHandler {
     }
 
     }
+
 
 
 

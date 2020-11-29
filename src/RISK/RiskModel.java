@@ -1104,6 +1104,7 @@ public class   RiskModel implements Serializable{
     public Stage getCurrentStage(){
         return currentStage;
     }
+
     public void ImportPlayer(String name, boolean AI, int troops, int ID, String ownTerritory){
         Player player = new Player(name,AI);
         player.setID(ID);
@@ -1157,6 +1158,10 @@ public class   RiskModel implements Serializable{
             LoadingStrategy reader = new XMLDOMReader(path);
             reader.recoverGame(this);
         }
+
+    }
+
+    public void loadGame(RiskModel model) {
 
     }
 }

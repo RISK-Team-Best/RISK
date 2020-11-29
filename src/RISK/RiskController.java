@@ -154,7 +154,26 @@ public class RiskController {
         }
     }
     public class LoadButtonListener implements ActionListener {
+        /*@Override
+        public void actionPerformed(ActionEvent e) {
+            XMLHandler handler = null;
+            try {
+                 handler = new XMLHandler();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            try{
+                handler.importXMLFileByName(view.getFileName());
+            }
+            catch(Exception saxException) {
+                saxException.printStackTrace();
+            }
 
+            model = handler.getModel();
+            //System.out.print(model.getCurrentStage());
+
+        }
+*/
         @Override
         public void actionPerformed(ActionEvent e) {
             model.recoverGame();
