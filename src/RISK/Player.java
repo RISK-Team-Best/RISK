@@ -75,8 +75,7 @@ public class Player implements Serializable {
      * @return the array list
      */
     public ArrayList<String> getTerritoriesString(){
-        ArrayList<String> territoriesString = new ArrayList<>(territories.keySet());
-        return territoriesString;
+        return new ArrayList<>(territories.keySet());
     }
 
     /**
