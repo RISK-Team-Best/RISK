@@ -109,6 +109,7 @@ public class XMLDOMWriter implements SavingStrategy{
         }
         Element currentPlayer = game.createElement("currentPlayer");
         currentPlayer.setTextContent(model.getCurrentPlayer().getName());
+        root.appendChild(currentPlayer);
         DOMSource source = new DOMSource(game);
         Result result = new StreamResult(new File(path));
         try {

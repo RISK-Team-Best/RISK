@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.util.ArrayList;
 
 
 public class XMLDOMReader implements LoadingStrategy{
@@ -26,15 +27,16 @@ public class XMLDOMReader implements LoadingStrategy{
     }
 
     public void recoverGame(RiskModel riskModel) {//break down to small methods
+
+        readStage(riskModel);
         readPlayer(riskModel);
         readTerritories(riskModel);
-        readStage(riskModel);
 
 
     }
 
     private void readStage(RiskModel riskModel) {
-        NodeList stage = doc.getElementsByTagName("Stage");
+        NodeList stage = doc.getElementsByTagName("currentStage");
         String s = stage.item(0).getTextContent();
         riskModel.setCurrentStage(Stage.valueOf(s));
     }
@@ -62,20 +64,21 @@ public class XMLDOMReader implements LoadingStrategy{
         NodeList players = doc.getElementsByTagName("Player");//get all Players
         for (int i = 0;i<players.getLength();i++)
         {
-            Node node = players.item(i);//Player i
-            Element player = (Element) node;
+            Node PlayerNode = players.item(i);//Player i
+            Element player = (Element) PlayerNode;
             String id = player.getAttribute("ID");
-            NodeList name = player.getElementsByTagName("name");//other information
-            String n = name.item(0).getTextContent();
-            NodeList ai = player.getElementsByTagName("AI");//other information
-            String a = ai.item(0).getTextContent();
-            NodeList troops = player.getElementsByTagName("troops");//other information
-            String t = troops.item(0).getTextContent();
-            NodeList ownTerritory = player.getElementsByTagName("ownTerritory");//other information
-            String o = ownTerritory.item(0).getTextContent();
+            String isAI = player.getAttribute("isAI");
+            String troops = player.getAttribute("troops");
+            ArrayList<Continent> ownContinents = new ArrayList<>();
+            NodeList continents = doc.getElementsByTagName("ownContinent");
+            for(int j = 0;j<continents.getLength();j++)
+            {
+                Node continentNode = continents.item(j);
+                Element continent = (Element) continentNode;
+                String continentName = continent.getAttribute("continentName");
+                String bonus = continent.getAttribute("Bonus");
 
-            //riskModel.ImportPlayer(n,Boolean.valueOf(a),Integer.parseInt(t),Integer.parseInt(id),o);
-
+            }
         }
     }
 
