@@ -71,7 +71,7 @@ documentation
 
 
 #### Contribution: 
-Board.java:Guanqun Dong(Figured out using outputstream to read text and map image and make it can read in Jar), Jiawei Ma(All other things)                         
+Board.java:Guanqun Dong(Figured out using outputstream method to read text and map image and make it can read in Jar), Jiawei Ma(All other things)                         
 RiskModel.java,Continent.java:Jiawei Ma                                 
 RiskView.java:Jiawei Ma,Jiatong Han,Tiantian Lin                                              
 RiskController.java, ReadMe File: Jiawei Ma,Tiantian Lin                                    

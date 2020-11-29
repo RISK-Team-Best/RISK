@@ -48,8 +48,7 @@ public class XMLDOMWriter {
         }
     }
 
-    public void genarateMap (Board board)
-    {
+    public void generateMap(Board board) {
         Document map = documentBuilder.newDocument();
         Element root = map.createElement("board");
         map.appendChild(root);
@@ -80,7 +79,7 @@ public class XMLDOMWriter {
         try {
             Board map = new Board();
             XMLDOMWriter writer = new XMLDOMWriter();
-            writer.genarateMap(map);
+            writer.generateMap(map);
 
         }catch (Exception e){
             System.out.println(e);

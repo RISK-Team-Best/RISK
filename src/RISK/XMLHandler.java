@@ -154,7 +154,8 @@ public class XMLHandler extends DefaultHandler {
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         }
-    }  
+    }
+
     //export saved games with name
     public void exportXMLFileByName(String filename) throws IOException {
         FileWriter fileWriter =new FileWriter(filename+".xml");
