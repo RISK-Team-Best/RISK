@@ -14,11 +14,8 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class XMLHandler extends DefaultHandler {
     private boolean isPlayer, isTerritory, isName, isHolder, isTroops, isAI, isStage, isOwnTerritory,isID;
@@ -109,39 +106,58 @@ public class XMLHandler extends DefaultHandler {
 
                 attr.clear();
                 handler.startElement("", "", "ownTerritory", attr);
-                String territory = model.getPlayerById(i).getTerritories() + "";
-                handler.characters(territory.toCharArray(), 0, territory.length());
+                for(Territory tempTerritory:model.getPlayerById(i).getTerritories()){
+                    attr.clear();
+                    handler.startElement("","","Territory",attr);
+
+                    attr.clear();
+                    handler.startElement("","","Name",attr);
+                    handler.characters(tempTerritory.getName().toCharArray(),0,tempTerritory.getName().length());
+                    handler.endElement("","","Name");
+
+                    attr.clear();
+                    handler.startElement("","","Troops",attr);
+                    handler.characters(String.valueOf(tempTerritory.getTroops()).toCharArray(),0,String.valueOf(tempTerritory.getTroops()).length());
+                    handler.endElement("","","Troops");
+
+                    attr.clear();
+                    handler.startElement("","","Holder",attr);
+                    handler.characters(tempTerritory.getHolder().getName().toCharArray(),0,tempTerritory.getHolder().getName().length());
+                    handler.endElement("","","Holder");
+
+                    handler.endElement("","","Territory");
+                }
                 handler.endElement("", "", "ownTerritory");
 
 
                 handler.endElement("", "", "Player");
             }
 
-            //store territory in XML
-            for (int i = 0; i < model.getAllCountries().size(); i++) {
-                attr.addAttribute("", "", "ID", "", String.valueOf(i));
-                handler.startElement("", "", "Territory", attr);
-
-                attr.clear();
-                handler.startElement("", "", "name", attr);
-                String name = model.getAllCountries().get(i).getName() + "";
-                handler.characters(name.toCharArray(), 0, name.length());
-                handler.endElement("", "", "name");
-
-                attr.clear();
-                handler.startElement("", "", "holder", attr);
-                String holder = model.getAllCountries().get(i).getHolder().getName() + "";
-                handler.characters(holder.toCharArray(), 0, holder.length());
-                handler.endElement("", "", "holder");
-
-                attr.clear();
-                handler.startElement("", "", "troops", attr);
-                String troops = model.getAllCountries().get(i).getTroops() + "";
-                handler.characters(troops.toCharArray(), 0, troops.length());
-                handler.endElement("", "", "troops");
-
-                handler.endElement("", "", "Territory");
-            }
+//            //store territory in XML
+//            for (int i = 0; i < model.getAllCountries().size(); i++) {
+//                attr.addAttribute("", "", "ID", "", String.valueOf(i));
+//                handler.startElement("", "", "Territory", attr);
+//
+//                attr.clear();
+//                handler.startElement("", "", "name", attr);
+//                String name = model.getAllCountries().get(i).getName() + "";
+//                handler.characters(name.toCharArray(), 0, name.length());
+//                handler.endElement("", "", "name");
+//
+//                attr.clear();
+//                handler.startElement("", "", "holder", attr);
+//                String holder = model.getAllCountries().get(i).getHolder().getName() + "";
+//                handler.characters(holder.toCharArray(), 0, holder.length());
+//                handler.endElement("", "", "holder");
+//
+//                attr.clear();
+//                handler.startElement("", "", "troops", attr);
+//                String troops = model.getAllCountries().get(i).getTroops() + "";
+//                handler.characters(troops.toCharArray(), 0, troops.length());
+//                handler.endElement("", "", "troops");
+//
+//                handler.endElement("", "", "Territory");
+//            }
 
             attr.clear();
             handler.startElement("", "", "Stage", attr);
@@ -188,7 +204,6 @@ public class XMLHandler extends DefaultHandler {
     public void startElement(String u, String in, String qName, Attributes a) throws SAXException {
 
         /*super.startElement(u, in, qName, a);
-
         //if ("Player".equals(qName)) {
             //isPlayer = true;
        // }
@@ -200,7 +215,6 @@ public class XMLHandler extends DefaultHandler {
             isTerritory = true;
         } else if ("name".equals(qName)) {
             isName = true;
-
         } else if ("holder".equals(qName)) {
             isHolder = true;
         } else if ("troops".equals(qName)) {
@@ -211,7 +225,6 @@ public class XMLHandler extends DefaultHandler {
             isStage = true;
         } else if ("ownTerritory".equals(qName)) {
             isOwnTerritory = true;
-
         }
         else if ("id".equals(qName)){
             isID = true;
@@ -225,7 +238,6 @@ public class XMLHandler extends DefaultHandler {
 
 
         /*if(qName.equals("Player") && isPlayer) {
-
             this.model.ImportPlayer(name,AI,troops,id,ownTerritory);
             isPlayer = false;
         }
@@ -244,9 +256,7 @@ public class XMLHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
 
         /*super.characters(ch, start, length);
-
         String text = new String(ch, start, length);
-
         if (isName) {
             name = text;
             isName = false;
@@ -257,11 +267,9 @@ public class XMLHandler extends DefaultHandler {
             AI = Boolean.valueOf(text);
             isTroops = false;
         } else if (isOwnTerritory) {
-
             ownTerritory = text;
             isOwnTerritory = false;
         }
-
         else if(isStage) {
             stage = Stage.values()[Integer.parseInt(text)];
             isStage = false;
@@ -280,8 +288,4 @@ public class XMLHandler extends DefaultHandler {
         return this.model;
     }
 
-    }
-
-
-
-
+}
