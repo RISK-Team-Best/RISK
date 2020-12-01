@@ -1,7 +1,5 @@
 package RISK;
 
-import org.xml.sax.SAXException;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -135,21 +133,9 @@ public class RiskController {
     public class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            /*XMLHandler handler = null;
-            try {
-                handler = new XMLHandler();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-            try {
-                handler.setModel(model);
-                handler.toXMLFile(view.getFileName());
-            }
-                catch (SAXException saxException) {
-                    saxException.printStackTrace();
-                }*/
-            SavingStrategy strategy = new XMLDOMWriter();
-            strategy.saveGame(model,"testFile.xml");
+            model.saveProcess();
+//            SavingStrategy strategy = new XMLDOMWriter();
+//            strategy.saveGame(model,"testFile.xml");
 
         }
     }
