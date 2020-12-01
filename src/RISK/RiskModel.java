@@ -1,5 +1,7 @@
 package RISK;
 
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -16,7 +18,7 @@ public class   RiskModel implements Serializable{
 
     private final List<RiskViewInterface> viewList;
 
-    private final ArrayList<Player> players;
+    private ArrayList<Player> players;
     private final ArrayList<Territory> allCountries;
     private final ArrayList<Continent> allContinents;
     private final ArrayList<Territory> originTerritory = new ArrayList<>();
@@ -114,6 +116,16 @@ public class   RiskModel implements Serializable{
         for (int i = 0; i < numberPlayers; i++) {
             if(AITypeList[i])players.add(new AIPlayer(playerNameList[i],this));
             else players.add(new Player(playerNameList[i],this));
+        }
+    }
+
+    public void importPlayers(ArrayList<Player> players){
+        this.players.clear();
+        this.playerIDHashMap.clear();
+
+        this.players = players;
+        for(Player player:players){
+            playerIDHashMap.put(player.getID(),player);
         }
     }
 
@@ -1018,5 +1030,19 @@ public class   RiskModel implements Serializable{
             reader.recoverGame(this);
         }*/
 
+    }
+
+    public void saveProcess() {
+        try {
+            XMLHandler handler = new XMLHandler();
+            handler.setModel(this);
+            for(RiskViewInterface view:viewList) {
+                handler.toXMLFile(view.getFileName());
+            }
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (SAXException saxException) {
+            saxException.printStackTrace();
+        }
     }
 }

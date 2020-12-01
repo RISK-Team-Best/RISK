@@ -355,9 +355,14 @@ public class RiskView extends JFrame implements RiskViewInterface{
         int numberPlayer = 0;
         while(numberPlayer==0) {
             String input = JOptionPane.showInputDialog( "Please enter the number of players.(2-6)");
-            if(!input.matches("[2-6]"))JOptionPane.showMessageDialog(null, "Invalid Input.", "Warning", JOptionPane.ERROR_MESSAGE);
-            else {
-                numberPlayer = Integer.parseInt(input);
+            try {
+                if (!input.matches("[2-6]"))
+                    JOptionPane.showMessageDialog(null, "Invalid Input.", "Warning", JOptionPane.ERROR_MESSAGE);
+                else {
+                    numberPlayer = Integer.parseInt(input);
+                }
+            }catch (NullPointerException e){
+                JOptionPane.showMessageDialog(null, "Invalid Input.", "Warning", JOptionPane.ERROR_MESSAGE);
             }
         }
         this.numberPlayer = numberPlayer;

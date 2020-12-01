@@ -18,12 +18,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class XMLHandler extends DefaultHandler {
-    private boolean isPlayer, isTerritory, isName, isHolder, isTroops, isAI, isStage, isOwnTerritory,isID;
+    private boolean isPlayer, isTerritory, isName, isHolder, isTroops, isStage, isOwnTerritory,isID;
 
     private Stage stage;
     private RiskModel model;
     private String name;
-    private boolean AI;
     private int troops,id;
     private String holder;
     private String ownTerritory;
@@ -44,7 +43,6 @@ public class XMLHandler extends DefaultHandler {
         isName = false;
         isHolder = false;
         isTroops = false;
-        isAI = false;
         isOwnTerritory = false;
         isID = false;
     }
@@ -78,7 +76,11 @@ public class XMLHandler extends DefaultHandler {
             //store player in XML
             for (int i = 0; i < model.getNumberPlayers(); i++) {
                 attr.addAttribute("", "", "ID", "", String.valueOf(i));
-                handler.startElement("", "", "Player", attr);
+                if(model.getPlayerById(i) instanceof AIPlayer){
+                    handler.startElement("", "", "AIPlayer", attr);
+                }else {
+                    handler.startElement("", "", "Player", attr);
+                }
 
                 attr.clear();
                 handler.startElement("", "", "id", attr);
@@ -92,11 +94,11 @@ public class XMLHandler extends DefaultHandler {
                 handler.characters(value.toCharArray(), 0, value.length());
                 handler.endElement("", "", "name");
 
-                attr.clear();
-                handler.startElement("", "", "AI", attr);
-                //String ai = model.getPlayerById(i).isAI() + "";
-                //handler.characters(ai.toCharArray(), 0, ai.length());
-                handler.endElement("", "", "AI");
+//                attr.clear();
+//                handler.startElement("", "", "AI", attr);
+//                //String ai = model.getPlayerById(i).isAI() + "";
+//                //handler.characters(ai.toCharArray(), 0, ai.length());
+//                handler.endElement("", "", "AI");
 
                 attr.clear();
                 handler.startElement("", "", "troops", attr);
@@ -127,10 +129,27 @@ public class XMLHandler extends DefaultHandler {
 
                     handler.endElement("","","Territory");
                 }
+
                 handler.endElement("", "", "ownTerritory");
 
 
-                handler.endElement("", "", "Player");
+                if(!model.getPlayerById(i).getContinents().isEmpty()){
+                    attr.clear();
+                    handler.startElement("","","ownContinent",attr);
+                    for(Continent continent:model.getPlayerById(i).getContinents()){
+                        attr.clear();
+                        handler.startElement("","","Continent",attr);
+                        handler.characters(continent.getName().toCharArray(),0,continent.getName().length());
+                        handler.endElement("","","Continent");
+                    }
+                    handler.endElement("","","ownContinent");
+                }
+
+                if(model.getPlayerById(i) instanceof AIPlayer){
+                    handler.endElement("", "", "AIPlayer");
+                }else {
+                    handler.endElement("", "", "Player");
+                }
             }
 
 //            //store territory in XML
