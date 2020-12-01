@@ -23,4 +23,13 @@ public enum Stage {
     public String getName() {
         return name;
     }
+
+    public static Stage fromString(String text){
+        for(Stage stage:Stage.values()){
+            if(stage.name.equalsIgnoreCase(text)){
+                return stage;
+            }
+        }
+        return null;
+    }
 }

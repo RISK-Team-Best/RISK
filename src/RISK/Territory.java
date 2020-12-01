@@ -33,6 +33,10 @@ public class Territory implements Serializable {
         this.troops = troops;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * Sets holder.
      *

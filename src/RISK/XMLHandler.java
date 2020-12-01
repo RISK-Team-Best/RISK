@@ -16,9 +16,18 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class XMLHandler extends DefaultHandler {
-    private boolean isPlayer, isTerritory, isName, isHolder, isTroops, isStage, isOwnTerritory,isID;
+    private boolean isPlayerName = false;
+    private boolean isTerritoryName = false;
+    private boolean isHolder = false;
+    private boolean isTroops = false;
+    private boolean isStage = false;
+    private boolean isOwnTerritory = false;
+    private boolean isOwnContinent = false;
+    private boolean isID = false;
+    private boolean isCurrentPlayer = false;
 
     private Stage stage;
     private RiskModel model;
@@ -26,9 +35,11 @@ public class XMLHandler extends DefaultHandler {
     private int troops,id;
     private String holder;
     private String ownTerritory;
-    private Player player = null;
-    private Territory territory = null;
-    private StringBuilder sb = null;
+    private Player player;
+    private Territory territory;
+    private StringBuilder stringBuilder;
+    private ArrayList<Territory> ownTerritoryList;
+    private ArrayList<Continent> ownContinentList;
 
 
     //private BufferedImage image;
@@ -36,15 +47,6 @@ public class XMLHandler extends DefaultHandler {
     public XMLHandler() throws IOException {
 
         model = new RiskModel();
-
-        isPlayer = false;
-        isTerritory = false;
-        isStage = false;
-        isName = false;
-        isHolder = false;
-        isTroops = false;
-        isOwnTerritory = false;
-        isID = false;
     }
 
     /**
@@ -89,10 +91,10 @@ public class XMLHandler extends DefaultHandler {
                 handler.endElement("", "", "id");
 
                 attr.clear();
-                handler.startElement("", "", "name", attr);
+                handler.startElement("", "", "PlayerName", attr);
                 String value = model.getPlayerById(i).getName() + "";
                 handler.characters(value.toCharArray(), 0, value.length());
-                handler.endElement("", "", "name");
+                handler.endElement("", "", "PlayerName");
 
 //                attr.clear();
 //                handler.startElement("", "", "AI", attr);
@@ -222,34 +224,58 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void startElement(String u, String in, String qName, Attributes a) throws SAXException {
 
-        /*super.startElement(u, in, qName, a);
-        //if ("Player".equals(qName)) {
-            //isPlayer = true;
-       // }
-        if("Player".equals(qName)){
-            player = new Player("",false);
-            //isPlayer = true;
+//        super.startElement(u, in, qName, a);
+//        if ("Player".equals(qName)) {
+//            isPlayer = true;
+//        }
+//        if("Player".equals(qName)){
+//            player = new Player("",false);
+//            //isPlayer = true;
+//        }
+//        else if ("Territory".equals(qName)) {
+//            isTerritory = true;
+//        } else if ("name".equals(qName)) {
+//            isName = true;
+//        } else if ("holder".equals(qName)) {
+//            isHolder = true;
+//        } else if ("troops".equals(qName)) {
+//            isTroops = true;
+//        } else if ("AI".equals(qName)) {
+//            isAI = true;
+//        } else if ("Stage".equals(qName)) {
+//            isStage = true;
+//        } else if ("ownTerritory".equals(qName)) {
+//            isOwnTerritory = true;
+//        }
+//        else if ("id".equals(qName)){
+//            isID = true;
+//        }
+//        sb = new StringBuilder();
+        if(qName.equalsIgnoreCase("Risk")) {
+            try {
+                model = new RiskModel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        else if ("Territory".equals(qName)) {
-            isTerritory = true;
-        } else if ("name".equals(qName)) {
-            isName = true;
-        } else if ("holder".equals(qName)) {
-            isHolder = true;
-        } else if ("troops".equals(qName)) {
-            isTroops = true;
-        } else if ("AI".equals(qName)) {
-            isAI = true;
-        } else if ("Stage".equals(qName)) {
-            isStage = true;
-        } else if ("ownTerritory".equals(qName)) {
+        if(qName.equalsIgnoreCase("Player")) player = new Player("",this.model);;
+        if(qName.equalsIgnoreCase("AIPlayer")) player = new AIPlayer("",this.model);;
+        if(qName.equalsIgnoreCase("id")) isID =true;
+        if(qName.equalsIgnoreCase("PlayerName")) isPlayerName = true;
+        if(qName.equalsIgnoreCase("Territory")) territory = new Territory("");
+        if(qName.equalsIgnoreCase("Name")) isTerritoryName = true;
+        if(qName.equalsIgnoreCase("troops")) isTroops = true;
+        if(qName.equalsIgnoreCase("holder")) isHolder = true;
+        if(qName.equalsIgnoreCase("ownTerritory")){
+            ownTerritoryList = new ArrayList<>();
             isOwnTerritory = true;
         }
-        else if ("id".equals(qName)){
-            isID = true;
+        if(qName.equalsIgnoreCase("ownContinent")){
+            ownContinentList = new ArrayList<>();
+            isOwnContinent = true;
         }
-        sb = new StringBuilder();
-*/
+        if(qName.equalsIgnoreCase("Stage")) isStage = true;
+        if(qName.equalsIgnoreCase("currentPlayer")) isCurrentPlayer = true;
     }
 
     @Override
@@ -301,6 +327,35 @@ public class XMLHandler extends DefaultHandler {
             holder = text;
             isHolder = false;
         }*/
+        String info = new String(ch,start,length);
+        if(isPlayerName){
+            player.setName(info);
+            isPlayerName = false;
+        }
+        if(isTerritoryName){
+            territory.setName(info);
+            isTerritoryName = false;
+        }
+        if(isHolder){
+            territory.setHolder(player);
+            isHolder = false;
+        }
+        if(isTroops){
+            territory.setTroops(Integer.parseInt(info));
+            isTroops = false;
+        }
+        if(isStage){
+            model.setCurrentStage(Stage.fromString(info));
+            isStage = false;
+        }
+        if(isID){
+            player.setID(Integer.parseInt(info));
+            isID = false;
+        }
+        if(isCurrentPlayer){
+            model.setCurrentPlayer(model.getPlayerByName(info));
+            isCurrentPlayer = false;
+        }
     }
 
     public RiskModel getModel() {

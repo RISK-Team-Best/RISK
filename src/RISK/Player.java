@@ -51,6 +51,22 @@ public class Player implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTerritories(HashMap<String, Territory> territories) {
+        this.territories = territories;
+    }
+
+    public void setContinents(HashMap<String, Continent> continents) {
+        this.continents = continents;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * This method is getting troops.
      *

@@ -1014,7 +1014,12 @@ public class   RiskModel implements Serializable{
         this.currentPlayer = currentPlayer;
     }
 
-
+    public Player getPlayerByName(String name){
+        for(Player player:players){
+            if(player.getName().equals(name)) return player;
+        }
+        return null;
+    }
 
     public void recoverGame()
     {
