@@ -19,8 +19,8 @@ public class   RiskModel implements Serializable{
     private final List<RiskViewInterface> viewList;
 
     private ArrayList<Player> players;
-    private final ArrayList<Territory> allCountries;
-    private final ArrayList<Continent> allContinents;
+    private ArrayList<Territory> allCountries;//需要save allcountries 和 board
+    private ArrayList<Continent> allContinents;
     private final ArrayList<Territory> originTerritory = new ArrayList<>();
     private final ArrayList<Territory> targetTerritory = new ArrayList<>();
     private final ArrayList<Territory> fortifyTerritory = new ArrayList<>();
@@ -33,10 +33,12 @@ public class   RiskModel implements Serializable{
 
     private int numberPlayers;
 
-    private final Board board;
+    private Board board;
     private final Board tempBoard;
 
     private String battleStatusString;
+    private String statusLabel;
+    private String mapInfo;
 
     private Player currentPlayer;
 
@@ -82,6 +84,14 @@ public class   RiskModel implements Serializable{
         colorIDHashMap.put(3,Color.PINK);
         colorIDHashMap.put(4,Color.WHITE);
         colorIDHashMap.put(5,Color.LIGHT_GRAY);
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void setAllContinents(ArrayList<Continent> allContinents) {
+        this.allContinents = allContinents;
     }
 
     public void addView(RiskViewInterface viewInterface){
@@ -658,6 +668,7 @@ public class   RiskModel implements Serializable{
             for(RiskViewInterface view: viewList){
                 view.updateSkipAttack(currentPlayer);
             }
+            currentStage = Stage.ATTACKEND;
         }
         if(currentStage==Stage.FORTIFY){
             resetButtonsAndBoxProcedure();
@@ -665,6 +676,7 @@ public class   RiskModel implements Serializable{
             for(RiskViewInterface view: viewList){
                 view.updateSkipFortify(currentPlayer);
             }
+            currentStage = Stage.FORTIFYEND;
         }
     }
 
@@ -674,6 +686,9 @@ public class   RiskModel implements Serializable{
     public void confirmProcess(){
         if(currentStage==Stage.DRAFT){
             draftProcess();
+            if(currentPlayer.getTroops()==0) {
+                currentStage = Stage.DRAFTEND;
+            }
         }
 
         if(currentStage==Stage.ATTACK){
@@ -682,10 +697,12 @@ public class   RiskModel implements Serializable{
 
         if(currentStage==Stage.FORTIFY){
             fortifyProcess();
+            currentStage = Stage.FORTIFYEND;
         }
 
         if(currentStage==Stage.DEPLOY){
             deployTroopsProcess();
+            currentStage = Stage.DRAFTEND;
         }
     }
 
@@ -1002,6 +1019,18 @@ public class   RiskModel implements Serializable{
         this.originTerritoryButtonPressed = originTerritoryButtonPressed;
     }
 
+    public void setTargetTerritoryButtonPressed(boolean targetTerritoryButtonPressed) {
+        this.targetTerritoryButtonPressed = targetTerritoryButtonPressed;
+    }
+
+    public void setOriginTerritoryName(String originTerritoryName) {
+        this.originTerritoryName = originTerritoryName;
+    }
+
+    public void setTargetTerritoryName(String targetTerritoryName) {
+        this.targetTerritoryName = targetTerritoryName;
+    }
+
     public void setAttackTerritory(Territory attackTerritory) {
         this.attackTerritory = attackTerritory;
     }
@@ -1014,12 +1043,15 @@ public class   RiskModel implements Serializable{
         this.currentPlayer = currentPlayer;
     }
 
+
+
     public Player getPlayerByName(String name){
         for(Player player:players){
             if(player.getName().equals(name)) return player;
         }
         return null;
     }
+
 
     public void recoverGame()
     {
@@ -1049,5 +1081,78 @@ public class   RiskModel implements Serializable{
         } catch (SAXException saxException) {
             saxException.printStackTrace();
         }
+    }
+
+    public void reload(){
+        this.allCountries.clear();
+        setPlayerNum(players.size());
+
+        for(Player player:players){
+            for(Territory territory:player.getTerritories()){
+                allCountries.add(territory);
+            }
+        }
+        for(RiskViewInterface view:viewList){
+            for(Territory territory:allCountries){
+                view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
+            }
+            paintTerritoryButtons(view);
+            view.setStatusLabel(statusLabel);
+            view.setContinentsLabel(getMapInfoThroughContinent());
+            view.disableAllTerritoryButton();
+        }
+        reloadStageProcess();
+    }
+
+    public void reloadStageProcess(){
+        if(currentStage==Stage.DRAFT){
+            reloadDraftProcess();
+        }
+        if(currentStage==Stage.DRAFTEND){
+
+        }
+        if(currentStage==Stage.ATTACK){
+
+        }
+        if(currentStage==Stage.ATTACKTODEPLOY){
+
+        }
+        if(currentStage==Stage.ATTACKEND){
+
+        }
+        if(currentStage==Stage.FORTIFY){
+
+        }
+        if(currentStage==Stage.FORTIFYEND){
+
+        }
+    }
+
+    public void reloadDraftProcess(){
+        for(RiskViewInterface view:viewList){
+            view.updateDraftPrepare(currentPlayer,currentStage,getContinentBonusString());
+            if(!originTerritoryButtonPressed) {
+                view.updateDraftCountryClick(originTerritoryName);
+            }
+        }
+    }
+
+    public boolean isOriginTerritoryButtonPressed() {
+        return originTerritoryButtonPressed;
+    }
+
+    public boolean isTargetTerritoryButtonPressed() {
+        return targetTerritoryButtonPressed;
+    }
+
+    public String getStatusString(){
+        for(RiskViewInterface view: viewList){
+            return view.getStatusLabel();
+        }
+        return null;
+    }
+
+    public void setStatusString(String statusLabel){
+        this.statusLabel = statusLabel;
     }
 }

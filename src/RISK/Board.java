@@ -117,5 +117,9 @@ public class Board implements Serializable{
         return neighbors.get(countryName);
     }
 
+    public Continent getContinentByName(String name){
+        return continentHashMap.get(name);
+    }
+
 
 }

@@ -322,6 +322,7 @@ public class Player implements Serializable {
             if(gainTerritory) {
                 JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"You conquered "+defenceTerritory.getName()+"!");
                 view.updateWinAttack(this);
+                model.setCurrentStage(Stage.ATTACKTODEPLOY);
                 return;
             }
         }

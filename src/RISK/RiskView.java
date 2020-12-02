@@ -424,6 +424,11 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     @Override
+    public String getStatusLabel(){
+        return statusLabel.getText();
+    }
+
+    @Override
     public void updateAIAttack(Player currentPlayer, Territory tempAttackTerritory, Territory tempDefenceTerritory) {
         setStatusLabel(currentPlayer.getName()+"'s turn, Attack Stage. "+tempAttackTerritory.getName()+" attacks "+tempDefenceTerritory.getName()+".");
         getTerritoryButtonByString(tempAttackTerritory.getName()).setBackground(Color.RED);
@@ -538,6 +543,11 @@ public class RiskView extends JFrame implements RiskViewInterface{
         for(JButton button:territoryButtons){
             button.setEnabled(false);
         }
+    }
+
+    @Override
+    public void enableButton(String buttonName) {
+        getJButton(buttonName).setEnabled(true);
     }
 
     /**

@@ -4,7 +4,7 @@ package RISK;
  * Enum Stage is for record the stage of the game
  */
 public enum Stage {
-    DRAFT("Draft"),ATTACK("Attack"),FORTIFY("Fortify"),DEPLOY("Deploy");
+    DRAFT("Draft"),ATTACK("Attack"),FORTIFY("Fortify"),ATTACKTODEPLOY("Attack_To_Deploy"),DEPLOY("Deploy"),DRAFTEND("Draft_End"),ATTACKEND("Attack_End"),FORTIFYEND("Fortify_End");
 
     private String name;
 

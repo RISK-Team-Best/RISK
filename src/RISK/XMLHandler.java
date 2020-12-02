@@ -22,12 +22,17 @@ public class XMLHandler extends DefaultHandler {
     private boolean isPlayerName = false;
     private boolean isTerritoryName = false;
     private boolean isHolder = false;
-    private boolean isTroops = false;
+    private boolean isPlayerTroops = false;
+    private boolean isTerritoryTroops = false;
     private boolean isStage = false;
-    private boolean isOwnTerritory = false;
-    private boolean isOwnContinent = false;
     private boolean isID = false;
     private boolean isCurrentPlayer = false;
+    private boolean isContinent = false;
+    private boolean isStatusLabel = false;
+    private boolean isOriginTerritoryButtonClick = false;
+    private boolean isTargetTerritoryButtonClick = false;
+    private boolean isOriginTerritoryName = false;
+    private boolean isTargetTerritoryName = false;
 
     private Stage stage;
     private RiskModel model;
@@ -37,9 +42,16 @@ public class XMLHandler extends DefaultHandler {
     private String ownTerritory;
     private Player player;
     private Territory territory;
+    private Continent tempContinent;
     private StringBuilder stringBuilder;
     private ArrayList<Territory> ownTerritoryList;
     private ArrayList<Continent> ownContinentList;
+    private ArrayList<Player> importPlayers;
+    private String statusLabel;
+    private String originTerritoryButtonClick;
+    private String targetTerritoryButtonClick;
+    private String originTerritoryName;
+    private String targetTerritoryName;
 
 
     //private BufferedImage image;
@@ -47,6 +59,7 @@ public class XMLHandler extends DefaultHandler {
     public XMLHandler() throws IOException {
 
         model = new RiskModel();
+        importPlayers = new ArrayList<>();
     }
 
     /**
@@ -103,10 +116,10 @@ public class XMLHandler extends DefaultHandler {
 //                handler.endElement("", "", "AI");
 
                 attr.clear();
-                handler.startElement("", "", "troops", attr);
+                handler.startElement("", "", "playerTroops", attr);
                 String troops = model.getPlayerById(i).getTroops() + "";
                 handler.characters(troops.toCharArray(), 0, troops.length());
-                handler.endElement("", "", "troops");
+                handler.endElement("", "", "playerTroops");
 
                 attr.clear();
                 handler.startElement("", "", "ownTerritory", attr);
@@ -192,6 +205,38 @@ public class XMLHandler extends DefaultHandler {
             handler.characters(currentplayer.toCharArray(), 0, currentplayer.length());
             handler.endElement("", "", "CurrentPlayer");
 
+            attr.clear();
+            handler.startElement("", "", "statusLabel", attr);
+            statusLabel = model.getStatusString();
+            handler.characters(statusLabel.toCharArray(), 0, statusLabel.length());
+            handler.endElement("", "", "statusLabel");
+
+            attr.clear();
+            handler.startElement("", "", "originTerritoryButtonClick", attr);
+            if(model.isOriginTerritoryButtonPressed())originTerritoryButtonClick = "true";
+            else originTerritoryButtonClick = "false";
+            handler.characters(originTerritoryButtonClick.toCharArray(), 0, originTerritoryButtonClick.length());
+            handler.endElement("", "", "originTerritoryButtonClick");
+
+            attr.clear();
+            handler.startElement("", "", "targetTerritoryButtonClick", attr);
+            if(model.isTargetTerritoryButtonPressed())targetTerritoryButtonClick = "true";
+            else targetTerritoryButtonClick = "false";
+            handler.characters(targetTerritoryButtonClick.toCharArray(), 0, targetTerritoryButtonClick.length());
+            handler.endElement("", "", "targetTerritoryButtonClick");
+
+            attr.clear();
+            handler.startElement("", "", "originTerritoryName", attr);
+            originTerritoryName = model.getOriginTerritoryName();
+            handler.characters(originTerritoryName.toCharArray(), 0, originTerritoryName.length());
+            handler.endElement("", "", "originTerritoryName");
+
+            attr.clear();
+            handler.startElement("", "", "targetTerritoryName", attr);
+            targetTerritoryName = model.getTargetTerritoryName();
+            handler.characters(targetTerritoryName.toCharArray(), 0, targetTerritoryName.length());
+            handler.endElement("", "", "targetTerritoryName");
+
             handler.endElement("", "", "RISK");
             handler.endDocument();
 
@@ -263,19 +308,18 @@ public class XMLHandler extends DefaultHandler {
         if(qName.equalsIgnoreCase("id")) isID =true;
         if(qName.equalsIgnoreCase("PlayerName")) isPlayerName = true;
         if(qName.equalsIgnoreCase("Territory")) territory = new Territory("");
+        if(qName.equalsIgnoreCase("Continent")) isContinent = true;
         if(qName.equalsIgnoreCase("Name")) isTerritoryName = true;
-        if(qName.equalsIgnoreCase("troops")) isTroops = true;
+        if(qName.equalsIgnoreCase("troops")) isTerritoryTroops = true;
+        if(qName.equalsIgnoreCase("playerTroops")) isPlayerTroops = true;
         if(qName.equalsIgnoreCase("holder")) isHolder = true;
-        if(qName.equalsIgnoreCase("ownTerritory")){
-            ownTerritoryList = new ArrayList<>();
-            isOwnTerritory = true;
-        }
-        if(qName.equalsIgnoreCase("ownContinent")){
-            ownContinentList = new ArrayList<>();
-            isOwnContinent = true;
-        }
         if(qName.equalsIgnoreCase("Stage")) isStage = true;
-        if(qName.equalsIgnoreCase("currentPlayer")) isCurrentPlayer = true;
+        if(qName.equalsIgnoreCase("CurrentPlayer")) isCurrentPlayer = true;
+        if(qName.equalsIgnoreCase("statusLabel")) isStatusLabel = true;
+        if(qName.equalsIgnoreCase("originTerritoryButtonClick")) isOriginTerritoryButtonClick = true;
+        if(qName.equalsIgnoreCase("targetTerritoryButtonClick")) isTargetTerritoryButtonClick = true;
+        if(qName.equalsIgnoreCase("originTerritoryName")) isOriginTerritoryName = true;
+        if(qName.equalsIgnoreCase("targetTerritoryName")) isTargetTerritoryName = true;
     }
 
     @Override
@@ -295,6 +339,17 @@ public class XMLHandler extends DefaultHandler {
             isStage = false;
         }
 */
+
+        if(qName.equalsIgnoreCase("Player")){
+            importPlayers.add(player);
+        }
+        if(qName.equalsIgnoreCase("AIPlayer")){
+            importPlayers.add(player);
+        }
+        if(qName.equalsIgnoreCase("Territory")){
+            player.addTerritory(territory);
+        }
+        if(qName.equalsIgnoreCase("Continent")){player.addContinent(tempContinent);}
     }
 
     @Override
@@ -340,12 +395,17 @@ public class XMLHandler extends DefaultHandler {
             territory.setHolder(player);
             isHolder = false;
         }
-        if(isTroops){
+        if(isPlayerTroops){
+            player.setTroops(Integer.parseInt(info));
+            isPlayerTroops = false;
+        }
+        if(isTerritoryTroops){
             territory.setTroops(Integer.parseInt(info));
-            isTroops = false;
+            isTerritoryTroops = false;
         }
         if(isStage){
             model.setCurrentStage(Stage.fromString(info));
+            model.importPlayers(importPlayers);
             isStage = false;
         }
         if(isID){
@@ -356,7 +416,38 @@ public class XMLHandler extends DefaultHandler {
             model.setCurrentPlayer(model.getPlayerByName(info));
             isCurrentPlayer = false;
         }
+        if(isContinent){
+            try {
+                tempContinent = new Board().getContinentByName(info);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            isContinent = false;
+        }
+        if(isStatusLabel){
+            model.setStatusString(info);
+            isStatusLabel = false;
+        }
+        if(isOriginTerritoryButtonClick){
+            if(info.equals("true"))model.setOriginTerritoryButtonPressed(true);
+            else model.setOriginTerritoryButtonPressed(false);
+            isOriginTerritoryButtonClick = false;
+        }
+        if(isTargetTerritoryButtonClick){
+            if(info.equals("true"))model.setTargetTerritoryButtonPressed(true);
+            else model.setTargetTerritoryButtonPressed(false);
+            isTargetTerritoryButtonClick = false;
+        }
+        if(isOriginTerritoryName){
+            model.setOriginTerritoryName(info);
+            isOriginTerritoryName = false;
+        }
+        if(isTargetTerritoryName){
+            model.setTargetTerritoryName(info);
+            isTargetTerritoryName = false;
+        }
     }
+
 
     public RiskModel getModel() {
         return this.model;

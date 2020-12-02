@@ -140,7 +140,7 @@ public class RiskController {
         }
     }
     public class LoadButtonListener implements ActionListener {
-        /*@Override
+        @Override
         public void actionPerformed(ActionEvent e) {
             XMLHandler handler = null;
             try {
@@ -156,14 +156,15 @@ public class RiskController {
             }
 
             model = handler.getModel();
+            model.addView(view);
+            model.reload();
             //System.out.print(model.getCurrentStage());
 
         }
-*/
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            model.recoverGame();
-        }
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            model.recoverGame();
+//        }
     }
 
     }

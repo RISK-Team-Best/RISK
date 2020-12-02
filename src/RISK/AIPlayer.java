@@ -36,6 +36,7 @@ public class AIPlayer extends Player{
             view.setTerritoryButtonTroops(draftTerritory.getName(),draftTerritory.getTroops());
             model.paintTerritoryButtons(view);
         }
+        model.setCurrentStage(Stage.DRAFTEND);
     }
 
     @Override
@@ -61,13 +62,14 @@ public class AIPlayer extends Player{
                 JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"You conquered "+tempDefenceTerritory.getName()+"!");
                 view.setStatusLabel(tempAttackTerritory.getName()+" wins the war and conquered " +tempDefenceTerritory.getName() +" !");
                 view.updateAIWinAttack();
+                model.setCurrentStage(Stage.ATTACKTODEPLOY);
                 return;
             }
-
+            view.enableButton("Fortify");
         }
         JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"You didn't conquered "+tempDefenceTerritory.getName()+".");
         model.checkContinent(this);
-
+        model.setCurrentStage(Stage.ATTACKEND);
     }
 
     @Override
@@ -86,6 +88,7 @@ public class AIPlayer extends Player{
             model.resetButtonsAndBoxProcedure();
             view.disableAllTerritoryButton();
         }
+        model.setCurrentStage(Stage.DRAFTEND);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class AIPlayer extends Player{
         int troops = new Random().nextInt(tempFortifyTerritory.getTroops()-1)+1;
         model.fortify(tempFortifyTerritory,tempFortifiedTerritory,troops);
         fortifyProcessResult(tempFortifyTerritory,tempFortifiedTerritory,troops);
-
+        model.setCurrentStage(Stage.FORTIFYEND);
     }
 
 

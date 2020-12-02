@@ -268,4 +268,8 @@ public interface RiskViewInterface {
     void updateAIWinAttack();
 
     void disableAllTerritoryButton();
+
+    void enableButton(String buttonName);
+
+    String getStatusLabel();
 }
