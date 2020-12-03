@@ -429,6 +429,16 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     @Override
+    public void paintOriginAndTargetTerritory(boolean originTerritoryButtonPressed, boolean targetTerritoryButtonPressed, String originTerritoryName, String targetTerritoryName) {
+        if(!originTerritoryButtonPressed){
+            getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
+        }
+        if(!targetTerritoryButtonPressed){
+            getTerritoryButtonByString(targetTerritoryName).setBackground(Color.ORANGE);
+        }
+    }
+
+    @Override
     public void updateAIAttack(Player currentPlayer, Territory tempAttackTerritory, Territory tempDefenceTerritory) {
         setStatusLabel(currentPlayer.getName()+"'s turn, Attack Stage. "+tempAttackTerritory.getName()+" attacks "+tempDefenceTerritory.getName()+".");
         getTerritoryButtonByString(tempAttackTerritory.getName()).setBackground(Color.RED);
@@ -488,6 +498,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
      *
      * @param troops set the way to attack:one,two,three, and blitz
      */
+    @Override
     public void setAttackTroopsBox(int troops){
         troopsLabel.setText("Way to attack:");
         troopsBox.removeAllItems();
@@ -737,7 +748,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
         confirmButton.setEnabled(true);
         skipButton.setEnabled(false);
         setStatusLabel(currentPlayer.getName() + "'s turn, " + currentStage.getName() + " stage. Set troops to the new earned territory.");
-        setTroopsBox(attackTroops);
+        setTroopsBox(attackTroops-1);
     }
 
     @Override
@@ -791,6 +802,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
         setStatusLabel(currentPlayer.getName() +"'s turn, please click \"Attack\" button to start ATTACK stage.");
 
     }
+
+
     public String getFileName(){
         String file = JOptionPane.showInputDialog( "Please enter the file name");
         return file;

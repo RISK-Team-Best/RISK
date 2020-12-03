@@ -38,7 +38,6 @@ public class   RiskModel implements Serializable{
 
     private String battleStatusString;
     private String statusLabel;
-    private String mapInfo;
 
     private Player currentPlayer;
 
@@ -589,7 +588,7 @@ public class   RiskModel implements Serializable{
      * Model handle a new game process and update the view
      */
     public void newGameProcess(){
-        currentStage = Stage.DRAFT;
+        currentStage = Stage.FORTIFYEND;
 
         int playerNum = 0;
         for(RiskViewInterface view: viewList){
@@ -663,7 +662,7 @@ public class   RiskModel implements Serializable{
      *This method is modeling to do the skip process and update the view
      */
     public void skipProcess(){
-        if(currentStage==Stage.ATTACK){
+        if(currentStage==Stage.ATTACK||currentStage==Stage.DRAFTEND){
             resetButtonsAndBoxProcedure();
             for(RiskViewInterface view: viewList){
                 view.updateSkipAttack(currentPlayer);
@@ -697,7 +696,6 @@ public class   RiskModel implements Serializable{
 
         if(currentStage==Stage.FORTIFY){
             fortifyProcess();
-            currentStage = Stage.FORTIFYEND;
         }
 
         if(currentStage==Stage.DEPLOY){
@@ -722,6 +720,8 @@ public class   RiskModel implements Serializable{
             paintTerritoryButtons(view);
             view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
         }
+        attackTerritory = null;
+        defenceTerritory = null;
 
     }
 
@@ -770,6 +770,7 @@ public class   RiskModel implements Serializable{
             fortify(getTerritoryByString(originTerritoryName), getTerritoryByString(targetTerritoryName), moveTroops);
         }
         currentPlayer.fortifyProcessResult(getTerritoryByString(originTerritoryName),getTerritoryByString(targetTerritoryName),moveTroops);
+        currentStage = Stage.FORTIFYEND;
     }
 
     /**
@@ -1109,31 +1110,113 @@ public class   RiskModel implements Serializable{
             reloadDraftProcess();
         }
         if(currentStage==Stage.DRAFTEND){
-
+            reloadDraftEndProcess();
         }
         if(currentStage==Stage.ATTACK){
-
+            reloadAttackProcess();
         }
         if(currentStage==Stage.ATTACKTODEPLOY){
-
+            reloadAttackToDeployProcess();
+        }
+        if(currentStage==Stage.DEPLOY){
+            reloadDeploy();
         }
         if(currentStage==Stage.ATTACKEND){
-
+            reloadAttackEnd();
         }
         if(currentStage==Stage.FORTIFY){
-
+            reloadFortify();
         }
         if(currentStage==Stage.FORTIFYEND){
-
+            reloadFortifyEnd();
         }
     }
 
-    public void reloadDraftProcess(){
+    private void reloadDraftProcess(){
         for(RiskViewInterface view:viewList){
             view.updateDraftPrepare(currentPlayer,currentStage,getContinentBonusString());
             if(!originTerritoryButtonPressed) {
                 view.updateDraftCountryClick(originTerritoryName);
             }
+        }
+    }
+
+    private void reloadDraftEndProcess(){
+        for(RiskViewInterface view:viewList){
+            view.disableAllCommandButtons();
+            view.updateDraftFinish(currentPlayer);
+        }
+    }
+
+    private void reloadAttackProcess(){
+        for(RiskViewInterface view:viewList){
+            if(originTerritoryButtonPressed&&targetTerritoryButtonPressed){
+                view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
+            }
+            else if((!originTerritoryButtonPressed)&&targetTerritoryButtonPressed){
+                view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(),getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
+            }
+            else if((!originTerritoryButtonPressed)&&(!targetTerritoryButtonPressed)){
+                view.setAttackTroopsBox(getTerritoryByString(originTerritoryName).getTroops());
+                view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+            }
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+            view.disableAllCommandButtons();
+            view.enableButton("Confirm");
+            view.enableButton("Skip");
+        }
+    }
+
+    private void reloadAttackToDeployProcess() {
+        setAttackTerritory(getTerritoryByString(originTerritoryName));
+        setDefenceTerritory(getTerritoryByString(targetTerritoryName));
+        for(RiskViewInterface view:viewList){
+            view.disableAllCommandButtons();
+            view.updateWinAttack(currentPlayer);
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+        }
+    }
+
+    private void reloadDeploy(){
+        attackTerritory = getTerritoryByString(originTerritoryName);
+        defenceTerritory = getTerritoryByString(targetTerritoryName);
+        for(RiskViewInterface view:viewList){
+            view.disableAllCommandButtons();
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+            view.updateDeployPrepare(currentPlayer,currentStage,getTerritoryByString(originTerritoryName).getTroops());
+        }
+    }
+
+    private void reloadAttackEnd(){
+        resetButtonsAndBoxProcedure();
+        for(RiskViewInterface view:viewList){
+            view.disableAllCommandButtons();
+            view.updateSkipAttack(currentPlayer);
+        }
+    }
+
+    private void reloadFortify(){
+        for(RiskViewInterface view:viewList){
+            if(originTerritoryButtonPressed&&targetTerritoryButtonPressed){
+                view.resetButtonsAndBox(getFortifyTerritories(currentPlayer));
+            }
+            else if(!originTerritoryButtonPressed){
+                view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1,getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
+                if(!targetTerritoryButtonPressed) {
+                    view.updateClickTargetTerritoryButton(originTerritoryName, targetTerritoryName);
+                }
+            }
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+            view.disableAllCommandButtons();
+            view.enableButton("Confirm");
+            view.enableButton("Skip");
+        }
+    }
+
+    private void reloadFortifyEnd(){
+        resetButtonsAndBoxProcedure();
+        for(RiskViewInterface view:viewList){
+            view.updateFortifyFinish(currentPlayer);
         }
     }
 

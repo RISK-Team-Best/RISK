@@ -48,9 +48,13 @@ public class AIPlayer extends Player{
         ArrayList<Territory> maxTroopsAttackTerritoryList = model.getMaxTroopsAttackTerritoryList();
         Territory tempAttackTerritory = maxTroopsAttackTerritoryList.get(new Random().nextInt(maxTroopsAttackTerritoryList.size()));
         model.setAttackTerritory(tempAttackTerritory);
+        model.setOriginTerritoryButtonPressed(false);
+        model.setOriginTerritoryName(tempAttackTerritory.getName());
         ArrayList<Territory> minTroopsDefenceTerritoryList = model.getMinTroopsDefenceTerritory(tempAttackTerritory);
         Territory tempDefenceTerritory = minTroopsDefenceTerritoryList.get(new Random().nextInt(minTroopsDefenceTerritoryList.size()));
         model.setDefenceTerritory(tempDefenceTerritory);
+        model.setTargetTerritoryButtonPressed(false);
+        model.setTargetTerritoryName(tempDefenceTerritory.getName());
         boolean gainTerritory = model.battle(tempAttackTerritory,tempDefenceTerritory,AttackWay.BLITZ);
 
         for(RiskViewInterface view: model.getViewList()) {
@@ -67,6 +71,7 @@ public class AIPlayer extends Player{
             }
             view.enableButton("Fortify");
         }
+        model.resetButtonsAndBoxProcedure();
         JOptionPane.showMessageDialog(null,model.getBattleStatusString()+"You didn't conquered "+tempDefenceTerritory.getName()+".");
         model.checkContinent(this);
         model.setCurrentStage(Stage.ATTACKEND);

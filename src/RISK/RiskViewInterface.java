@@ -272,4 +272,9 @@ public interface RiskViewInterface {
     void enableButton(String buttonName);
 
     String getStatusLabel();
+
+
+    void paintOriginAndTargetTerritory(boolean originTerritoryButtonPressed, boolean targetTerritoryButtonPressed, String originTerritoryName, String targetTerritoryName);
+
+    void setAttackTroopsBox(int attackTerritoryTroops);
 }

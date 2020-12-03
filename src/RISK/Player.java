@@ -288,7 +288,7 @@ public class Player implements Serializable {
     public void deployPrepare(){
         model.setCurrentStage(Stage.DEPLOY);
         for(RiskViewInterface view: model.getViewList()){
-            view.updateDeployPrepare(this,model.getCurrentStage(),model.getAttackTerritory().getTroops()-1);
+            view.updateDeployPrepare(this,model.getCurrentStage(),model.getAttackTerritory().getTroops());
         }
     }
 
