@@ -147,6 +147,8 @@ public class RiskController {
                  handler = new XMLHandler();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
             try{
                 handler.importXMLFileByName(view.getFileName());

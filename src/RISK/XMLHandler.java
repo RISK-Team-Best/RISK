@@ -56,7 +56,7 @@ public class XMLHandler extends DefaultHandler {
 
     //private BufferedImage image;
 
-    public XMLHandler() throws IOException {
+    public XMLHandler() throws Exception {
 
         model = new RiskModel();
         importPlayers = new ArrayList<>();
@@ -301,6 +301,8 @@ public class XMLHandler extends DefaultHandler {
                 model = new RiskModel();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         if(qName.equalsIgnoreCase("Player")) player = new Player("",this.model);;
@@ -418,8 +420,10 @@ public class XMLHandler extends DefaultHandler {
         }
         if(isContinent){
             try {
-                tempContinent = new Board().getContinentByName(info);
+                tempContinent = new Board("OriginRiskMap").getContinentByName(info);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             isContinent = false;

@@ -1,12 +1,10 @@
 package RISK;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * MapPanel class for add map on GUI
@@ -23,9 +21,11 @@ public class MapPanel extends JPanel implements Serializable{
     public MapPanel() {
         try {
 
-            image = ImageIO.read(getClass().getResource("RiskMap.jpg"));
+            image = new Board("OriginRiskMap").getImage();
         } catch (IOException ex) {
             // handle exception...
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

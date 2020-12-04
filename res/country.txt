@@ -1,42 +1,42 @@
-Alaska
-Alberta
-Central America
-Eastern United States
-Greenland
-Northwest Territory
-Ontario
-Quebec
-Western United States
-Argentina
-Brazil
-Venezuela
-Great Britain
-Iceland
-Northern Europe
-Scandinavia
-Southern Europe
-Ukraine
-Western Europe
-Congo
-East Africa
-Egypt
-Madagascar
-North Africa
-South Africa
-Afghanistan
-China
-India
-Irkutsk
-Japan
-Kamchatka
-Middle East
-Mongolia
-Siam
-Siberia
-Ural
-Yakutsk
-Eastern Australia
-Indonesia
-New Guinea
-Western Australia
-Peru
+Alaska,50,65
+Alberta,135,107
+Central America,140,275
+Eastern United States,160,210
+Greenland,280,68
+Northwest Territory,183,58
+Ontario,183,118
+Quebec,215,153
+Western United States,149,170
+Argentina,220,440
+Brazil,265,380
+Venezuela,185,320
+Great Britain,335,150
+Iceland,355,82
+Northern Europe,385,190
+Scandinavia,410,80
+Southern Europe,420,240
+Ukraine,500,120
+Western Europe,365,222
+Congo,445,389
+East Africa,480,353
+Egypt,445,290
+Madagascar,530,450
+North Africa,365,320
+South Africa,455,500
+Afghanistan,555,222
+China,696,255
+India,580,260
+Irkutsk,668,110
+Japan,770,165
+Kamchatka,745,55
+Middle East,505,290
+Mongolia,695,166
+Siam,668,325
+Siberia,610,103
+Ural,575,150
+Yakutsk,680,45
+Eastern Australia,790,495
+Indonesia,680,420
+New Guinea,760,360
+Western Australia,720,453
+Peru,175,360

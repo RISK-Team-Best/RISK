@@ -65,10 +65,10 @@ public class   RiskModel implements Serializable{
      *
      * @throws IOException the io exception
      */
-    public RiskModel() throws IOException {
+    public RiskModel() throws Exception {
         players = new ArrayList<>();
-        board = new Board();
-        tempBoard = new Board();
+        board = new Board("OriginRiskMap");
+        tempBoard = new Board("OriginRiskMap");
         initialTroopHashMap = new HashMap<>();
         playerIDHashMap = new HashMap<>();
         setInitialTroopHashMap();
@@ -1081,6 +1081,8 @@ public class   RiskModel implements Serializable{
             ioException.printStackTrace();
         } catch (SAXException saxException) {
             saxException.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

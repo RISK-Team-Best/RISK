@@ -122,7 +122,7 @@ public class XMLDOMWriter implements SavingStrategy{
 
     public static void main(String[] args) {
         try {
-            Board map = new Board();
+            Board map = new Board("OriginRiskMap");
             XMLDOMWriter writer = new XMLDOMWriter();
             writer.generateMap(map);
 
