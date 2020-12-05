@@ -70,8 +70,6 @@ public class RiskView extends JFrame implements RiskViewInterface{
             button.setActionCommand(territoryName);
         }
 
-
-
         continentInfoPane = new JScrollPane(continentsLabel);
         continentInfoPane.setPreferredSize(new Dimension(200,600));
         continentsLabel.setFont(new Font("Arial",0,12));
@@ -128,7 +126,6 @@ public class RiskView extends JFrame implements RiskViewInterface{
         this.commandButtonList.add(deploy);
         this.commandButtonList.add(skipButton);
         this.commandButtonList.add(confirmButton);
-
 
         this.setLocation(50,50);
         this.setSize(1000,4000);
@@ -328,8 +325,6 @@ public class RiskView extends JFrame implements RiskViewInterface{
     public AttackWay getAttackTroopsBox(){
         return (AttackWay) troopsBox.getSelectedItem();
     }
-
-
 
 
     /**

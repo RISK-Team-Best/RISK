@@ -186,10 +186,7 @@ public class RiskController {
             //System.out.print(model.getCurrentStage());
 
         }
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            model.recoverGame();
-//        }
+
     }
 
     }
