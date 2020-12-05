@@ -3,6 +3,7 @@ package RISK;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -611,9 +612,18 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
 
     public String getFileName(){
-        String file = JOptionPane.showInputDialog( "Please enter the file name");
-        return file;
-
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("."));
+        int state = chooser.showDialog(null,"Confirm");
+        if(state==JFileChooser.APPROVE_OPTION){
+            String filename = chooser.getSelectedFile().getName();
+            int end = filename.lastIndexOf(".");
+            if(end ==-1){end+=2;}
+            return filename.substring(0,end);
+        }else {
+            System.out.println("no file chosen");
+            return null;
+        }
     }
 
     /**
