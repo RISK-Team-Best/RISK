@@ -67,7 +67,7 @@ public class   RiskModel implements Serializable{
      * @throws IOException the io exception
      */
     public RiskModel(String mapName) throws Exception {
-        mapName = mapName;
+        this.mapName = mapName;
         players = new ArrayList<>();
         board = new Board(mapName);
         tempBoard = new Board(mapName);
@@ -117,6 +117,10 @@ public class   RiskModel implements Serializable{
         }
         currentPlayer = players.get(0);
 
+    }
+
+    public String getMapName() {
+        return mapName;
     }
 
     /**
@@ -1079,7 +1083,7 @@ public class   RiskModel implements Serializable{
             XMLHandler handler = new XMLHandler(mapName);
             handler.setModel(this);
             for(RiskViewInterface view:viewList) {
-                handler.toXMLFile(view.getFileName());
+                handler.toXMLFile(view.getFileName()+"_"+this.mapName);
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();

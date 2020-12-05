@@ -59,7 +59,6 @@ public class XMLHandler extends DefaultHandler {
 
     public XMLHandler(String mapName) throws Exception {
         this.mapName = mapName;
-        model = new RiskModel(mapName);
         importPlayers = new ArrayList<>();
     }
 
@@ -79,7 +78,7 @@ public class XMLHandler extends DefaultHandler {
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            Result result = new StreamResult(filename + ".xml");
+            Result result = new StreamResult(filename+ ".xml");
             handler.setResult(result);
 
             AttributesImpl attr = new AttributesImpl();
@@ -254,6 +253,9 @@ public class XMLHandler extends DefaultHandler {
 
     //import saved games with name
     public void importXMLFileByName(String filename) throws Exception {
+        String[] names = filename.split("_");
+
+        model = new RiskModel(names[1]);
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
 
@@ -421,7 +423,7 @@ public class XMLHandler extends DefaultHandler {
         }
         if(isContinent){
             try {
-                tempContinent = new Board("OriginRiskMap").getContinentByName(info);
+                tempContinent = new Board(mapName).getContinentByName(info);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {

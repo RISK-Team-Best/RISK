@@ -1,5 +1,8 @@
 package RISK;
 
+import org.xml.sax.SAXException;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -169,10 +172,12 @@ public class RiskController {
                 exception.printStackTrace();
             }
             try{
-                handler.importXMLFileByName(view.getFileName());
+                String fileName = view.getFileName()+"_"+model.getMapName();
+                handler.importXMLFileByName(fileName);
             }
-            catch(Exception saxException) {
-                saxException.printStackTrace();
+            catch (Exception fileNotFoundException){
+                JOptionPane.showMessageDialog(null,"You haven't save any file under this map. Please check and try again.","File Not Found",JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             model = handler.getModel();
