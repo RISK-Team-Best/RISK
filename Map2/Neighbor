@@ -16,3 +16,19 @@ Sick Wards,Upper Lavatory,Hospital,Passage,Lecher Room
 Hospital,Sick Ward,Passage, Attendants Rooms
 Attendants Room,Hospital,Passage
 Passage,Hospital,Sick Wards,Lecher Room,Dispel Room,Screen Room, Cell Room Right,Attendants Room
+Cell Room Northwest,Cell Room Exit,Cell Room North, Cell Room Center,
+Cell Room Center,Cell Room Northwest, Cell Room Passage, Cell Room North, Cell Room Entrance,
+Cell Room Entrance,Cell Room Center, Cell Room North, Hallway,Guards Lavatory, Cell Room South
+Cell Room Exit Left, Mess Room, Cell Room South Passage, Cell Room Center Passage,Cell Room Exit
+Hallway,Cell Room North,Cell Room Entrance,Guards Lavatory, Guards Room,Commandants Office, Adjutants Office,
+Cell Room Center Passage,Cell ROom Exit Left, Cell Room Center
+Cell Room South,Cell Room South Passage,Cell Room Center, Cell Room Entrance, Guards Lavatory
+Guards Room,Hallway,Guards Lavatory, Main Stairway
+Main Stairway,Guards Lavatory, Guards Room,Second Floor Hall,
+Commandants Office,Cell Room North, Adjutants Office,Hallway
+Guards Lavatory,Cell Room Entrance, Cell Room South, Main Stairway,Guards Room,Hallway
+Adjutants office,Commandants Office,Hallway
+Telegraph Office,Clerks,Second Floor Hall,Record Room
+Record Room,Telegraph Office, Second Floor Hall,
+Second Floor Hall,Main Stairway,Clerks,Telegraph Office, Record Room
+Clerks,Second Floor Hall, Telegraph Office

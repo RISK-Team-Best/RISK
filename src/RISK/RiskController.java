@@ -183,10 +183,7 @@ public class RiskController {
             model.reload();
 
         }
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            model.recoverGame();
-//        }
+
     }
 
     }
