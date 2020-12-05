@@ -19,7 +19,7 @@ public class RiskModelTest {
      */
     @Before
     public void setUp() throws Exception {
-        riskModel = new RiskModel();
+        riskModel = new RiskModel("OriginRiskMap");
         riskModel.setPlayerNum(2);
         riskModel.addPlayersName(new String[]{"Player_1", "Player_2"},new Boolean[]{false,false});
         riskModel.initialGame();

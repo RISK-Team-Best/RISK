@@ -52,13 +52,14 @@ public class XMLHandler extends DefaultHandler {
     private String targetTerritoryButtonClick;
     private String originTerritoryName;
     private String targetTerritoryName;
+    private String mapName;
 
 
     //private BufferedImage image;
 
-    public XMLHandler() throws Exception {
-
-        model = new RiskModel();
+    public XMLHandler(String mapName) throws Exception {
+        this.mapName = mapName;
+        model = new RiskModel(mapName);
         importPlayers = new ArrayList<>();
     }
 
@@ -298,7 +299,7 @@ public class XMLHandler extends DefaultHandler {
 //        sb = new StringBuilder();
         if(qName.equalsIgnoreCase("Risk")) {
             try {
-                model = new RiskModel();
+                model = new RiskModel(mapName);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {

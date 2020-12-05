@@ -10,6 +10,7 @@ import java.io.IOException;
 public class RiskController {
     private RiskModel model;
     private RiskView view;
+    private String mapName = "OriginRiskMap";
 
 
     /**
@@ -20,9 +21,11 @@ public class RiskController {
     public RiskController(RiskModel riskModel,RiskView riskView) throws IOException{
         this.model = riskModel;
         this.view = riskView;
-
         this.model.addView(this.view);
+        registerListeners();
+    }
 
+    private void registerListeners(){
         view.addNewGameMenuListener(new NewGameMenuListener() );
         view.addDraftButtonListener(new DraftButtonListener());
         view.addAttackButtonListener(new AttackButtonListener());
@@ -33,9 +36,7 @@ public class RiskController {
         view.addTerritoryButtonListener(new TerritoryButtonListener());
         view.addSaveButtonListner(new SaveButtonListener());
         view.addImportButtonListner(new LoadButtonListener());
-
-
-
+        view.addNewMapButtonListener(new NewMapListener());
     }
 
 
@@ -70,6 +71,23 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             model.attackPrepare();
+        }
+    }
+
+    public class NewMapListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                mapName = new LoadNewMapDialog().getMapName();
+                model = new RiskModel(mapName);
+                view.dispose();
+                view = new RiskView(new Board(mapName));
+                model.addView(view);
+                registerListeners();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -144,7 +162,7 @@ public class RiskController {
         public void actionPerformed(ActionEvent e) {
             XMLHandler handler = null;
             try {
-                 handler = new XMLHandler();
+                 handler = new XMLHandler(mapName);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             } catch (Exception exception) {

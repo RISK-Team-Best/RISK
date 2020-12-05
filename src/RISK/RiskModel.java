@@ -34,7 +34,7 @@ public class   RiskModel implements Serializable{
     private int numberPlayers;
 
     private Board board;
-    private final Board tempBoard;
+    private Board tempBoard;
 
     private String battleStatusString;
     private String statusLabel;
@@ -59,16 +59,18 @@ public class   RiskModel implements Serializable{
 
     private String originTerritoryName = "";
     private String targetTerritoryName = "";
+    private String mapName;
 
     /**
      * Instantiates a new Game.
      *
      * @throws IOException the io exception
      */
-    public RiskModel() throws Exception {
+    public RiskModel(String mapName) throws Exception {
+        mapName = mapName;
         players = new ArrayList<>();
-        board = new Board("OriginRiskMap");
-        tempBoard = new Board("OriginRiskMap");
+        board = new Board(mapName);
+        tempBoard = new Board(mapName);
         initialTroopHashMap = new HashMap<>();
         playerIDHashMap = new HashMap<>();
         setInitialTroopHashMap();
@@ -1074,7 +1076,7 @@ public class   RiskModel implements Serializable{
 
     public void saveProcess() {
         try {
-            XMLHandler handler = new XMLHandler();
+            XMLHandler handler = new XMLHandler(mapName);
             handler.setModel(this);
             for(RiskViewInterface view:viewList) {
                 handler.toXMLFile(view.getFileName());
