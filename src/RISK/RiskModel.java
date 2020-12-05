@@ -959,13 +959,8 @@ public class   RiskModel implements Serializable{
         return currentStage;
     }
 
-    public void ImportPlayer(String name, boolean AI, int troops, int ID, String ownTerritory){
+    public void ImportPlayer(String name, int troops, int ID, String ownTerritory){
         Player player = new Player(name,this);
-
-        if(AI){
-            player = (AIPlayer) player;
-        }
-
         player.setID(ID);
         player.setTroops(troops);
 
