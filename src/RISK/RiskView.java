@@ -618,11 +618,11 @@ public class RiskView extends JFrame implements RiskViewInterface{
         if(state==JFileChooser.APPROVE_OPTION){
             String filename = chooser.getSelectedFile().getName();
             int end = filename.lastIndexOf(".");
-            if(end ==-1){end+=2;}
-            return filename.substring(0,end);
+            if(end ==-1){return filename;}//if there is no . saving
+            return filename.substring(0,end);//loading,get rid of extension
         }else {
-            System.out.println("no file chosen");
-            return null;
+            System.out.println("try again"); //keep asking user to give something not garantee valid
+            return getFileName();
         }
     }
 
