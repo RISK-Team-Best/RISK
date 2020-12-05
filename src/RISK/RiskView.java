@@ -621,8 +621,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
             if(end ==-1){return filename;}//if there is no . saving
             return filename.substring(0,end);//loading,get rid of extension
         }else {
-            System.out.println("try again"); //keep asking user to give something not garantee valid
-            return getFileName();
+            return null;
         }
     }
 
