@@ -958,8 +958,14 @@ public class   RiskModel implements Serializable{
     public Stage getCurrentStage(){
         return currentStage;
     }
-    public void ImportPlayer(String name, int troops, int ID, String ownTerritory){
+
+    public void ImportPlayer(String name, boolean AI, int troops, int ID, String ownTerritory){
         Player player = new Player(name,this);
+
+        if(AI){
+            player = (AIPlayer) player;
+        }
+
         player.setID(ID);
         player.setTroops(troops);
 
@@ -971,6 +977,7 @@ public class   RiskModel implements Serializable{
             player.addTerritory(t);
 
         }
+
         for(Player p : this.players){
             if(!(p.getName().equals(name))){
                 this.players.add(player);

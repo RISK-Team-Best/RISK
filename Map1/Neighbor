@@ -1,0 +1,41 @@
+Plankwalk Point,Cannon Lookout,The Lunar Howl
+Cannon Lookout,Cutlass Cove,Bandit Den,Plankwalk Point
+Cutlass Cove,Cannon Lookout,Bandit Den,Sandy Retreat,Barnacle Beach
+Bandit Den,Bayside Inn,Town Square,Sandy Retreat,Cannon Lookout,Cutlass Cove,Fisherman's Wharf
+Sandy Retreat,Bandit Den,Fish Market,Barnacle Beach,Cutlass Cove
+Barnacle Beach,Cutlass Cove,Sandy Retreat
+Fisherman's Wharf,Pier 03,Bayside Inn,Bandit Den
+Pier 01,St.Taylor's Estate
+Pier 02,Pier 01,Pier 03,St.Taylor's Estate,Manor Grove
+Pier 03,Fisherman's Wharf,Bayside Inn,Pier 02
+Toothy Cliffs,Prawn Peak,Bombard Bay,Deadman's Delight
+Bombard Bay,Toothy Cliffs,Gold Cannon
+Prawn Peak,Jetty,St.Taylor's Estate,Tropical Ascent,Toothy Cliffs
+Sleepy Plateau,Landlubber Lagoon,Docks,Pavilion,Wharf A
+Docks,Pavilion,Sleepy Plateau,Salty Shore,Passenger Vessel
+Pavilion,Sleepy Plateau,Docks,Salty Shore,Jetty,Tropical Ascent,Rum Raven's Tavern
+Salty Shore,Jetty,Pavilion,Docks,Passenger Vessel
+Jetty,Prawn Peak,Tropical Ascent,Pavilion,Salty Shore
+Passenger Vessel,Salty Shore,Docks
+Wharf A,Wharf B,Sleepy Plateau
+Wharf B,Wharf A,Wharf C
+Wharf C,Wharf B,Rock Pools
+Rock Pools,Wharf C,Rogue Paradise
+Rogue Paradise,Lighthouse,Rock Pools,Fort Stonelock
+Lighthouse,Fort Stonelock,Rogue Paradise
+Fort Stonelock,Lighthouse,Rogue Paradise,Fick's Fury
+Fick's Fury,Fort Stonelock,Bloodbeard's Revenge
+Bloodbeard's Revenge,Gold Cannon,Fick's Fury
+Gold Cannon,Bloodbeard's Revenge,Skull Keeper,Bombard Bay
+Skull Keeper,Deadman's Delight,Gold Cannon
+Deadman's Delight,Skull Keeper,Toothy Cliffs,Stormweaver
+Stormweaver,The Lunar Howl,Deadman's Delight
+The Lunar Howl,Stormweaver,Plankwalk Point
+Bayside Inn,Pier 03,Fisherman's Wharf,Manor Grove,Town Square,Bandit Den
+Town Square,Fish Market,Rum Raven's Tavern,Manor Grove,Bayside Inn,Bandit Den
+Fish Market,Town Square,Landlubber Lagoon,Sandy Retreat
+Landlubber Lagoon,Fish Market,Rum Raven's Tavern,Sleepy Plateau
+Manor Grove,Bayside Inn,Town Square,Rum Raven's Tavern,Tropical Ascent,St.Taylor's Estate,Pier 02
+Rum Raven's Tavern,Tropical Ascent,Manor Grove,Town Square,Landlubber Lagoon,Pavilion
+St.Taylor's Estate,Tropical Ascent,Prawn Peak,Pier 01,Pier 02,Manor Grove
+Tropical Ascent,Manor Grove,St.Taylor's Estate,Rum Raven's Tavern,Pavilion,Jetty,Prawn Peak

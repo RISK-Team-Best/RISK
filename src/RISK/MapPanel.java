@@ -1,5 +1,6 @@
 package RISK;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,6 +23,7 @@ public class MapPanel extends JPanel implements Serializable{
         try {
 
             image = new Board("OriginRiskMap").getImage();
+
         } catch (IOException ex) {
             // handle exception...
         } catch (Exception e) {
