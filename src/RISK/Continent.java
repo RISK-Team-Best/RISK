@@ -2,7 +2,6 @@ package RISK;
 
 import java.util.ArrayList;
 
-
 /*
  * The class Continent store the territories which in the same continent
  *

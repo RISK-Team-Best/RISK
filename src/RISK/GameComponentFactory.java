@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 public class GameComponentFactory {
     public static Player createPlayer(String name, String troops, String ID,
-                                      String isAI, ArrayList<Territory> ownTerritory,ArrayList<Continent> ownContinents,RiskModel model)
-    {
+                                      String isAI, ArrayList<Territory> ownTerritory,ArrayList<Continent> ownContinents,RiskModel model) {
         if(isAI.equals("true"))
         {
             AIPlayer newPlayer = new AIPlayer(name,model);
@@ -35,8 +34,7 @@ public class GameComponentFactory {
         }
     }
 
-    public static Territory createTerritory(String name,String troops,Player holder,RiskModel model)
-    {
+    public static Territory createTerritory(String name,String troops,Player holder,RiskModel model){
         Territory newTerritory = model.getTerritoryByString(name);
         newTerritory.setTroops(Integer.parseInt(troops));
         newTerritory.setHolder(holder);
@@ -44,9 +42,7 @@ public class GameComponentFactory {
 
     }
 
-    public static Continent createContinent(String name,String bonus,RiskModel model)
-    {
+    public static Continent createContinent(String name,String bonus,RiskModel model){
         return null;
-
     }
 }

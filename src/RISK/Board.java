@@ -147,6 +147,12 @@ public class Board extends DefaultHandler {
         return neighbors.get(countryName);
     }
 
+    /**
+     * Get all neighbors in an array list of a territory through territory's name.
+     *
+     * @param name
+     * @return the name of the continent .
+     */
     public Continent getContinentByName(String name){
         return continentHashMap.get(name);
     }

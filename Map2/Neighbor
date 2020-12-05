@@ -1,0 +1,18 @@
+Storage,Workshop,Basement Stairway, Bakery
+Basement Stairway,Workshop,Clothing Room,Stockade Stairway
+Workshop,Storage,Bakery, Basement Stairway,Clothing Room
+Clothing Room,Basement Stairway,Workshop,Bakery,Lavatory
+Lavatory,Clothing Room,Bakery
+Mess Room,Cell Room Exit Left,Overseers Mess,Stockade Stairway,Kitchen
+Stockade Stairway,Basement Stairway,Kitchen
+Pantry,Overseers Mess,Kitchen,
+Overseers Mess,Pantry,Kitchen,Mess Room,
+Kitchen Storage,Kitchen
+Kitchen,Kitchen Storage,Pantry,Overseers Mess,stockade Stairway,Mess Room
+Lecher Room, Dispel Room, Sick Ward, Passage
+Dispel Room, Lecher Room, Passage, Screen Room
+Upper Lavatory, Sick Ward
+Sick Wards,Upper Lavatory,Hospital,Passage,Lecher Room
+Hospital,Sick Ward,Passage, Attendants Rooms
+Attendants Room,Hospital,Passage
+Passage,Hospital,Sick Wards,Lecher Room,Dispel Room,Screen Room, Cell Room Right,Attendants Room
