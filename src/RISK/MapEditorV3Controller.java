@@ -11,6 +11,7 @@ public class MapEditorV3Controller implements MouseListener {
     {
         this.model = model;
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         JComponent component = (JComponent) e.getSource();
