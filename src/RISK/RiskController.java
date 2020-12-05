@@ -1,7 +1,5 @@
 package RISK;
 
-import org.xml.sax.SAXException;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -183,7 +181,6 @@ public class RiskController {
             model = handler.getModel();
             model.addView(view);
             model.reload();
-            //System.out.print(model.getCurrentStage());
 
         }
 //        @Override
