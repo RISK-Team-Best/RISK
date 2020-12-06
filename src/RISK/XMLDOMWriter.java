@@ -19,6 +19,7 @@ public class XMLDOMWriter implements SavingStrategy{
     private DocumentBuilder documentBuilder;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private Transformer transformer;
+
     public XMLDOMWriter()
     {
         try {
@@ -30,13 +31,21 @@ public class XMLDOMWriter implements SavingStrategy{
         }
 
     }
-
+    /**
+     * Create empty board
+     *
+     * @return the all board in document
+     */
     public Document createEmptyBoard()
     {
         Document board = documentBuilder.newDocument();
         return board;
     }
 
+    /**
+     * Generate the map with document
+     *
+     */
     public void generateMapWithDoc(Document doc)
     {
         DOMSource source = new DOMSource(doc);
@@ -47,7 +56,12 @@ public class XMLDOMWriter implements SavingStrategy{
             System.out.println(e);
         }
     }
-
+    /**
+     * Generate the map
+     *
+     * @param board in Board
+     *
+     */
     public void generateMap(Board board) {
         Document map = documentBuilder.newDocument();
         Element root = map.createElement("board");
@@ -75,6 +89,13 @@ public class XMLDOMWriter implements SavingStrategy{
 
     }
 
+    /**
+     * Save the game
+     *
+     * @param model in risk model
+     * @param path in String
+     *
+     */
     public void saveGame(RiskModel model,String path) {
         Document game = documentBuilder.newDocument();
         Element root = game.createElement("RISK");
@@ -120,6 +141,10 @@ public class XMLDOMWriter implements SavingStrategy{
 
     }
 
+    /**
+     * main program
+     *
+     */
     public static void main(String[] args) {
         try {
             Board map = new Board("OriginRiskMap");

@@ -26,21 +26,33 @@ public class XMLDOMReader implements LoadingStrategy{
 
     }
 
+    /**
+     * Recover the game
+     *
+     * @param riskModel in Risk Model
+     */
     public void recoverGame(RiskModel riskModel) {//break down to small methods
-
         readStage(riskModel);
         readPlayer(riskModel);
         readTerritories(riskModel);
-
-
     }
 
+    /**
+     * Read the stage
+     *
+     * @param riskModel in Risk Model
+     */
     private void readStage(RiskModel riskModel) {
         NodeList stage = doc.getElementsByTagName("currentStage");
         String s = stage.item(0).getTextContent();
         riskModel.setCurrentStage(Stage.valueOf(s));
     }
 
+    /**
+     * Read the territories
+     *
+     * @param riskModel in Risk Model
+     */
     private void readTerritories(RiskModel riskModel) {
         NodeList territories = doc.getElementsByTagName("Territory");//get all Players
         for (int i = 0;i<territories.getLength();i++)
@@ -60,6 +72,11 @@ public class XMLDOMReader implements LoadingStrategy{
         }
     }
 
+    /**
+     * Read the player
+     *
+     * @param riskModel in Risk Model
+     */
     private void readPlayer(RiskModel riskModel) {
         NodeList players = doc.getElementsByTagName("Player");//get all Players
         for (int i = 0;i<players.getLength();i++)

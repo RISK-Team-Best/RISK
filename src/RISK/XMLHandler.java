@@ -55,14 +55,12 @@ public class XMLHandler extends DefaultHandler {
     private String mapName;
 
 
-    //private BufferedImage image;
-
     public XMLHandler(String mapName) throws Exception {
         this.mapName = mapName;
         importPlayers = new ArrayList<>();
     }
 
-    /**
+    /**Set the models
      * @param model the model to set
      */
     public void setModel(RiskModel model) {
@@ -109,11 +107,6 @@ public class XMLHandler extends DefaultHandler {
                 handler.characters(value.toCharArray(), 0, value.length());
                 handler.endElement("", "", "PlayerName");
 
-//                attr.clear();
-//                handler.startElement("", "", "AI", attr);
-//                //String ai = model.getPlayerById(i).isAI() + "";
-//                //handler.characters(ai.toCharArray(), 0, ai.length());
-//                handler.endElement("", "", "AI");
 
                 attr.clear();
                 handler.startElement("", "", "playerTroops", attr);
@@ -455,7 +448,10 @@ public class XMLHandler extends DefaultHandler {
         }
     }
 
-
+    /**Get the models
+     *
+     * @return the model
+     */
     public RiskModel getModel() {
         return this.model;
     }

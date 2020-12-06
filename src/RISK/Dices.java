@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-/**
+/*
  * 
  * The class Dices used to perform dice rolling and return the maximum value of the dice.
  *
  *
  * @Author: Tiantian Lin, 101095243
  */
+
 public class Dices  {
     private ArrayList<Integer> dices;
     private int dicesAmount;

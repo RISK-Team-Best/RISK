@@ -15,7 +15,7 @@ import java.util.HashMap;
 ///**
 // * The type Board which read the files and create map informations.
 // *
-// * @Author: Guanquan Dong, 101093918
+// * @Author: Guanqun Dong, 101093918
 // *
 // */
 
@@ -148,19 +148,29 @@ public class Board extends DefaultHandler {
     }
 
     /**
-     * Get all neighbors in an array list of a territory through territory's name.
+     * Get all continent by name.
      *
-     * @param name
+     * @param name the corresponding name
      * @return the name of the continent .
      */
     public Continent getContinentByName(String name){
         return continentHashMap.get(name);
     }
 
+    /**
+     * Get all coordinates in hashmap.
+     *
+     * @return the coordinates of the territory .
+     */
     public HashMap<String, ArrayList<Integer>> getCoordinates() {
         return coordinates;
     }
 
+    /**
+     * Get all Image of buffered image.
+     *
+     * @return the coordinates of the territory .
+     */
     public BufferedImage getImage() {
         return image;
     }
