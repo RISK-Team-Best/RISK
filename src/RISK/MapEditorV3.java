@@ -14,8 +14,7 @@ public class MapEditorV3 extends JFrame {
     private final MapEditorV3Controller controller;
     private HashMap<String,JButton> buttons = new HashMap<>();
 
-    public MapEditorV3()
-    {
+    public MapEditorV3(){
         //initial important parts
         super("MapEditor Version 3");
         fileChooser.setCurrentDirectory(new File("res"));

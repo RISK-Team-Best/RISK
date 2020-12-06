@@ -144,6 +144,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * This method is prompting to get the number of players.
+     *
      * @return the number of player
      */
     @Override
@@ -168,6 +169,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * This method is prompting to get each player's name
+     *
      * @return the player's name string list
      */
     @Override
@@ -179,6 +181,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * This method is a Setter for continentsLabel
+     *
      * @param string
      */
     public void setContinentsLabel(String string){
@@ -212,6 +215,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * This method is setting status Label
+     *
      * @param str set the text in status label
      */
     @Override
@@ -318,6 +322,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * This method is getting the attackway for attack stage in JComboBox
+     *
      * @return the troop number in troops box that selected
      */
     @Override
@@ -361,7 +366,8 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     /**
-     *This methos is making the original territories button enabled
+     *This methods is making the original territories button enabled
+     *
      * @param territories
      */
     @Override
@@ -395,6 +401,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Only enable one territory button and disable all others
+     *
      * @param territoryName
      */
     public void onlyEnableOriginTerritory(String territoryName){
@@ -498,6 +505,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * paint the territory's button for the player
+     *
      * @param player
      * @param color
      */
@@ -579,6 +587,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Get the selected troops in JComboBox and cast into int
+     *
      * @return the troops number that be selected
      */
     @Override
@@ -602,9 +611,11 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     }
 
-
-
-
+    /**
+     * Add new action listener for newGame button
+     *
+     * @return file in string
+     */
     public String getFileName(){
         String file = JOptionPane.showInputDialog( "Please enter the file name");
         return file;
@@ -637,9 +648,10 @@ public class RiskView extends JFrame implements RiskViewInterface{
         attack.addActionListener(attackButtonListener);
     }
 
-    /**
+
     /**
      * Add new action listener for fortify button
+     *
      * @param fortifyButtonListener
      */
     public void addFortifyButtonListener(ActionListener fortifyButtonListener){
@@ -648,6 +660,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for deploy button
+     *
      * @param deployButtonListener
      */
     public void addDeployButtonListener(ActionListener deployButtonListener){
@@ -656,6 +669,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for skip button
+     *
      * @param skipButtonListener
      */
     public void addSkipButtonListener(ActionListener skipButtonListener){
@@ -664,6 +678,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for confirm button
+     *
      * @param confirmButtonListener
      */
     public void addConfirmButtonListener(ActionListener confirmButtonListener){
@@ -673,6 +688,7 @@ public class RiskView extends JFrame implements RiskViewInterface{
 
     /**
      * Add new action listener for territory Button
+     *
      * @param territoryButtonListener
      */
     public void addTerritoryButtonListener(ActionListener territoryButtonListener){
@@ -680,13 +696,30 @@ public class RiskView extends JFrame implements RiskViewInterface{
             button.addActionListener(territoryButtonListener);
         }
     }
-    public void addSaveButtonListner(ActionListener saveButtonListener){
+
+    /**
+     * Add new action listener for saving Button
+     *
+     * @param saveButtonListener
+     */
+    public void addSaveButtonListener(ActionListener saveButtonListener){
         saveItem.addActionListener(saveButtonListener);
     }
-    public void addImportButtonListner(ActionListener importButtonListener){
+
+    /**
+     * Add new action listener for importing Button
+     *
+     * @param importButtonListener
+     */
+    public void addImportButtonListener(ActionListener importButtonListener){
         loadItem.addActionListener(importButtonListener);
     }
 
+    /**
+     * Add new action listener for new map button
+     *
+     * @param newMapListener
+     */
     public void addNewMapButtonListener(ActionListener newMapListener){
         newMapItem.addActionListener(newMapListener);
     }

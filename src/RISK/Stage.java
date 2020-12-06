@@ -10,6 +10,7 @@ public enum Stage {
 
     /**
      * Constructor for Stage
+     *
      * @param name
      */
     Stage(String name){
@@ -18,6 +19,7 @@ public enum Stage {
 
     /**
      * This method is getting name of the Stage type
+     *
      * @return Stage's name
      */
     public String getName() {

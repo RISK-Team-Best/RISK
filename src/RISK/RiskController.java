@@ -26,6 +26,10 @@ public class RiskController {
         registerListeners();
     }
 
+    /**
+     * Register Listeners
+     *
+     */
     private void registerListeners(){
         view.addNewGameMenuListener(new NewGameMenuListener() );
         view.addDraftButtonListener(new DraftButtonListener());
@@ -35,11 +39,10 @@ public class RiskController {
         view.addSkipButtonListener(new SkipButtonListener());
         view.addConfirmButtonListener(new ConfirmButtonListener());
         view.addTerritoryButtonListener(new TerritoryButtonListener());
-        view.addSaveButtonListner(new SaveButtonListener());
-        view.addImportButtonListner(new LoadButtonListener());
+        view.addSaveButtonListener(new SaveButtonListener());
+        view.addImportButtonListener(new LoadButtonListener());
         view.addNewMapButtonListener(new NewMapListener());
     }
-
 
     /**
      * Inner class implement NewGame function

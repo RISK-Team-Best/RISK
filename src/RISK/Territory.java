@@ -98,6 +98,7 @@ public class Territory implements Serializable {
      */
     public String shortDescription(){return getName()+"("+getTroops()+" troops)";}
 
+
      /**
       * @return Territory's name
       */
