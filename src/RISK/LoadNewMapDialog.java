@@ -18,7 +18,7 @@ public class LoadNewMapDialog {
     }
 
     enum MapType{
-        Classic("OriginRiskMap"),Seaport("Map1"),Invalid("Invalid");
+        Classic("OriginRiskMap"),Seaport("Map1"),Invalid("Invalid1");
 
         private String fileName;
         MapType(String fileName) {

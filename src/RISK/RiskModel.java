@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * The main Game.
  */
-public class   RiskModel implements Serializable{
+public class   RiskModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +28,7 @@ public class   RiskModel implements Serializable{
     private final HashMap<Integer, Player> playerIDHashMap;
 
     private final LinkedHashSet<Territory> neighborCountries;
+    private final LinkedHashSet<Territory> tempNeighborCountries;
 
     private int numberPlayers;
 
@@ -75,14 +76,36 @@ public class   RiskModel implements Serializable{
         allCountries = new ArrayList<>();
         allContinents = board.getAllContinents();
         neighborCountries = new LinkedHashSet<>();
+        tempNeighborCountries = new LinkedHashSet<>();
         viewList = new ArrayList<>();
 
-        colorIDHashMap.put(0,Color.MAGENTA);
-        colorIDHashMap.put(1,Color.CYAN);
-        colorIDHashMap.put(2,Color.GREEN);
-        colorIDHashMap.put(3,Color.PINK);
-        colorIDHashMap.put(4,Color.WHITE);
-        colorIDHashMap.put(5,Color.LIGHT_GRAY);
+        colorIDHashMap.put(0, Color.MAGENTA);
+        colorIDHashMap.put(1, Color.CYAN);
+        colorIDHashMap.put(2, Color.GREEN);
+        colorIDHashMap.put(3, Color.PINK);
+        colorIDHashMap.put(4, Color.WHITE);
+        colorIDHashMap.put(5, Color.LIGHT_GRAY);
+    }
+
+    public boolean invalidMap(){
+        for(Territory territory:board.getAllCountries()){
+            tempNeighborCountries.clear();
+            addAllNeighborCountries(territory);
+            if(tempNeighborCountries.size()!=board.getAllCountries().size()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addAllNeighborCountries(Territory territory){
+        int size = tempNeighborCountries.size();
+        for(Territory neighbor : board.getAllNeighbors(territory.getName())){
+            tempNeighborCountries.add(neighbor);
+            if(tempNeighborCountries.size()!=size){
+                addAllNeighborCountries(neighbor);
+            }else return;
+        }
     }
 
     public void setBoard(Board board) {
@@ -93,7 +116,7 @@ public class   RiskModel implements Serializable{
         this.allContinents = allContinents;
     }
 
-    public void addView(RiskViewInterface viewInterface){
+    public void addView(RiskViewInterface viewInterface) {
         viewList.add(viewInterface);
     }
 
@@ -109,9 +132,9 @@ public class   RiskModel implements Serializable{
             assignTroops(player);
             player.printPlayerInfo();
         }
-        for(int i = 0;i<this.numberPlayers;i++){
+        for (int i = 0; i < this.numberPlayers; i++) {
             players.get(i).setID(i);
-            playerIDHashMap.put(i,players.get(i));
+            playerIDHashMap.put(i, players.get(i));
         }
         currentPlayer = players.get(0);
 
@@ -124,21 +147,21 @@ public class   RiskModel implements Serializable{
     /**
      * This method is adding player names into the game
      */
-    public void addPlayersName(String[] playerNameList,Boolean[] AITypeList) {
+    public void addPlayersName(String[] playerNameList, Boolean[] AITypeList) {
         players.clear();
         for (int i = 0; i < numberPlayers; i++) {
-            if(AITypeList[i])players.add(new AIPlayer(playerNameList[i],this));
-            else players.add(new Player(playerNameList[i],this));
+            if (AITypeList[i]) players.add(new AIPlayer(playerNameList[i], this));
+            else players.add(new Player(playerNameList[i], this));
         }
     }
 
-    public void importPlayers(ArrayList<Player> players){
+    public void importPlayers(ArrayList<Player> players) {
         this.players.clear();
         this.playerIDHashMap.clear();
 
         this.players = players;
-        for(Player player:players){
-            playerIDHashMap.put(player.getID(),player);
+        for (Player player : players) {
+            playerIDHashMap.put(player.getID(), player);
         }
     }
 
@@ -166,7 +189,7 @@ public class   RiskModel implements Serializable{
     /**
      * This method is assigning countries randomly.
      */
-    public void assignCountriesRandomly(){
+    public void assignCountriesRandomly() {
         ArrayList<Territory> tempAllCountries = tempBoard.getAllCountries();
         int averageStates = tempAllCountries.size() / numberPlayers;
         int extraStates = tempAllCountries.size() % numberPlayers;
@@ -243,13 +266,15 @@ public class   RiskModel implements Serializable{
 
     /**
      * This method is getting the player's territories which are available to attack
+     *
      * @param player
      * @return the attack territory list
      */
-    public ArrayList<Territory> getAttackTerritoriesList(Player player){
+    public ArrayList<Territory> getAttackTerritoriesList(Player player) {
         originTerritory.clear();
-        for(Territory territory:player.getTerritories()){
-            if(territory.getTroops()>1&&checkAttackableNeighbors(territory,player))originTerritory.add(territory);
+        for (Territory territory : player.getTerritories()) {
+            if (territory.getTroops() > 1 && checkAttackableNeighbors(territory, player))
+                originTerritory.add(territory);
         }
         return originTerritory;
     }
@@ -261,11 +286,11 @@ public class   RiskModel implements Serializable{
      * @param territory
      * @return the defence territory list
      */
-    public ArrayList<Territory> getDefenceTerritories(Player player,Territory territory){
+    public ArrayList<Territory> getDefenceTerritories(Player player, Territory territory) {
         targetTerritory.clear();
         for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
-            for(Territory territory1:allCountries) {
-                if(territory1.getName().equals(neighbor.getName())&&(!territory1.getHolder().equals(player))) {
+            for (Territory territory1 : allCountries) {
+                if (territory1.getName().equals(neighbor.getName()) && (!territory1.getHolder().equals(player))) {
                     targetTerritory.add(territory1);
                 }
             }
@@ -281,9 +306,9 @@ public class   RiskModel implements Serializable{
      * @param defenceCountry the defence country
      * @return Whether player conquered the target territory.
      */
-    public boolean battle(Territory attackCountry, Territory defenceCountry,AttackWay attackWay) {
+    public boolean battle(Territory attackCountry, Territory defenceCountry, AttackWay attackWay) {
         battleStatusString = "";
-        if(attackWay.equals(AttackWay.BLITZ)) return blitz(attackCountry,defenceCountry);
+        if (attackWay.equals(AttackWay.BLITZ)) return blitz(attackCountry, defenceCountry);
         int defenceTroops = 1;
         if (defenceCountry.getTroops() >= 2) defenceTroops = 2;
         Dices attackDice = new Dices(attackWay.getAttackTroops());
@@ -302,7 +327,7 @@ public class   RiskModel implements Serializable{
      */
     public boolean blitz(Territory attackCountry, Territory defenceCountry) {
         while ((attackCountry.getTroops() > 1) && (defenceCountry.getTroops() > 0)) {
-            int attack = attackCountry.getTroops()-1;
+            int attack = attackCountry.getTroops() - 1;
             int defence = defenceCountry.getTroops();
             if (attack > 3) attack = 3;
             if (defence > 2) defence = 2;
@@ -325,15 +350,15 @@ public class   RiskModel implements Serializable{
         attackDice.diceRolling();
         defenceDice.diceRolling();
         int minDiceAmount = Math.min(attackDice.getDicesAmount(), defenceDice.getDicesAmount());
-        int attackLostTroops=0;
-        int defenceLostTroops=0;
-        battleStatusString += attackCountry.getName()+" rolls: ";
-        for(int i = 0; i<attackDice.getDicesAmount();i++){
-            battleStatusString += attackDice.getIndexDice(i)+", ";
+        int attackLostTroops = 0;
+        int defenceLostTroops = 0;
+        battleStatusString += attackCountry.getName() + " rolls: ";
+        for (int i = 0; i < attackDice.getDicesAmount(); i++) {
+            battleStatusString += attackDice.getIndexDice(i) + ", ";
         }
-        battleStatusString+="\n"+defenceCountry.getName()+" rolls: ";
-        for(int i = 0; i<defenceDice.getDicesAmount();i++){
-            battleStatusString += defenceDice.getIndexDice(i)+", ";
+        battleStatusString += "\n" + defenceCountry.getName() + " rolls: ";
+        for (int i = 0; i < defenceDice.getDicesAmount(); i++) {
+            battleStatusString += defenceDice.getIndexDice(i) + ", ";
         }
         for (int i = 0; i < minDiceAmount; i++) {
             if (attackDice.getIndexDice(i) > defenceDice.getIndexDice(i)) {
@@ -344,7 +369,7 @@ public class   RiskModel implements Serializable{
                 attackLostTroops++;
             }
         }
-        battleStatusString += "\n"+attackCountry.getName()+" lost "+attackLostTroops+" troops.\n"+defenceCountry.getName()+" lost "+defenceLostTroops+" troops.\n\n";
+        battleStatusString += "\n" + attackCountry.getName() + " lost " + attackLostTroops + " troops.\n" + defenceCountry.getName() + " lost " + defenceLostTroops + " troops.\n\n";
     }
 
     /**
@@ -353,7 +378,7 @@ public class   RiskModel implements Serializable{
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
      */
-    public void deployTroops(Territory attackCountry, Territory defenceCountry,int deployTroops) {
+    public void deployTroops(Territory attackCountry, Territory defenceCountry, int deployTroops) {
         attackCountry.decreaseTroops(deployTroops);
         defenceCountry.getHolder().removeTerritory(defenceCountry);
         defenceCountry.setHolder(attackCountry.getHolder());
@@ -368,11 +393,11 @@ public class   RiskModel implements Serializable{
      * @param player
      * @return the fortify territory list
      */
-    public ArrayList<Territory> getFortifyTerritories(Player player){
+    public ArrayList<Territory> getFortifyTerritories(Player player) {
         fortifyTerritory.clear();
         for (Territory country : player.getTerritories()) {
-            for(Territory territory:board.getAllNeighbors(country.getName())){
-                if((getTerritoryByString(territory.getName()).getHolder().equals(country.getHolder()))&&(country.getTroops()>1)&&(!fortifyTerritory.contains(country))){
+            for (Territory territory : board.getAllNeighbors(country.getName())) {
+                if ((getTerritoryByString(territory.getName()).getHolder().equals(country.getHolder())) && (country.getTroops() > 1) && (!fortifyTerritory.contains(country))) {
                     this.fortifyTerritory.add(country);
                 }
             }
@@ -387,7 +412,7 @@ public class   RiskModel implements Serializable{
      * @param player
      * @return the fortified territory list
      */
-    public ArrayList<Territory> getFortifiedTerritory(Territory fortifyCountry, Player player){
+    public ArrayList<Territory> getFortifiedTerritory(Territory fortifyCountry, Player player) {
         fortifiedTerritory.clear();
         neighborCountries.clear();
         neighborCountries.add(fortifyCountry);
@@ -402,11 +427,12 @@ public class   RiskModel implements Serializable{
 
     /**
      * The fortify move troops from fortifyCountry to fortifiedCountry
+     *
      * @param fortifyCountry
      * @param fortifiedCountry
      * @param troop
      */
-    public void fortify(Territory fortifyCountry, Territory fortifiedCountry,int troop) {
+    public void fortify(Territory fortifyCountry, Territory fortifiedCountry, int troop) {
         fortifyCountry.decreaseTroops(troop);
         fortifiedCountry.increaseTroops(troop);
     }
@@ -419,16 +445,15 @@ public class   RiskModel implements Serializable{
      * @param territory the territory
      * @param player    the player
      */
-    public void addNeighborCountries(Territory territory, Player player){
+    public void addNeighborCountries(Territory territory, Player player) {
         int size = neighborCountries.size();
-        for(Territory neighbor: board.getAllNeighbors(territory.getName())){
-            for(Player player1:players){
-                if(player1.checkTerritoryByString(neighbor.getName())&&(player1.getName().equals(player.getName()))){
+        for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
+            for (Player player1 : players) {
+                if (player1.checkTerritoryByString(neighbor.getName()) && (player1.getName().equals(player.getName()))) {
                     neighborCountries.add(getTerritoryByString(neighbor.getName()));
-                    if(neighborCountries.size()!=size) {
-                        addNeighborCountries(getTerritoryByString(neighbor.getName()),player);
-                    }
-                    else break;
+                    if (neighborCountries.size() != size) {
+                        addNeighborCountries(getTerritoryByString(neighbor.getName()), player);
+                    } else break;
                 }
             }
         }
@@ -440,12 +465,12 @@ public class   RiskModel implements Serializable{
      * @param territory
      * @param player
      * @return ture if the territory has attackable neighbors
-     *         false if the territory has no attackable neighbors
+     * false if the territory has no attackable neighbors
      */
-    public boolean checkAttackableNeighbors(Territory territory, Player player){
-        for(Territory neighbor : board.getAllNeighbors(territory.getName())){
-            for(Player player1:players){
-                if(player1.checkTerritoryByString(neighbor.getName())&&(!player1.getName().equals(player.getName()))){
+    public boolean checkAttackableNeighbors(Territory territory, Player player) {
+        for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
+            for (Player player1 : players) {
+                if (player1.checkTerritoryByString(neighbor.getName()) && (!player1.getName().equals(player.getName()))) {
                     return true;
                 }
             }
@@ -457,17 +482,17 @@ public class   RiskModel implements Serializable{
      * This method is checking winner and print out congratulation message.
      * If only any player lost all territories. Prompt to show his failure.
      */
-    public void checkWinner(){
-        for(Player player:players){
-            if(player.getTerritories().isEmpty()){
-                JOptionPane.showMessageDialog(null, player.getName()+" fails...");
+    public void checkWinner() {
+        for (Player player : players) {
+            if (player.getTerritories().isEmpty()) {
+                JOptionPane.showMessageDialog(null, player.getName() + " fails...");
                 players.remove(player);
                 playerIDHashMap.remove(player.getID());
                 break;
             }
         }
-        if(playerIDHashMap.size()==1){
-            JOptionPane.showMessageDialog(null, "Congratulation, we have the winner: "+players.get(0).getName());
+        if (playerIDHashMap.size() == 1) {
+            JOptionPane.showMessageDialog(null, "Congratulation, we have the winner: " + players.get(0).getName());
             System.exit(-1);
         }
     }
@@ -475,11 +500,11 @@ public class   RiskModel implements Serializable{
     /**
      * This method is for updating any player has the continent or lose
      */
-    public void updateContinentListInfo(){
-        for(Continent continent:allContinents){
-            for(Player player:players){
-                for(Territory territory:player.getTerritories()){
-                    if(continent.memberString().contains(territory.getName())){
+    public void updateContinentListInfo() {
+        for (Continent continent : allContinents) {
+            for (Player player : players) {
+                for (Territory territory : player.getTerritories()) {
+                    if (continent.memberString().contains(territory.getName())) {
                         continent.getMemberTerritory(territory).setHolder(territory.getHolder());
                         continent.getMemberTerritory(territory).setTroops(territory.getTroops());
                     }
@@ -491,15 +516,15 @@ public class   RiskModel implements Serializable{
 
     /**
      * This method is setting the number of players
-     *
      */
-    public void setPlayerNum(int playerNum){
+    public void setPlayerNum(int playerNum) {
         this.numberPlayers = playerNum;
     }
 
 
     /**
      * Getter for allCountries in arraylist
+     *
      * @return all territory list
      */
     public ArrayList<Territory> getAllCountries() {
@@ -508,20 +533,22 @@ public class   RiskModel implements Serializable{
 
     /**
      * getter of CurrentPlayer
+     *
      * @return the player that currently doing the action
      */
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
     /**
      * Get the next player
+     *
      * @param currentPlayerID
      * @return the next player
      */
-    public Player getNextPlayer(int currentPlayerID){
-        int nextPlayerID = (currentPlayerID+1)%numberPlayers;
-        if(!playerIDHashMap.containsKey(nextPlayerID))return getNextPlayer(nextPlayerID);
+    public Player getNextPlayer(int currentPlayerID) {
+        int nextPlayerID = (currentPlayerID + 1) % numberPlayers;
+        if (!playerIDHashMap.containsKey(nextPlayerID)) return getNextPlayer(nextPlayerID);
         return playerIDHashMap.get(nextPlayerID);
     }
 
@@ -531,18 +558,18 @@ public class   RiskModel implements Serializable{
      *
      * @return the map info
      */
-    public String getMapInfoThroughContinent(){
+    public String getMapInfoThroughContinent() {
         updateContinentListInfo();
         String str = "<html> TERRITORY-HOLDER-TROOPS<br><br>";
-        for(Continent continent: allContinents){
-            str+=continent.getName()+":<br>";
-            for(Territory territory:continent.getMembers()){
-                str+=territory.getName()+"-"+territory.getHolder().getName()+"-"+territory.getTroops()+" <br>";
+        for (Continent continent : allContinents) {
+            str += continent.getName() + ":<br>";
+            for (Territory territory : continent.getMembers()) {
+                str += territory.getName() + "-" + territory.getHolder().getName() + "-" + territory.getTroops() + " <br>";
             }
-            str+="<br>";
+            str += "<br>";
         }
-        str+="</html>";
-        return  str;
+        str += "</html>";
+        return str;
     }
 
     /**
@@ -551,9 +578,9 @@ public class   RiskModel implements Serializable{
      * @param territoryName
      * @return the territory that have the territoryName
      */
-    public Territory getTerritoryByString(String territoryName){
-        for(Territory territory:allCountries){
-            if(territory.getName().equals(territoryName))return territory;
+    public Territory getTerritoryByString(String territoryName) {
+        for (Territory territory : allCountries) {
+            if (territory.getName().equals(territoryName)) return territory;
         }
         return null;
     }
@@ -564,15 +591,16 @@ public class   RiskModel implements Serializable{
      * @param id
      * @return player match the id
      */
-    public Player getPlayerById(int id){
-        for(Player player:players){
-            if(player.getID()==id)return player;
+    public Player getPlayerById(int id) {
+        for (Player player : players) {
+            if (player.getID() == id) return player;
         }
         return null;
     }
 
     /**
      * Get all Players
+     *
      * @return all Players
      */
     public ArrayList<Player> getPlayers() {
@@ -591,11 +619,11 @@ public class   RiskModel implements Serializable{
     /**
      * Model handle a new game process and update the view
      */
-    public void newGameProcess(){
+    public void newGameProcess() {
         currentStage = Stage.FORTIFYEND;
 
         int playerNum = 0;
-        for(RiskViewInterface view: viewList){
+        for (RiskViewInterface view : viewList) {
             playerNum = view.getNumberPlayerDialog();
         }
         setPlayerNum(playerNum);
@@ -603,18 +631,18 @@ public class   RiskModel implements Serializable{
 
         String[] playerNameList = new String[0];
         Boolean[] AITypeList = new Boolean[0];
-        for(RiskViewInterface view: viewList){
-            LinkedHashMap<String,Boolean> namesAndType = view.popGetName();
+        for (RiskViewInterface view : viewList) {
+            LinkedHashMap<String, Boolean> namesAndType = view.popGetName();
             playerNameList = namesAndType.keySet().toArray(new String[0]);
             AITypeList = namesAndType.values().toArray(new Boolean[0]);
         }
-        addPlayersName(playerNameList,AITypeList);
+        addPlayersName(playerNameList, AITypeList);
         initialGame();
-        for(RiskViewInterface view: viewList){
-            for(Territory territory:getAllCountries()){
-                view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
+        for (RiskViewInterface view : viewList) {
+            for (Territory territory : getAllCountries()) {
+                view.setTerritoryButtonTroops(territory.getName(), territory.getTroops());
             }
-            view.updateNewGameProcess(getMapInfoThroughContinent(),getCurrentPlayer().getName());
+            view.updateNewGameProcess(getMapInfoThroughContinent(), getCurrentPlayer().getName());
             paintTerritoryButtons(view);
         }
 //        jumpToAIProcess();
@@ -623,19 +651,19 @@ public class   RiskModel implements Serializable{
     /**
      * Model handle the draft preparation and update the view
      */
-    public void draftPrepare(){
+    public void draftPrepare() {
         currentPlayer.draftPrepare();
     }
 
     /**
      * @return the list of the Continent name if the player own continents
      */
-    public String getContinentBonusString(){
+    public String getContinentBonusString() {
         String continentBonus = "";
-        if(currentPlayer.haveContinent()) {
+        if (currentPlayer.haveContinent()) {
             continentBonus = " With ";
-            for(Continent continent:currentPlayer.getContinents()){
-                continentBonus+="--"+continent.getName();
+            for (Continent continent : currentPlayer.getContinents()) {
+                continentBonus += "--" + continent.getName();
             }
         }
         return continentBonus;
@@ -644,39 +672,39 @@ public class   RiskModel implements Serializable{
     /**
      * Model handle the attack preparation and update the view
      */
-    public void attackPrepare(){
+    public void attackPrepare() {
         currentPlayer.attackPrepare();
     }
 
     /**
      * Model handle the fortify preparation and update the view
      */
-    public void fortifyPrepare(){
+    public void fortifyPrepare() {
         currentPlayer.fortifyPrepare();
     }
 
     /**
      * Model handle the deploy preparation and update the view
      */
-    public void deployPrepare(){
+    public void deployPrepare() {
         currentPlayer.deployPrepare();
     }
 
     /**
-     *This method is modeling to do the skip process and update the view
+     * This method is modeling to do the skip process and update the view
      */
-    public void skipProcess(){
-        if(currentStage==Stage.ATTACK||currentStage==Stage.DRAFTEND){
+    public void skipProcess() {
+        if (currentStage == Stage.ATTACK || currentStage == Stage.DRAFTEND) {
             resetButtonsAndBoxProcedure();
-            for(RiskViewInterface view: viewList){
+            for (RiskViewInterface view : viewList) {
                 view.updateSkipAttack(currentPlayer);
             }
             currentStage = Stage.ATTACKEND;
         }
-        if(currentStage==Stage.FORTIFY){
+        if (currentStage == Stage.FORTIFY) {
             resetButtonsAndBoxProcedure();
             currentPlayer = getNextPlayer(currentPlayer.getID());
-            for(RiskViewInterface view: viewList){
+            for (RiskViewInterface view : viewList) {
                 view.updateSkipFortify(currentPlayer);
             }
             currentStage = Stage.FORTIFYEND;
@@ -686,23 +714,23 @@ public class   RiskModel implements Serializable{
     /**
      * Model handle confirm process and update the view
      */
-    public void confirmProcess(){
-        if(currentStage==Stage.DRAFT){
+    public void confirmProcess() {
+        if (currentStage == Stage.DRAFT) {
             draftProcess();
-            if(currentPlayer.getTroops()==0) {
+            if (currentPlayer.getTroops() == 0) {
                 currentStage = Stage.DRAFTEND;
             }
         }
 
-        if(currentStage==Stage.ATTACK){
+        if (currentStage == Stage.ATTACK) {
             attackProcess();
         }
 
-        if(currentStage==Stage.FORTIFY){
+        if (currentStage == Stage.FORTIFY) {
             fortifyProcess();
         }
 
-        if(currentStage==Stage.DEPLOY){
+        if (currentStage == Stage.DEPLOY) {
             deployTroopsProcess();
             currentStage = Stage.DRAFTEND;
         }
@@ -711,16 +739,16 @@ public class   RiskModel implements Serializable{
     /**
      * This method is updating the view when user click the button on the map(reset)
      */
-    public void resetButtonsAndBoxProcedure(){
-        if(!originTerritoryName.equals("")){
+    public void resetButtonsAndBoxProcedure() {
+        if (!originTerritoryName.equals("")) {
             originTerritoryButtonPressed = true;
             originTerritoryName = "";
         }
-        if(!targetTerritoryName.equals("")) {
+        if (!targetTerritoryName.equals("")) {
             targetTerritoryButtonPressed = true;
             targetTerritoryName = "";
         }
-        for(RiskViewInterface view: viewList) {
+        for (RiskViewInterface view : viewList) {
             paintTerritoryButtons(view);
             view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
         }
@@ -732,24 +760,24 @@ public class   RiskModel implements Serializable{
     /**
      * Model do the draft process and update the view
      */
-    private void draftProcess(){
-        if(originTerritoryName.equals("")) {
+    private void draftProcess() {
+        if (originTerritoryName.equals("")) {
             JOptionPane.showMessageDialog(null, "Please select One territory!", "No Territory Selected", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        for(RiskViewInterface view: viewList) {
+        for (RiskViewInterface view : viewList) {
             draft(currentPlayer, originTerritoryName, view.getSelectedTroops());
             view.setContinentsLabel(getMapInfoThroughContinent());
-            view.updateDraftProcess(currentPlayer,currentStage);
-            view.setTerritoryButtonTroops(originTerritoryName,getTerritoryByString(originTerritoryName).getTroops());
+            view.updateDraftProcess(currentPlayer, currentStage);
+            view.setTerritoryButtonTroops(originTerritoryName, getTerritoryByString(originTerritoryName).getTroops());
             paintTerritoryButtons(view);
-            if(currentPlayer.getTroops()==0){
+            if (currentPlayer.getTroops() == 0) {
                 view.updateDraftFinish(currentPlayer);
                 return;
             }
             view.enableOriginalTerritories(currentPlayer.getTerritories());
         }
-        originTerritoryName="";
+        originTerritoryName = "";
         originTerritoryButtonPressed = true;
     }
 
@@ -763,56 +791,58 @@ public class   RiskModel implements Serializable{
     /**
      * Model do the fortify process and update the view
      */
-    public void fortifyProcess(){
-        if(originTerritoryName.isEmpty() || targetTerritoryName.isEmpty()) {
-            JOptionPane.showMessageDialog(null,"Please ensure you have selected both territories!","Incomplete Selection on Territories",JOptionPane.ERROR_MESSAGE);
+    public void fortifyProcess() {
+        if (originTerritoryName.isEmpty() || targetTerritoryName.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please ensure you have selected both territories!", "Incomplete Selection on Territories", JOptionPane.ERROR_MESSAGE);
             return;
         }
         int moveTroops = 0;
-        for(RiskViewInterface view: viewList) {
+        for (RiskViewInterface view : viewList) {
             moveTroops = view.getSelectedTroops();
             fortify(getTerritoryByString(originTerritoryName), getTerritoryByString(targetTerritoryName), moveTroops);
         }
-        currentPlayer.fortifyProcessResult(getTerritoryByString(originTerritoryName),getTerritoryByString(targetTerritoryName),moveTroops);
+        currentPlayer.fortifyProcessResult(getTerritoryByString(originTerritoryName), getTerritoryByString(targetTerritoryName), moveTroops);
         currentStage = Stage.FORTIFYEND;
     }
 
     /**
      * Model do the deploy process and update the view
      */
-    public void deployTroopsProcess(){
+    public void deployTroopsProcess() {
         int moveTroops = 0;
-        for(RiskViewInterface view: viewList) {
+        for (RiskViewInterface view : viewList) {
             moveTroops = view.getSelectedTroops();
             deployTroops(attackTerritory, defenceTerritory, moveTroops);
         }
-        currentPlayer.deployProcess(attackTerritory.getName(),defenceTerritory.getName(),moveTroops);
+        currentPlayer.deployProcess(attackTerritory.getName(), defenceTerritory.getName(), moveTroops);
     }
 
-    /** This method update the view when user click the button on the map
+    /**
+     * This method update the view when user click the button on the map
+     *
      * @param territoryName
      */
-    public void territoryButtonClickProcess(String territoryName){
-        if(currentStage==Stage.DRAFT){
+    public void territoryButtonClickProcess(String territoryName) {
+        if (currentStage == Stage.DRAFT) {
             draftStageTerritoryButtonAction(territoryName);
         }
-        if(currentStage==Stage.ATTACK){
+        if (currentStage == Stage.ATTACK) {
             attackStageTerritoryButtonAction(territoryName);
         }
-        if(currentStage==Stage.FORTIFY){
+        if (currentStage == Stage.FORTIFY) {
             fortifyStageTerritoryButtonAction(territoryName);
         }
     }
 
-    public void draftStageTerritoryButtonAction(String territoryName){
-        if(originTerritoryButtonPressed){
+    public void draftStageTerritoryButtonAction(String territoryName) {
+        if (originTerritoryButtonPressed) {
             originTerritoryName = territoryName;
-            for(RiskViewInterface view: viewList) {
+            for (RiskViewInterface view : viewList) {
                 view.updateDraftCountryClick(territoryName);
             }
-        }else{
+        } else {
             originTerritoryName = "";
-            for(RiskViewInterface view: viewList) {
+            for (RiskViewInterface view : viewList) {
                 view.enableOriginalTerritories(currentPlayer.getTerritories());
                 paintTerritoryButtons(view);
             }
@@ -820,67 +850,67 @@ public class   RiskModel implements Serializable{
         originTerritoryButtonPressed = !originTerritoryButtonPressed;
     }
 
-    public void attackStageTerritoryButtonAction(String territoryName){
+    public void attackStageTerritoryButtonAction(String territoryName) {
         if (originTerritoryButtonPressed) {
             originTerritoryName = territoryName;
-            for(RiskViewInterface view: viewList) {
-                view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(),getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
+            for (RiskViewInterface view : viewList) {
+                view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(), getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
             }
-            originTerritoryButtonPressed =! originTerritoryButtonPressed;
-        }else if(territoryName.equals(originTerritoryName)){
+            originTerritoryButtonPressed = !originTerritoryButtonPressed;
+        } else if (territoryName.equals(originTerritoryName)) {
             originTerritoryName = "";
-            if(!targetTerritoryName.equals("")){
+            if (!targetTerritoryName.equals("")) {
                 targetTerritoryButtonPressed = true;
             }
-            for(RiskViewInterface view: viewList) {
+            for (RiskViewInterface view : viewList) {
                 view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
                 paintTerritoryButtons(view);
             }
-            originTerritoryButtonPressed =! originTerritoryButtonPressed;
-        }else if(targetTerritoryButtonPressed){
+            originTerritoryButtonPressed = !originTerritoryButtonPressed;
+        } else if (targetTerritoryButtonPressed) {
             targetTerritoryName = territoryName;
-            for(RiskViewInterface view: viewList) {
-                view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+            for (RiskViewInterface view : viewList) {
+                view.updateClickTargetTerritoryButton(originTerritoryName, targetTerritoryName);
             }
             targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
-        }else if(!targetTerritoryButtonPressed){
+        } else if (!targetTerritoryButtonPressed) {
             targetTerritoryName = "";
-            for(RiskViewInterface view: viewList) {
+            for (RiskViewInterface view : viewList) {
                 paintTerritoryButtons(view);
-                view.updateCancelDefenceTerritoryButton(originTerritoryName,getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)));
+                view.updateCancelDefenceTerritoryButton(originTerritoryName, getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)));
             }
             targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
         }
     }
 
-    public void fortifyStageTerritoryButtonAction(String territoryName){
+    public void fortifyStageTerritoryButtonAction(String territoryName) {
         if (originTerritoryButtonPressed) {
             originTerritoryName = territoryName;
-            for(RiskViewInterface view:viewList) {
-                view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1,getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
+            for (RiskViewInterface view : viewList) {
+                view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1, getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
             }
-            originTerritoryButtonPressed =! originTerritoryButtonPressed;
-        }else if(territoryName.equals(originTerritoryName)){
+            originTerritoryButtonPressed = !originTerritoryButtonPressed;
+        } else if (territoryName.equals(originTerritoryName)) {
             originTerritoryName = "";
-            if(!targetTerritoryName.equals("")){
+            if (!targetTerritoryName.equals("")) {
                 targetTerritoryButtonPressed = true;
             }
-            for(RiskViewInterface view:viewList) {
+            for (RiskViewInterface view : viewList) {
                 paintTerritoryButtons(view);
                 view.resetButtonsAndBox(getFortifyTerritories(currentPlayer));
             }
-            originTerritoryButtonPressed =! originTerritoryButtonPressed;
-        }else if(targetTerritoryButtonPressed){
+            originTerritoryButtonPressed = !originTerritoryButtonPressed;
+        } else if (targetTerritoryButtonPressed) {
             targetTerritoryName = territoryName;
-            for(RiskViewInterface view: viewList) {
-                view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+            for (RiskViewInterface view : viewList) {
+                view.updateClickTargetTerritoryButton(originTerritoryName, targetTerritoryName);
             }
             targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
-        }else if(!targetTerritoryButtonPressed){
+        } else if (!targetTerritoryButtonPressed) {
             targetTerritoryName = "";
-            for(RiskViewInterface view: viewList) {
+            for (RiskViewInterface view : viewList) {
                 paintTerritoryButtons(view);
-                view.updateCancelFortifyTerritoryButton(originTerritoryName,getFortifiedTerritory(getTerritoryByString(originTerritoryName),currentPlayer));
+                view.updateCancelFortifyTerritoryButton(originTerritoryName, getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer));
             }
             targetTerritoryButtonPressed = !targetTerritoryButtonPressed;
         }
@@ -889,10 +919,10 @@ public class   RiskModel implements Serializable{
     /**
      * @param view Update the map view using after each action
      */
-    public void paintTerritoryButtons(RiskViewInterface view){
-        for(int id=0; id<numberPlayers;id++){
-            if(!playerIDHashMap.containsKey(id))continue;
-            view.paintTerritoryButtons(getPlayerById(id),colorIDHashMap.get(id));
+    public void paintTerritoryButtons(RiskViewInterface view) {
+        for (int id = 0; id < numberPlayers; id++) {
+            if (!playerIDHashMap.containsKey(id)) continue;
+            view.paintTerritoryButtons(getPlayerById(id), colorIDHashMap.get(id));
         }
     }
 
@@ -900,12 +930,12 @@ public class   RiskModel implements Serializable{
     /**
      * @return the territory list that have the max num of troops
      */
-    public ArrayList<Territory>getMaxTroopsAttackTerritoryList(){
+    public ArrayList<Territory> getMaxTroopsAttackTerritoryList() {
         ArrayList<Territory> maxTroopsTerritories = new ArrayList<>();
         ArrayList<Territory> attackTerritories = getAttackTerritoriesList(currentPlayer);
         int maxTroops = getMaxTroopsInTerritoryList(attackTerritories);
-        for(Territory territory:attackTerritories){
-            if(territory.getTroops()==maxTroops){
+        for (Territory territory : attackTerritories) {
+            if (territory.getTroops() == maxTroops) {
                 maxTroopsTerritories.add(territory);
             }
         }
@@ -916,10 +946,10 @@ public class   RiskModel implements Serializable{
      * @param territories
      * @return the max num of troops in one territory list
      */
-    public int getMaxTroopsInTerritoryList(ArrayList<Territory> territories){
+    public int getMaxTroopsInTerritoryList(ArrayList<Territory> territories) {
         int maxTroops = territories.get(0).getTroops();
-        for(Territory territory:territories){
-            if(territory.getTroops()>maxTroops){
+        for (Territory territory : territories) {
+            if (territory.getTroops() > maxTroops) {
                 maxTroops = territory.getTroops();
             }
         }
@@ -930,12 +960,12 @@ public class   RiskModel implements Serializable{
      * @param attackTerritory
      * @return the territory list that has the minimum num of troops
      */
-    public ArrayList<Territory> getMinTroopsDefenceTerritory(Territory attackTerritory){
+    public ArrayList<Territory> getMinTroopsDefenceTerritory(Territory attackTerritory) {
         ArrayList<Territory> minTroopsTerritories = new ArrayList<>();
-        ArrayList<Territory> defenceTerritories = getDefenceTerritories(currentPlayer,attackTerritory);
+        ArrayList<Territory> defenceTerritories = getDefenceTerritories(currentPlayer, attackTerritory);
         int minTroops = getMinTroopsInTerritoryList(defenceTerritories);
-        for(Territory territory:defenceTerritories){
-            if(territory.getTroops()==minTroops){
+        for (Territory territory : defenceTerritories) {
+            if (territory.getTroops() == minTroops) {
                 minTroopsTerritories.add(territory);
             }
         }
@@ -946,39 +976,40 @@ public class   RiskModel implements Serializable{
      * @param territories
      * @return get the minimum num of troops in one territory list
      */
-    public int getMinTroopsInTerritoryList(ArrayList<Territory> territories){
+    public int getMinTroopsInTerritoryList(ArrayList<Territory> territories) {
         int minTroops = territories.get(0).getTroops();
-        for(Territory territory:territories){
-            if(territory.getTroops()<minTroops){
+        for (Territory territory : territories) {
+            if (territory.getTroops() < minTroops) {
                 minTroops = territory.getTroops();
             }
         }
         return minTroops;
     }
-    public int getNumberPlayers(){
+
+    public int getNumberPlayers() {
         return this.numberPlayers;
     }
 
-    public Stage getCurrentStage(){
+    public Stage getCurrentStage() {
         return currentStage;
     }
 
-    public void ImportPlayer(String name, int troops, int ID, String ownTerritory){
-        Player player = new Player(name,this);
+    public void ImportPlayer(String name, int troops, int ID, String ownTerritory) {
+        Player player = new Player(name, this);
         player.setID(ID);
         player.setTroops(troops);
 
 
         String[] territory = ownTerritory.split(",");
-        for(String str: territory){
+        for (String str : territory) {
             Territory t = new Territory(str);
             t.setHolder(player);
             player.addTerritory(t);
 
         }
 
-        for(Player p : this.players){
-            if(!(p.getName().equals(name))){
+        for (Player p : this.players) {
+            if (!(p.getName().equals(name))) {
                 this.players.add(player);
             }
         }
@@ -986,12 +1017,11 @@ public class   RiskModel implements Serializable{
 
     }
 
-
-    public void ImportTerritory(String name,int troops,String holderName) {
+    public void ImportTerritory(String name, int troops, String holderName) {
         Territory territory = new Territory(name);
         territory.setTroops(troops);
-        for(Player p : this.players){
-            if(p.getName().equals(holderName)){
+        for (Player p : this.players) {
+            if (p.getName().equals(holderName)) {
                 territory.setHolder(p);
             }
         }
@@ -1051,40 +1081,22 @@ public class   RiskModel implements Serializable{
     }
 
 
-
-    public Player getPlayerByName(String name){
-        for(Player player:players){
-            if(player.getName().equals(name)) return player;
+    public Player getPlayerByName(String name) {
+        for (Player player : players) {
+            if (player.getName().equals(name)) return player;
         }
         return null;
     }
 
-
-    public void recoverGame()
-    {
-        /*String path;
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File("src"));
-        int state = fileChooser.showOpenDialog(null);
-        if (state == JFileChooser.APPROVE_OPTION){
-            File f = fileChooser.getSelectedFile();
-            path = f.getAbsolutePath();
-            System.out.println("file loaded");
-            LoadingStrategy reader = new XMLDOMReader(path);
-            reader.recoverGame(this);
-        }*/
-
-    }
-
     public void saveProcess() {
-        if(currentStage==null){
-            JOptionPane.showMessageDialog(null,"You have to start game first!","No need to save",JOptionPane.ERROR_MESSAGE);
+        if (currentStage == null) {
+            JOptionPane.showMessageDialog(null, "You have to start game first!", "No need to save", JOptionPane.ERROR_MESSAGE);
             return;
         }
         try {
             for (RiskViewInterface view : viewList) {
                 String fileName = view.getFileName();
-                if (fileName==null||fileName.isEmpty()) {
+                if (fileName == null || fileName.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter the file name you want to save! Try to save it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -1097,18 +1109,18 @@ public class   RiskModel implements Serializable{
         }
     }
 
-    public void reload(){
+    public void reload() {
         this.allCountries.clear();
         setPlayerNum(players.size());
 
-        for(Player player:players){
-            for(Territory territory:player.getTerritories()){
+        for (Player player : players) {
+            for (Territory territory : player.getTerritories()) {
                 allCountries.add(territory);
             }
         }
-        for(RiskViewInterface view:viewList){
-            for(Territory territory:allCountries){
-                view.setTerritoryButtonTroops(territory.getName(),territory.getTroops());
+        for (RiskViewInterface view : viewList) {
+            for (Territory territory : allCountries) {
+                view.setTerritoryButtonTroops(territory.getName(), territory.getTroops());
             }
             paintTerritoryButtons(view);
             view.setStatusLabel(statusLabel);
@@ -1118,62 +1130,60 @@ public class   RiskModel implements Serializable{
         reloadStageProcess();
     }
 
-    public void reloadStageProcess(){
-        if(currentStage==Stage.DRAFT){
+    public void reloadStageProcess() {
+        if (currentStage == Stage.DRAFT) {
             reloadDraftProcess();
         }
-        if(currentStage==Stage.DRAFTEND){
+        if (currentStage == Stage.DRAFTEND) {
             reloadDraftEndProcess();
         }
-        if(currentStage==Stage.ATTACK){
+        if (currentStage == Stage.ATTACK) {
             reloadAttackProcess();
         }
-        if(currentStage==Stage.ATTACKTODEPLOY){
+        if (currentStage == Stage.ATTACKTODEPLOY) {
             reloadAttackToDeployProcess();
         }
-        if(currentStage==Stage.DEPLOY){
+        if (currentStage == Stage.DEPLOY) {
             reloadDeploy();
         }
-        if(currentStage==Stage.ATTACKEND){
+        if (currentStage == Stage.ATTACKEND) {
             reloadAttackEnd();
         }
-        if(currentStage==Stage.FORTIFY){
+        if (currentStage == Stage.FORTIFY) {
             reloadFortify();
         }
-        if(currentStage==Stage.FORTIFYEND){
+        if (currentStage == Stage.FORTIFYEND) {
             reloadFortifyEnd();
         }
     }
 
-    private void reloadDraftProcess(){
-        for(RiskViewInterface view:viewList){
-            view.updateDraftPrepare(currentPlayer,currentStage,getContinentBonusString());
-            if(!originTerritoryButtonPressed) {
+    private void reloadDraftProcess() {
+        for (RiskViewInterface view : viewList) {
+            view.updateDraftPrepare(currentPlayer, currentStage, getContinentBonusString());
+            if (!originTerritoryButtonPressed) {
                 view.updateDraftCountryClick(originTerritoryName);
             }
         }
     }
 
-    private void reloadDraftEndProcess(){
-        for(RiskViewInterface view:viewList){
+    private void reloadDraftEndProcess() {
+        for (RiskViewInterface view : viewList) {
             view.disableAllCommandButtons();
             view.updateDraftFinish(currentPlayer);
         }
     }
 
-    private void reloadAttackProcess(){
-        for(RiskViewInterface view:viewList){
-            if(originTerritoryButtonPressed&&targetTerritoryButtonPressed){
+    private void reloadAttackProcess() {
+        for (RiskViewInterface view : viewList) {
+            if (originTerritoryButtonPressed && targetTerritoryButtonPressed) {
                 view.resetButtonsAndBox(getAttackTerritoriesList(currentPlayer));
-            }
-            else if((!originTerritoryButtonPressed)&&targetTerritoryButtonPressed){
-                view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(),getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
-            }
-            else if((!originTerritoryButtonPressed)&&(!targetTerritoryButtonPressed)){
+            } else if ((!originTerritoryButtonPressed) && targetTerritoryButtonPressed) {
+                view.updateClickAttackTerritoryButton(getTerritoryByString(originTerritoryName).getTroops(), getDefenceTerritories(currentPlayer, getTerritoryByString(originTerritoryName)), originTerritoryName);
+            } else if ((!originTerritoryButtonPressed) && (!targetTerritoryButtonPressed)) {
                 view.setAttackTroopsBox(getTerritoryByString(originTerritoryName).getTroops());
-                view.updateClickTargetTerritoryButton(originTerritoryName,targetTerritoryName);
+                view.updateClickTargetTerritoryButton(originTerritoryName, targetTerritoryName);
             }
-            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed, targetTerritoryButtonPressed, originTerritoryName, targetTerritoryName);
             view.disableAllCommandButtons();
             view.enableButton("Confirm");
             view.enableButton("Skip");
@@ -1183,52 +1193,51 @@ public class   RiskModel implements Serializable{
     private void reloadAttackToDeployProcess() {
         setAttackTerritory(getTerritoryByString(originTerritoryName));
         setDefenceTerritory(getTerritoryByString(targetTerritoryName));
-        for(RiskViewInterface view:viewList){
+        for (RiskViewInterface view : viewList) {
             view.disableAllCommandButtons();
             view.updateWinAttack(currentPlayer);
-            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed, targetTerritoryButtonPressed, originTerritoryName, targetTerritoryName);
         }
     }
 
-    private void reloadDeploy(){
+    private void reloadDeploy() {
         attackTerritory = getTerritoryByString(originTerritoryName);
         defenceTerritory = getTerritoryByString(targetTerritoryName);
-        for(RiskViewInterface view:viewList){
+        for (RiskViewInterface view : viewList) {
             view.disableAllCommandButtons();
-            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
-            view.updateDeployPrepare(currentPlayer,currentStage,getTerritoryByString(originTerritoryName).getTroops());
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed, targetTerritoryButtonPressed, originTerritoryName, targetTerritoryName);
+            view.updateDeployPrepare(currentPlayer, currentStage, getTerritoryByString(originTerritoryName).getTroops());
         }
     }
 
-    private void reloadAttackEnd(){
+    private void reloadAttackEnd() {
         resetButtonsAndBoxProcedure();
-        for(RiskViewInterface view:viewList){
+        for (RiskViewInterface view : viewList) {
             view.disableAllCommandButtons();
             view.updateSkipAttack(currentPlayer);
         }
     }
 
-    private void reloadFortify(){
-        for(RiskViewInterface view:viewList){
-            if(originTerritoryButtonPressed&&targetTerritoryButtonPressed){
+    private void reloadFortify() {
+        for (RiskViewInterface view : viewList) {
+            if (originTerritoryButtonPressed && targetTerritoryButtonPressed) {
                 view.resetButtonsAndBox(getFortifyTerritories(currentPlayer));
-            }
-            else if(!originTerritoryButtonPressed){
-                view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1,getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
-                if(!targetTerritoryButtonPressed) {
+            } else if (!originTerritoryButtonPressed) {
+                view.updateClickFortifyButton(getTerritoryByString(originTerritoryName).getTroops() - 1, getFortifiedTerritory(getTerritoryByString(originTerritoryName), currentPlayer), originTerritoryName);
+                if (!targetTerritoryButtonPressed) {
                     view.updateClickTargetTerritoryButton(originTerritoryName, targetTerritoryName);
                 }
             }
-            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed,targetTerritoryButtonPressed,originTerritoryName,targetTerritoryName);
+            view.paintOriginAndTargetTerritory(originTerritoryButtonPressed, targetTerritoryButtonPressed, originTerritoryName, targetTerritoryName);
             view.disableAllCommandButtons();
             view.enableButton("Confirm");
             view.enableButton("Skip");
         }
     }
 
-    private void reloadFortifyEnd(){
+    private void reloadFortifyEnd() {
         resetButtonsAndBoxProcedure();
-        for(RiskViewInterface view:viewList){
+        for (RiskViewInterface view : viewList) {
             view.updateFortifyFinish(currentPlayer);
         }
     }
@@ -1241,14 +1250,14 @@ public class   RiskModel implements Serializable{
         return targetTerritoryButtonPressed;
     }
 
-    public String getStatusString(){
-        for(RiskViewInterface view: viewList){
+    public String getStatusString() {
+        for (RiskViewInterface view : viewList) {
             return view.getStatusLabel();
         }
         return null;
     }
 
-    public void setStatusString(String statusLabel){
+    public void setStatusString(String statusLabel) {
         this.statusLabel = statusLabel;
     }
 }

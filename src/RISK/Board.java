@@ -12,12 +12,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-///**
-// * The type Board which read the files and create map informations.
-// *
-// * @Author: Guanqun Dong, 101093918
-// *
-// */
+/**
+ * The type Board which read the files and create map information.
+ */
 
 
 public class Board extends DefaultHandler {

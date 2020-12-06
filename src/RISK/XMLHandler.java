@@ -34,18 +34,10 @@ public class XMLHandler extends DefaultHandler {
     private boolean isOriginTerritoryName = false;
     private boolean isTargetTerritoryName = false;
 
-    private Stage stage;
     private RiskModel model;
-    private String name;
-    private int troops,id;
-    private String holder;
-    private String ownTerritory;
     private Player player;
     private Territory territory;
     private Continent tempContinent;
-    private StringBuilder stringBuilder;
-    private ArrayList<Territory> ownTerritoryList;
-    private ArrayList<Continent> ownContinentList;
     private ArrayList<Player> importPlayers;
     private String statusLabel;
     private String originTerritoryButtonClick;
@@ -160,32 +152,6 @@ public class XMLHandler extends DefaultHandler {
                 }
             }
 
-//            //store territory in XML
-//            for (int i = 0; i < model.getAllCountries().size(); i++) {
-//                attr.addAttribute("", "", "ID", "", String.valueOf(i));
-//                handler.startElement("", "", "Territory", attr);
-//
-//                attr.clear();
-//                handler.startElement("", "", "name", attr);
-//                String name = model.getAllCountries().get(i).getName() + "";
-//                handler.characters(name.toCharArray(), 0, name.length());
-//                handler.endElement("", "", "name");
-//
-//                attr.clear();
-//                handler.startElement("", "", "holder", attr);
-//                String holder = model.getAllCountries().get(i).getHolder().getName() + "";
-//                handler.characters(holder.toCharArray(), 0, holder.length());
-//                handler.endElement("", "", "holder");
-//
-//                attr.clear();
-//                handler.startElement("", "", "troops", attr);
-//                String troops = model.getAllCountries().get(i).getTroops() + "";
-//                handler.characters(troops.toCharArray(), 0, troops.length());
-//                handler.endElement("", "", "troops");
-//
-//                handler.endElement("", "", "Territory");
-//            }
-
             attr.clear();
             handler.startElement("", "", "Stage", attr);
             String stage = model.getCurrentStage().getName() + "";
@@ -256,42 +222,8 @@ public class XMLHandler extends DefaultHandler {
 
     }
 
-    public void readSAX(File f) throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        SAXParser s = spf.newSAXParser();
-        s.parse(f, this);
-    }
-
     @Override
     public void startElement(String u, String in, String qName, Attributes a) throws SAXException {
-
-//        super.startElement(u, in, qName, a);
-//        if ("Player".equals(qName)) {
-//            isPlayer = true;
-//        }
-//        if("Player".equals(qName)){
-//            player = new Player("",false);
-//            //isPlayer = true;
-//        }
-//        else if ("Territory".equals(qName)) {
-//            isTerritory = true;
-//        } else if ("name".equals(qName)) {
-//            isName = true;
-//        } else if ("holder".equals(qName)) {
-//            isHolder = true;
-//        } else if ("troops".equals(qName)) {
-//            isTroops = true;
-//        } else if ("AI".equals(qName)) {
-//            isAI = true;
-//        } else if ("Stage".equals(qName)) {
-//            isStage = true;
-//        } else if ("ownTerritory".equals(qName)) {
-//            isOwnTerritory = true;
-//        }
-//        else if ("id".equals(qName)){
-//            isID = true;
-//        }
-//        sb = new StringBuilder();
         if(qName.equalsIgnoreCase("Risk")) {
             try {
                 model = new RiskModel(mapName);
@@ -323,21 +255,6 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException{
 
-
-        /*if(qName.equals("Player") && isPlayer) {
-            this.model.ImportPlayer(name,AI,troops,id,ownTerritory);
-            isPlayer = false;
-        }
-        else if(qName.equals("Territory") && isTerritory) {
-            this.model.ImportTerritory(name,troops,holder);
-            isTerritory = false;
-        }
-        else if (qName.equals("Stage")&& isStage){
-            this.model.setCurrentStage(stage);
-            isStage = false;
-        }
-*/
-
         if(qName.equalsIgnoreCase("Player")){
             importPlayers.add(player);
         }
@@ -352,34 +269,6 @@ public class XMLHandler extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-
-        /*super.characters(ch, start, length);
-        String text = new String(ch, start, length);
-        if (isName) {
-            name = text;
-            isName = false;
-        } else if (isTroops) {
-            troops = Integer.parseInt(text);
-            isTroops = false;
-        } else if (isAI) {
-            AI = Boolean.valueOf(text);
-            isTroops = false;
-        } else if (isOwnTerritory) {
-            ownTerritory = text;
-            isOwnTerritory = false;
-        }
-        else if(isStage) {
-            stage = Stage.values()[Integer.parseInt(text)];
-            isStage = false;
-        }
-        else if (isID) {
-            id = Integer.parseInt(text);
-            isID = false;
-        }
-        else if (isHolder){
-            holder = text;
-            isHolder = false;
-        }*/
         String info = new String(ch,start,length);
         if(isPlayerName){
             player.setName(info);

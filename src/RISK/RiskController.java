@@ -84,7 +84,12 @@ public class RiskController {
         public void actionPerformed(ActionEvent e) {
             try {
                 mapName = new LoadNewMapDialog().getMapName();
-                model = new RiskModel(mapName);
+                RiskModel tempModel = new RiskModel(mapName);
+                if(tempModel.invalidMap()){
+                    JOptionPane.showMessageDialog(null,"Invalid Map! One or more countries are isolated!","INVALID MAP",JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                model = tempModel;
                 view.dispose();
                 view = new RiskView(new Board(mapName));
                 model.addView(view);
