@@ -166,18 +166,17 @@ public class RiskController {
         public void actionPerformed(ActionEvent e) {
             XMLHandler handler = null;
             try {
-                 handler = new XMLHandler(mapName);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            try{
-                String fileName = view.getFileName()+"_"+model.getMapName();
+                handler = new XMLHandler(mapName);
+                String fileName = view.getFileName();
+                if(fileName==null||fileName.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Enter the file name you want to load! Try to load it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                fileName+="_"+model.getMapName();
                 handler.importXMLFileByName(fileName);
             }
-            catch (Exception fileNotFoundException){
-                JOptionPane.showMessageDialog(null,"You haven't save any file under this map. Please check and try again.","File Not Found",JOptionPane.ERROR_MESSAGE);
+            catch (Exception exception){
+                JOptionPane.showMessageDialog(null,"You haven't save any file with this name under this map. Please check and try again.","File Not Found",JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

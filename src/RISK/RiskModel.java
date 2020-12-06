@@ -1,7 +1,5 @@
 package RISK;
 
-import org.xml.sax.SAXException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -1079,16 +1077,21 @@ public class   RiskModel implements Serializable{
     }
 
     public void saveProcess() {
+        if(currentStage==null){
+            JOptionPane.showMessageDialog(null,"You have to start game first!","No need to save",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         try {
-            XMLHandler handler = new XMLHandler(mapName);
-            handler.setModel(this);
-            for(RiskViewInterface view:viewList) {
-                handler.toXMLFile(view.getFileName()+"_"+this.mapName);
+            for (RiskViewInterface view : viewList) {
+                String fileName = view.getFileName();
+                if (fileName==null||fileName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Enter the file name you want to save! Try to save it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                XMLHandler handler = new XMLHandler(mapName);
+                handler.setModel(this);
+                handler.toXMLFile(view.getFileName() + "_" + this.mapName);
             }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } catch (SAXException saxException) {
-            saxException.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
