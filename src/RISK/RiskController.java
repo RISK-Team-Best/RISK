@@ -95,7 +95,7 @@ public class RiskController {
                 model.addView(view);
                 registerListeners();
             } catch (Exception exception) {
-                exception.printStackTrace();
+                JOptionPane.showMessageDialog(null,"Ooops, the map file may lost or damaged, please check and try again.","MAP FILES MISSING",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
