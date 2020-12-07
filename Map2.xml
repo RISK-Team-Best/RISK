@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><BoardInfo imagePath="Map2.jpg">
+    <TerritoriesList>
+        <Territory x="228" y="373">Lavatory</Territory>
+        <Territory x="84" y="420">Bakery</Territory>
+        <Territory x="165" y="341">Clothing Room</Territory>
+        <Territory x="106" y="327">Basement Stairway</Territory>
+        <Territory x="59" y="351">Workshop</Territory>
+        <Territory x="26" y="369">Storage</Territory>
+        <Territory x="240" y="235">Mess Room</Territory>
+        <Territory x="182" y="271">Stockade Stairway</Territory>
+        <Territory x="102" y="248">Kitchen</Territory>
+        <Territory x="58" y="231">Kitchen Storage</Territory>
+        <Territory x="125" y="193">Pantry</Territory>
+        <Territory x="193" y="193">Overseers Mess</Territory>
+        <Territory x="87" y="111">Upper Lavatory</Territory>
+        <Territory x="131" y="138">Sick Ward</Territory>
+        <Territory x="191" y="72">Hospital</Territory>
+        <Territory x="276" y="78">Attendants Room</Territory>
+        <Territory x="251" y="116">Passage</Territory>
+        <Territory x="282" y="143">Screen Room</Territory>
+        <Territory x="232" y="145">Dispel Room</Territory>
+        <Territory x="195" y="145">Lecher Room</Territory>
+        <Territory x="529" y="407">Clerks</Territory>
+        <Territory x="585" y="385">Telegraph Office</Territory>
+        <Territory x="654" y="394">Record Room</Territory>
+        <Territory x="585" y="355">Second Floor Hall</Territory>
+        <Territory x="355" y="166">Cell Room Exit Right</Territory>
+        <Territory x="427" y="156">Cell Room Northwest</Territory>
+        <Territory x="351" y="249">Cell Room Exit Left</Territory>
+        <Territory x="435" y="230">Cell Room Center Passage</Territory>
+        <Territory x="434" y="285">Cell Room South Passage</Territory>
+        <Territory x="503" y="209">Cell Room Center</Territory>
+        <Territory x="589" y="122">Cell Room North</Territory>
+        <Territory x="667" y="176">Cell Room Entrance</Territory>
+        <Territory x="642" y="241">Cell Room South</Territory>
+        <Territory x="694" y="115">Commandants Office</Territory>
+        <Territory x="760" y="114">Adjutants Office</Territory>
+        <Territory x="743" y="147">Hallway</Territory>
+        <Territory x="769" y="185">Guards Lavatory</Territory>
+        <Territory x="711" y="218">Guards Room</Territory>
+        <Territory x="766" y="221">Main Stairway</Territory>
+    </TerritoriesList>
+    <ContinentList>
+        <Continent name="Basement" bonus="6">
+            <MemberTerritory>Storage</MemberTerritory>
+            <MemberTerritory>Basement Stairway</MemberTerritory>
+            <MemberTerritory>Workshop</MemberTerritory>
+            <MemberTerritory>Clothing Room</MemberTerritory>
+            <MemberTerritory>Bakery</MemberTerritory>
+            <MemberTerritory>Lavatory</MemberTerritory>
+        </Continent>
+        <Continent name="Stockade" bonus="6">
+            <MemberTerritory>Kitchen Storage</MemberTerritory>
+            <MemberTerritory>Kitchen</MemberTerritory>
+            <MemberTerritory>Pantry</MemberTerritory>
+            <MemberTerritory>Overseers Mess</MemberTerritory>
+            <MemberTerritory>Stockade Stairway</MemberTerritory>
+            <MemberTerritory>Mess Room</MemberTerritory>
+        </Continent>
+        <Continent name="Second Floor West End" bonus="8">
+            <MemberTerritory>Upper Lavatory</MemberTerritory>
+            <MemberTerritory>Sick Ward</MemberTerritory>
+            <MemberTerritory>Hospital</MemberTerritory>
+            <MemberTerritory>Attendants Room</MemberTerritory>
+            <MemberTerritory>Passage</MemberTerritory>
+            <MemberTerritory>Lecher Room</MemberTerritory>
+            <MemberTerritory>Dispel Room</MemberTerritory>
+            <MemberTerritory>Screen Room</MemberTerritory>
+        </Continent>
+        <Continent name="First Floor" bonus="12">
+            <MemberTerritory>Cell Room Exit Right</MemberTerritory>
+            <MemberTerritory>Cell Room Northwest</MemberTerritory>
+            <MemberTerritory>Cell Room Exit Left</MemberTerritory>
+            <MemberTerritory>Cell Room Center Passage</MemberTerritory>
+            <MemberTerritory>Cell Room South Passage</MemberTerritory>
+            <MemberTerritory>Cell Room Center</MemberTerritory>
+            <MemberTerritory>Cell Room North</MemberTerritory>
+            <MemberTerritory>Cell Room Entrance</MemberTerritory>
+            <MemberTerritory>Cell Room South</MemberTerritory>
+            <MemberTerritory>Commandants Office</MemberTerritory>
+            <MemberTerritory>Adjutants Office</MemberTerritory>
+            <MemberTerritory>Hallway</MemberTerritory>
+            <MemberTerritory>Guards Lavatory</MemberTerritory>
+            <MemberTerritory>Guards Room</MemberTerritory>
+            <MemberTerritory>Main Stairway</MemberTerritory>
+        </Continent>
+        <Continent name="Second Floor East End" bonus="4">
+            <MemberTerritory>Clerks</MemberTerritory>
+            <MemberTerritory>Second Floor Hall</MemberTerritory>
+            <MemberTerritory>Telegraph Office</MemberTerritory>
+            <MemberTerritory>Record Room</MemberTerritory>
+        </Continent>
+    </ContinentList>
+    <NeighborList>
+        <MainTerritory name="Upper Lavatory">
+            <neighborTerritory>Sick Ward</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Sick Ward">
+            <neighborTerritory>Passage</neighborTerritory>
+            <neighborTerritory>Upper Lavatory</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Passage">
+            <neighborTerritory>Hospital</neighborTerritory>
+            <neighborTerritory>Sick Ward</neighborTerritory>
+            <neighborTerritory>Lecher Room</neighborTerritory>
+            <neighborTerritory>Dispel Room</neighborTerritory>
+            <neighborTerritory>Screen Room</neighborTerritory>
+            <neighborTerritory>Cell Room Exit Right</neighborTerritory>
+            <neighborTerritory>Attendants Room</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Hospital">
+            <neighborTerritory>Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Attendants Room">
+            <neighborTerritory>Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Lecher Room">
+            <neighborTerritory>Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Dispel Room">
+            <neighborTerritory>Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Screen Room">
+            <neighborTerritory>Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Kitchen Storage">
+            <neighborTerritory>Kitchen</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Kitchen">
+            <neighborTerritory>Kitchen Storage</neighborTerritory>
+            <neighborTerritory>Pantry</neighborTerritory>
+            <neighborTerritory>Overseers Mess</neighborTerritory>
+            <neighborTerritory>Stockade Stairway</neighborTerritory>
+            <neighborTerritory>Mess Room</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Pantry">
+            <neighborTerritory>Kitchen</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Stockade Stairway">
+            <neighborTerritory>Kitchen</neighborTerritory>
+            <neighborTerritory>Basement Stairway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Overseers Mess">
+            <neighborTerritory>Kitchen</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Mess Room">
+            <neighborTerritory>Cell Room Exit Left</neighborTerritory>
+            <neighborTerritory>Kitchen</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Storage">
+            <neighborTerritory>Workshop</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Workshop">
+            <neighborTerritory>Basement Stairway</neighborTerritory>
+            <neighborTerritory>Bakery</neighborTerritory>
+            <neighborTerritory>Storage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Basement Stairway">
+            <neighborTerritory>Stockade Stairway</neighborTerritory>
+            <neighborTerritory>Workshop</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Bakery">
+            <neighborTerritory>Workshop</neighborTerritory>
+            <neighborTerritory>Clothing Room</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Clothing Room">
+            <neighborTerritory>Bakery</neighborTerritory>
+            <neighborTerritory>Lavatory</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Lavatory">
+            <neighborTerritory>Clothing Room</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room Exit Right">
+            <neighborTerritory>Passage</neighborTerritory>
+            <neighborTerritory>Cell Room Exit Left</neighborTerritory>
+            <neighborTerritory>Cell Room Northwest</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room Exit Left">
+            <neighborTerritory>Mess Room</neighborTerritory>
+            <neighborTerritory>Cell Room Center Passage</neighborTerritory>
+            <neighborTerritory>Cell Room South Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room Northwest">
+            <neighborTerritory>Cell Room Exit Right</neighborTerritory>
+            <neighborTerritory>Cell Room Center</neighborTerritory>
+            <neighborTerritory>Cell Room North</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room Center Passage">
+            <neighborTerritory>Cell Room Center</neighborTerritory>
+            <neighborTerritory>Cell Room Exit Left</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room South Passage">
+            <neighborTerritory>Cell Room Exit Left</neighborTerritory>
+            <neighborTerritory>Cell Room South</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room Center">
+            <neighborTerritory>Cell Room Northwest</neighborTerritory>
+            <neighborTerritory>Cell Room North</neighborTerritory>
+            <neighborTerritory>Cell Room Entrance</neighborTerritory>
+            <neighborTerritory>Cell Room South</neighborTerritory>
+            <neighborTerritory>Cell Room Center Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room North">
+            <neighborTerritory>Cell Room Center</neighborTerritory>
+            <neighborTerritory>Cell Room Northwest</neighborTerritory>
+            <neighborTerritory>Cell Room Entrance</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room Entrance">
+            <neighborTerritory>Cell Room North</neighborTerritory>
+            <neighborTerritory>Cell Room Center</neighborTerritory>
+            <neighborTerritory>Cell Room South</neighborTerritory>
+            <neighborTerritory>Hallway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Cell Room South">
+            <neighborTerritory>Cell Room Entrance</neighborTerritory>
+            <neighborTerritory>Cell Room Center</neighborTerritory>
+            <neighborTerritory>Cell Room South Passage</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Hallway">
+            <neighborTerritory>Commandants Office</neighborTerritory>
+            <neighborTerritory>Adjutants Office</neighborTerritory>
+            <neighborTerritory>Guards Lavatory</neighborTerritory>
+            <neighborTerritory>Guards Room</neighborTerritory>
+            <neighborTerritory>Cell Room Entrance</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Commandants Office">
+            <neighborTerritory>Hallway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Adjutants Office">
+            <neighborTerritory>Hallway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Guards Lavatory">
+            <neighborTerritory>Hallway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Guards Room">
+            <neighborTerritory>Hallway</neighborTerritory>
+            <neighborTerritory>Main Stairway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Main Stairway">
+            <neighborTerritory>Guards Room</neighborTerritory>
+            <neighborTerritory>Second Floor Hall</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Second Floor Hall">
+            <neighborTerritory>Record Room</neighborTerritory>
+            <neighborTerritory>Telegraph Office</neighborTerritory>
+            <neighborTerritory>Clerks</neighborTerritory>
+            <neighborTerritory>Main Stairway</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Clerks">
+            <neighborTerritory>Second Floor Hall</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Telegraph Office">
+            <neighborTerritory>Second Floor Hall</neighborTerritory>
+        </MainTerritory>
+        <MainTerritory name="Record Room">
+            <neighborTerritory>Second Floor Hall</neighborTerritory>
+        </MainTerritory>
+    </NeighborList>
+</BoardInfo>
