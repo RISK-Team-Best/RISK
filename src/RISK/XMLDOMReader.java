@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class XMLDOMReader implements LoadingStrategy{
+public class XMLDOMReader {
 
     private Document doc;
 
