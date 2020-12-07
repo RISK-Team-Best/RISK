@@ -114,7 +114,7 @@ public class MapEditorV4 extends JFrame {
     public void addButton(String name,int x, int y) {
         JButton button = new JButton();
         button.setBounds(x-SIZE/2,y-SIZE/2,SIZE*2,SIZE);
-        System.out.print("name: "+name+" x:"+x+" y:"+y);
+        System.out.print(name+","+(x-10)+","+(y-90)+"\n");
         label.add(button);
         button.setText(name);
         buttons.put(name,button);
