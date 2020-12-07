@@ -1,0 +1,39 @@
+Upper Lavatory,Sick Ward
+Sick Ward,Passage,Upper Lavatory
+Passage,Hospital,Sick Ward,Lecher Room,Dispel Room,Screen Room,Cell Room Exit Right,Attendants Room
+Hospital,Passage
+Attendants Room,Passage
+Lecher Room,Passage
+Dispel Room,Passage
+Screen Room,Passage
+Kitchen Storage,Kitchen
+Kitchen,Kitchen Storage,Pantry,Overseers Mess,Stockade Stairway,Mess Room
+Pantry,Kitchen
+Stockade Stairway,Kitchen,Basement Stairway
+Overseers Mess,Kitchen
+Mess Room,Cell Room Exit Left,Kitchen
+Storage,Workshop
+Workshop,Basement Stairway,Bakery,Storage
+Basement Stairway,Stockade Stairway,Workshop
+Bakery,Workshop,Clothing Room
+Clothing Room,Bakery,Lavatory
+Lavatory,Clothing Room
+Cell Room Exit Right,Passage,Cell Room Exit Left,Cell Room Northwest
+Cell Room Exit Left,Mess Room,Cell Room Center Passage,Cell Room South Passage
+Cell Room Northwest,Cell Room Exit Right,Cell Room Center,Cell Room North
+Cell Room Center Passage,Cell Room Center,Cell Room Exit Left
+Cell Room South Passage,Cell Room Exit Left,Cell Room South
+Cell Room Center,Cell Room Northwest,Cell Room North,Cell Room Entrance,Cell Room South,Cell Room Center Passage
+Cell Room North,Cell Room Center,Cell Room Northwest,Cell Room Entrance
+Cell Room Entrance,Cell Room North,Cell Room Center,Cell Room South,Hallway
+Cell Room South,Cell Room Entrance,Cell Room Center,Cell Room South Passage
+Hallway,Commandants Office,Adjutants Office,Guards Lavatory,Guards Room,Cell Room Entrance
+Commandants Office,Hallway
+Adjutants Office,Hallway
+Guards Lavatory,Hallway
+Guards Room,Hallway,Main Stairway
+Main Stairway,Guards Room,Second Floor Hall
+Second Floor Hall,Record Room,Telegraph Office,Clerks,Main Stairway
+Clerks,Second Floor Hall
+Telegraph Office,Second Floor Hall
+Record Room,Second Floor Hall
