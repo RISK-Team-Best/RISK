@@ -1,6 +1,7 @@
-package RISK;
+package ToolsAndTries;
 
 
+import RISK.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -14,7 +15,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
-public class XMLDOMWriter implements SavingStrategy{
+public class XMLDOMWriter implements SavingStrategy {
     private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     private DocumentBuilder documentBuilder;
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -96,7 +97,7 @@ public class XMLDOMWriter implements SavingStrategy{
      * @param path in String
      *
      */
-    public void saveGame(RiskModel model,String path) {
+    public void saveGame(RiskModel model, String path) {
         Document game = documentBuilder.newDocument();
         Element root = game.createElement("RISK");
         game.appendChild(root);

@@ -1,32 +1,41 @@
-package RISK;
+package ToolsAndTries;
 
-import javax.swing.*;
-import javax.xml.transform.Source;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapEditorV3Model extends DefaultListModel {
+public class MapEditorV4Model extends DefaultListModel {
     private final XMLDOMWriter writer = new XMLDOMWriter();
     private final Document board= writer.createEmptyBoard();
-    private final Element root = board.createElement("board");
+    private final Element BoardInfo = board.createElement("BoardInfo");
+    private final Element ContinentList = board.createElement("ContinentList");
+    private final Element TerritoriesList = board.createElement("TerritoriesList");
     private JList<String> view;
     private JList<String> subView;
     private Map<String,DefaultListModel<String>> subModels = new HashMap<>();
-    private MapEditorV3 frame;
-    public MapEditorV3Model(MapEditorV3 frame)
+    private Map<String,Element> continentMap = new HashMap<>();
+    private MapEditorV4 frame;
+    public MapEditorV4Model(MapEditorV4 frame)
     {
         this.frame = frame;
-        board.appendChild(root);
+        board.appendChild(BoardInfo);
+        BoardInfo.appendChild(ContinentList);
+        BoardInfo.appendChild(TerritoriesList);
     }
 
     public void addContinent(String name)
     {
-        Element continent = board.createElement(name);
-        root.appendChild(continent);
+        String bonus = JOptionPane.showInputDialog("bonus");
+        Element continent = board.createElement("newContinent");
+        continent.setAttribute("name",name);
+        continent.setAttribute("bonus",bonus);
+        ContinentList.appendChild(continent);
+        continentMap.put(name,continent);
+
         addElement(name);
         subModels.put(name,new DefaultListModel<>());
     }
@@ -45,17 +54,17 @@ public class MapEditorV3Model extends DefaultListModel {
         }
         String name = JOptionPane.showInputDialog("Territory Name");
         if (name==null){return;}
-        Element territory = board.createElement(name);
+        Element territory = board.createElement("Territory");
         territory.setAttribute("x",String.valueOf(x));
         territory.setAttribute("y",String.valueOf(y));
-        Element p = (Element)board.getElementsByTagName(continent).item(0);
-        p.appendChild(territory);
+        territory.setTextContent(name);
+        TerritoriesList.appendChild(territory);
+
+        Element memberTerritory = board.createElement("MemberTerritory");
+        memberTerritory.setTextContent(name);
+        continentMap.get(view.getSelectedValue()).appendChild(memberTerritory);
+
         frame.addButton(name,x,y);
-
-
-
-
-
         DefaultListModel<String> subViewModel = subModels.get(continent);
         subView.setModel(subViewModel);
         subViewModel.addElement(name);
@@ -97,5 +106,9 @@ public class MapEditorV3Model extends DefaultListModel {
 
         DefaultListModel<String> subViewModel = subModels.get(continent);
         subView.setModel(subViewModel);
+    }
+
+    public void setPath(String path) {
+        BoardInfo.setAttribute("path",path);
     }
 }

@@ -1,17 +1,22 @@
-package RISK;
+package ToolsAndTries;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MapEditorV4Controller implements MouseListener {
-    private MapEditorV4Model model;
-
-    public MapEditorV4Controller(MapEditorV4Model model)
+public class MapEditorV3Controller implements MouseListener {
+    private MapEditorV3Model model;
+    public MapEditorV3Controller(MapEditorV3Model model)
     {
-       this.model = model;
+        this.model = model;
     }
+
+    /**
+     * Instantiates a new Player.
+     *
+     * @param e in Mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         JComponent component = (JComponent) e.getSource();

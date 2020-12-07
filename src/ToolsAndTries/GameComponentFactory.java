@@ -1,10 +1,12 @@
-package RISK;
+package ToolsAndTries;
+
+import RISK.*;
 
 import java.util.ArrayList;
 
 public class GameComponentFactory {
     public static Player createPlayer(String name, String troops, String ID,
-                                      String isAI, ArrayList<Territory> ownTerritory,ArrayList<Continent> ownContinents,RiskModel model) {
+                                      String isAI, ArrayList<Territory> ownTerritory, ArrayList<Continent> ownContinents, RiskModel model) {
         if(isAI.equals("true"))
         {
             AIPlayer newPlayer = new AIPlayer(name,model);
