@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Hello" default="compile" basedir=".">
+    <target name="init" description="make directory">
+        <mkdir dir="compileFile"/>
+        <mkdir dir="jarFile"/>
+    </target>
+    <target name="compile" depends="init" description="compile file">
+        <javac srcdir="src" destdir="compileFile"/>
+    </target>
+    <target name="doc" depends="init">
+        <mkdir dir="javaDoc"/>
+        <javadoc sourcepath="src" destdir="javaDoc"/>
+    </target>
+
+</project>
