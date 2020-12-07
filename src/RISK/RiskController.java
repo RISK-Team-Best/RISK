@@ -95,8 +95,7 @@ public class RiskController {
                 model.addView(view);
                 registerListeners();
             } catch (Exception exception) {
-//                JOptionPane.showMessageDialog(null,"Ooops, the map file may lost or damaged, please check and try again.","MAP FILES MISSING",JOptionPane.ERROR_MESSAGE);
-                exception.printStackTrace();
+                JOptionPane.showMessageDialog(null,"Ooops, the map file may lost or damaged, please check and try again.","MAP FILES MISSING",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -162,9 +161,6 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             model.saveProcess();
-//            SavingStrategy strategy = new XMLDOMWriter();
-//            strategy.saveGame(model,"testFile.xml");
-
         }
     }
 
