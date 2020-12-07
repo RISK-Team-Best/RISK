@@ -1,5 +1,5 @@
 package RISK;
 
 public interface LoadingStrategy {
-    public void recoverGame(RiskModel riskModel);
+    public void loadGame(String mapName,RiskView view,RiskModel model);
 }

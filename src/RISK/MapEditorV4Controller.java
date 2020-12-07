@@ -7,9 +7,10 @@ import java.awt.event.MouseListener;
 
 public class MapEditorV4Controller implements MouseListener {
     private MapEditorV4Model model;
+
     public MapEditorV4Controller(MapEditorV4Model model)
     {
-        this.model = model;
+       this.model = model;
     }
     @Override
     public void mouseClicked(MouseEvent e) {
