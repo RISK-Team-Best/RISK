@@ -28,7 +28,7 @@ public class   RiskModel implements Serializable {
     private final HashMap<Integer, Player> playerIDHashMap;
 
     private final LinkedHashSet<Territory> neighborCountries;
-    private final LinkedHashSet<Territory> tempNeighborCountries;
+    private final LinkedHashSet<String> tempNeighborCountries;
 
     private int numberPlayers;
 
@@ -101,10 +101,10 @@ public class   RiskModel implements Serializable {
     public void addAllNeighborCountries(Territory territory){
         int size = tempNeighborCountries.size();
         for(Territory neighbor : board.getAllNeighbors(territory.getName())){
-            tempNeighborCountries.add(neighbor);
+            tempNeighborCountries.add(neighbor.getName());
             if(tempNeighborCountries.size()!=size){
                 addAllNeighborCountries(neighbor);
-            }else return;
+            }else continue;
         }
     }
 
