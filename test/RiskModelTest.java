@@ -185,6 +185,7 @@ public class RiskModelTest {
         assertEquals(testmodel1.getNextPlayer(0).getTerritoriesString(),riskModel.getNextPlayer(0).getTerritoriesString());
         assertEquals(testmodel1.getNextPlayer(0).getTroops(),riskModel.getNextPlayer(0).getTroops());
 
+        //test player1 territory troops
         assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(0).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(0).getTroops());
         assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(1).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(1).getTroops());
         assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(2).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(2).getTroops());
@@ -192,6 +193,14 @@ public class RiskModelTest {
         assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(4).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(4).getTroops());
         assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(5).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(5).getTroops());
 
+
+        //test player2 territory troops
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(0).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(0).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(1).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(1).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(2).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(2).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(3).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(3).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(4).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(4).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(5).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(5).getTroops());
 
         //test player is correct
         assertEquals(2,testmodel1.getNumberPlayers());//test player num saved and load successful
