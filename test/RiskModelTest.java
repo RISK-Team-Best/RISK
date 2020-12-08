@@ -178,11 +178,19 @@ public class RiskModelTest {
 
         //test all territory successful load
         assertEquals(testmodel1.getAllCountries().size(),riskModel.getAllCountries().size());
+
         assertEquals(testmodel1.getCurrentPlayer().getTerritoriesString(),riskModel.getCurrentPlayer().getTerritoriesString());
         assertEquals(testmodel1.getCurrentPlayer().getTroops(),riskModel.getCurrentPlayer().getTroops());
 
         assertEquals(testmodel1.getNextPlayer(0).getTerritoriesString(),riskModel.getNextPlayer(0).getTerritoriesString());
         assertEquals(testmodel1.getNextPlayer(0).getTroops(),riskModel.getNextPlayer(0).getTroops());
+
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(0).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(0).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(1).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(1).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(2).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(2).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(3).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(3).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(4).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(4).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(5).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(5).getTroops());
 
 
         //test player is correct
@@ -212,7 +220,7 @@ public class RiskModelTest {
         testmodel4.setPlayerNum(2);
         testmodel4.addPlayersName(new String[]{"Player_3", "Player_4"},new Boolean[]{false,false});
         testmodel4.initialGame();
-        //System.out.println(testmodel4.getAllCountries().size());
+
 
         assertEquals(false,testmodel4.invalidMap());
         assertEquals(41,testmodel4.getAllCountries().size());//test Map1 territory all load to current model

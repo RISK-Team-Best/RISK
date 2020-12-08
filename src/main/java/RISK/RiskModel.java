@@ -17,7 +17,7 @@ public class   RiskModel implements Serializable {
     private final List<RiskViewInterface> viewList;
 
     private ArrayList<Player> players;
-    private ArrayList<Territory> allCountries;//需要save allcountries 和 board
+    private ArrayList<Territory> allCountries;
     private ArrayList<Continent> allContinents;
     private final ArrayList<Territory> originTerritory = new ArrayList<>();
     private final ArrayList<Territory> targetTerritory = new ArrayList<>();
