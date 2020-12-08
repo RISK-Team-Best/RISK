@@ -15,7 +15,6 @@ public class Player implements Serializable {
     protected HashMap<String,Territory> territories;
     protected HashMap<String,Continent> continents;
     protected int id;
-//    private boolean AI;
     protected final int leastBonusTroops = 3;
     protected final int bonusUnits = 3;
     protected RiskModel model;
@@ -30,7 +29,6 @@ public class Player implements Serializable {
         territories = new HashMap<>();
         continents = new HashMap<>();
         this.model = model;
-//        this.AI = AI;
     }
 
     /**
@@ -53,18 +51,6 @@ public class Player implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setTerritories(HashMap<String, Territory> territories) {
-        this.territories = territories;
-    }
-
-    public void setContinents(HashMap<String, Continent> continents) {
-        this.continents = continents;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**

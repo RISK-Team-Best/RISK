@@ -273,8 +273,6 @@ public interface RiskViewInterface {
 
     String getStatusLabel();
 
-    String loadGameMapName();
-
     void paintOriginAndTargetTerritory(boolean originTerritoryButtonPressed, boolean targetTerritoryButtonPressed, String originTerritoryName, String targetTerritoryName);
 
     void setAttackTroopsBox(int attackTerritoryTroops);

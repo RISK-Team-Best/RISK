@@ -44,14 +44,16 @@ public class Board extends DefaultHandler {
     public Board(String fileName) throws Exception {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
-        saxParser.parse(new File(fileName + ".xml"), this);
+
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(fileName + ".xml");
+        saxParser.parse(stream, this);
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if(qName.equalsIgnoreCase("boardInfo")) {
             try {
-                image = ImageIO.read(getClass().getResource(attributes.getValue("imagePath")));
+                image = ImageIO.read(getClass().getClassLoader().getResource(attributes.getValue("imagePath")));
             } catch (IOException e) {
                 e.printStackTrace();
             }

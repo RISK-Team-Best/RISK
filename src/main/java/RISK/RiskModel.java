@@ -1080,6 +1080,16 @@ public class   RiskModel implements Serializable {
         this.currentPlayer = currentPlayer;
     }
 
+    public String getFileNameThroughView(){
+        for(RiskViewInterface view:viewList){
+            return view.getFileName();
+        }
+        return "";
+    }
+
+    public String getNewMapName(){
+        return new LoadNewMapDialog().getMapName();
+    }
 
     public Player getPlayerByName(String name) {
         for (Player player : players) {
@@ -1093,17 +1103,21 @@ public class   RiskModel implements Serializable {
             JOptionPane.showMessageDialog(null, "You have to start game first!", "No need to save", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try {
-            for (RiskViewInterface view : viewList) {
-                String fileName = view.getFileName();
-                if (fileName == null || fileName.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Enter the file name you want to save! Try to save it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                XMLHandler handler = new XMLHandler(mapName);
-                handler.setModel(this);
-                handler.toXMLFile(view.getFileName() + "_" + this.mapName);
+        for (RiskViewInterface view : viewList) {
+            String fileName = view.getFileName();
+            if (fileName == null || fileName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter the file name you want to save! Try to save it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            handleSaveByFileName(fileName,mapName);
+        }
+    }
+
+    public void handleSaveByFileName(String fileName,String mapName){
+        try{
+            XMLHandler handler = new XMLHandler(mapName);
+            handler.setModel(this);
+            handler.toXMLFile(fileName + "_" + this.mapName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1260,4 +1274,6 @@ public class   RiskModel implements Serializable {
     public void setStatusString(String statusLabel) {
         this.statusLabel = statusLabel;
     }
+
+
 }

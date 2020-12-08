@@ -83,7 +83,7 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                mapName = new LoadNewMapDialog().getMapName();
+                mapName = model.getNewMapName();
                 RiskModel tempModel = new RiskModel(mapName);
                 if(tempModel.invalidMap()){
                     JOptionPane.showMessageDialog(null,"Invalid Map! One or more countries are isolated!","INVALID MAP",JOptionPane.ERROR_MESSAGE);
@@ -95,8 +95,7 @@ public class RiskController {
                 model.addView(view);
                 registerListeners();
             } catch (Exception exception) {
-//                JOptionPane.showMessageDialog(null,"Ooops, the map file may lost or damaged, please check and try again.","MAP FILES MISSING",JOptionPane.ERROR_MESSAGE);
-                exception.printStackTrace();
+                JOptionPane.showMessageDialog(null,"Ooops, the map file may lost or damaged, please check and try again.","MAP FILES MISSING",JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -162,18 +161,31 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             model.saveProcess();
-//            SavingStrategy strategy = new XMLDOMWriter();
-//            strategy.saveGame(model,"testFile.xml");
-
         }
     }
 
     public class LoadButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LoadingStrategy loader = new LoadingWithSAX();
-            loader.loadGame(mapName,view,model);
+            XMLHandler handler = null;
+            try {
+                handler = new XMLHandler(mapName);
+                String fileName = model.getFileNameThroughView();
+                if(fileName==null||fileName.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Enter the file name you want to load! Try to load it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                fileName+="_"+model.getMapName();
+                handler.importXMLFileByName(fileName);
+            }
+            catch (Exception exception){
+                JOptionPane.showMessageDialog(null,"You haven't save any file with this name under this map. Please check and try again.","File Not Found",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            model = handler.getModel();
+            model.addView(view);
+            model.reload();
         }
 
     }

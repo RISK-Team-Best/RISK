@@ -229,11 +229,6 @@ public class RiskView extends JFrame implements RiskViewInterface{
     }
 
     @Override
-    public String loadGameMapName() {
-        return new LoadNewMapDialog().getMapName();
-    }
-
-    @Override
     public void paintOriginAndTargetTerritory(boolean originTerritoryButtonPressed, boolean targetTerritoryButtonPressed, String originTerritoryName, String targetTerritoryName) {
         if(!originTerritoryButtonPressed){
             getTerritoryButtonByString(originTerritoryName).setBackground(Color.RED);
