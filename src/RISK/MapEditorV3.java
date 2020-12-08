@@ -88,8 +88,6 @@ public class MapEditorV3 extends JFrame {
         });
         controlArea.add(removeTerritory);
 
-
-
         //button 3
         JButton writeMap = new JButton("Generate Map");
         writeMap.addActionListener(e -> {

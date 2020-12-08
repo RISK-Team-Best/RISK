@@ -17,6 +17,7 @@ public class MapEditorV3Model extends DefaultListModel {
     private JList<String> subView;
     private Map<String,DefaultListModel<String>> subModels = new HashMap<>();
     private MapEditorV3 frame;
+
     public MapEditorV3Model(MapEditorV3 frame)
     {
         this.frame = frame;
@@ -51,10 +52,6 @@ public class MapEditorV3Model extends DefaultListModel {
         Element p = (Element)board.getElementsByTagName(continent).item(0);
         p.appendChild(territory);
         frame.addButton(name,x,y);
-
-
-
-
 
         DefaultListModel<String> subViewModel = subModels.get(continent);
         subView.setModel(subViewModel);
