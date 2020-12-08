@@ -85,7 +85,7 @@ public class MapEditorV3Model extends DefaultListModel {
         node.getParentNode().removeChild(node);
     }
 
-    public void changeSubmodel() {
+    public void changeSubModel() {
         String continent = view.getSelectedValue();
         if (continent==null){
             System.out.println("No Continent Selected");
