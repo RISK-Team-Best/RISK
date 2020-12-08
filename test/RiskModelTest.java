@@ -13,6 +13,7 @@ public class RiskModelTest {
     private Player player1,player2;
     private String country1Name;
     private String mapName;
+    private RiskView view;
 
 
     /**
@@ -22,11 +23,13 @@ public class RiskModelTest {
     public void setUp() throws Exception {
 
         riskModel = new RiskModel("OriginRiskMap");
+        view = new RiskView(new Board("OriginRiskMap"));
+        riskModel.addView(view);
         riskModel.setPlayerNum(2);
         riskModel.addPlayersName(new String[]{"Player_1", "Player_2"},new Boolean[]{false,false});
         riskModel.initialGame();
         riskModel.setCurrentStage(Stage.DRAFT);
-        riskModel.setStatusString("");
+        view.setStatusLabel("");
 
 
         player1 = riskModel.getCurrentPlayer();
@@ -161,10 +164,12 @@ public class RiskModelTest {
 
         String filename = "testFile";
         riskModel.handleSaveByFileName(filename,mapName);
+        view.dispose();
 
         XMLHandler handler = new XMLHandler(mapName);
-        handler.importXMLFileByName(filename + "_" + this.mapName);
-        handler.importXMLFileByName(filename);
+        String fileName = filename + "_" + this.mapName;
+        handler.importXMLFileByName(fileName);
+//        handler.importXMLFileByName(filename);
         RiskModel testmodel1 = handler.getModel();
         testmodel1.reload();
 
