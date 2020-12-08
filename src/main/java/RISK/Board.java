@@ -44,7 +44,9 @@ public class Board extends DefaultHandler {
     public Board(String fileName) throws Exception {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
-        saxParser.parse(new File(fileName + ".xml"), this);
+
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(fileName + ".xml");
+        saxParser.parse(stream, this);
     }
 
     @Override
