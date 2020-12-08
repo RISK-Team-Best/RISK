@@ -1102,7 +1102,7 @@ public class   RiskModel implements Serializable {
                 }
                 XMLHandler handler = new XMLHandler(mapName);
                 handler.setModel(this);
-                handler.toXMLFile(view.getFileName() + "_" + this.mapName);
+                handler.toXMLFile(fileName + "_" + this.mapName);
             }
         } catch (Exception e) {
             e.printStackTrace();
