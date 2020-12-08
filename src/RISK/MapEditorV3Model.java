@@ -32,8 +32,7 @@ public class MapEditorV3Model extends DefaultListModel {
         subModels.put(name,new DefaultListModel<>());
     }
 
-    public void generateBoard()
-    {
+    public void generateBoard(){
         writer.generateMapWithDoc(board);
 
     }
