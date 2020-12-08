@@ -1093,17 +1093,21 @@ public class   RiskModel implements Serializable {
             JOptionPane.showMessageDialog(null, "You have to start game first!", "No need to save", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try {
-            for (RiskViewInterface view : viewList) {
-                String fileName = view.getFileName();
-                if (fileName == null || fileName.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Enter the file name you want to save! Try to save it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                XMLHandler handler = new XMLHandler(mapName);
-                handler.setModel(this);
-                handler.toXMLFile(fileName + "_" + this.mapName);
+        for (RiskViewInterface view : viewList) {
+            String fileName = view.getFileName();
+            if (fileName == null || fileName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter the file name you want to save! Try to save it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            handleSaveByFileName(fileName,mapName);
+        }
+    }
+
+    public void handleSaveByFileName(String fileName,String mapName){
+        try{
+            XMLHandler handler = new XMLHandler(mapName);
+            handler.setModel(this);
+            handler.toXMLFile(fileName + "_" + this.mapName);
         } catch (Exception e) {
             e.printStackTrace();
         }
