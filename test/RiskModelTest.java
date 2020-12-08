@@ -12,6 +12,7 @@ public class RiskModelTest {
     private Territory country1;
     private Player player1,player2;
     private String country1Name;
+    private String mapName;
 
 
     /**
@@ -19,10 +20,13 @@ public class RiskModelTest {
      */
     @Before
     public void setUp() throws Exception {
+
         riskModel = new RiskModel("OriginRiskMap");
         riskModel.setPlayerNum(2);
         riskModel.addPlayersName(new String[]{"Player_1", "Player_2"},new Boolean[]{false,false});
         riskModel.initialGame();
+        riskModel.setCurrentStage(Stage.DRAFT);
+        riskModel.setStatusString("");
 
 
         player1 = riskModel.getCurrentPlayer();
@@ -33,6 +37,7 @@ public class RiskModelTest {
 
 
         country1Name = country1.getName();
+        mapName = "OriginRiskMap";
 
 
 
@@ -149,6 +154,44 @@ public class RiskModelTest {
         assertEquals(1,fortifycounrty2.getTroops());//original country troops decrease
         assertEquals(origianlCountry2troops+moveCountry2troops,fortifiedcountry2.getTroops());
         //destination country troops increase
+    }
+
+    @Test
+    public void testHandleSaveAndLoadFileName() throws Exception {
+
+        String filename = "testFile";
+        riskModel.handleSaveByFileName(filename,mapName);
+
+        XMLHandler handler = new XMLHandler(mapName);
+        handler.importXMLFileByName(filename + "_" + this.mapName);
+        handler.importXMLFileByName(filename);
+        RiskModel testmodel1 = handler.getModel();
+        testmodel1.reload();
+
+        assertEquals(2,testmodel1.getNumberPlayers());
+        assertEquals(Stage.DRAFT,riskModel.getCurrentStage());
+
+
+    }
+    @Test
+    public void testInvalidLoad() throws Exception {
+        String invalid1 = "Invalid1";
+        RiskModel testmodel2 = new RiskModel(invalid1);
+        assertEquals(true,testmodel2.invalidMap());
+
+
+        String invalid2 = "Invalid2";
+        RiskModel testmodel3 = new RiskModel(invalid2);
+        assertEquals(true,testmodel3.invalidMap());
+
+        String map1 = "Map1";
+        RiskModel testmodel4 = new RiskModel(map1);
+        //System.out.println(testmodel4.getAllCountries().size());
+
+        assertEquals(false,testmodel4.invalidMap());
+        assertEquals(41,testmodel4.getAllCountries().size());
+
+
     }
 
 

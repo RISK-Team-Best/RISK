@@ -645,7 +645,7 @@ public class   RiskModel implements Serializable {
             view.updateNewGameProcess(getMapInfoThroughContinent(), getCurrentPlayer().getName());
             paintTerritoryButtons(view);
         }
-//        jumpToAIProcess();
+
     }
 
     /**
