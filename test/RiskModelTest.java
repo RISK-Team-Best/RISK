@@ -12,6 +12,8 @@ public class RiskModelTest {
     private Territory country1;
     private Player player1,player2;
     private String country1Name;
+    private String mapName;
+    private RiskView view;
 
 
     /**
@@ -19,10 +21,15 @@ public class RiskModelTest {
      */
     @Before
     public void setUp() throws Exception {
+
         riskModel = new RiskModel("OriginRiskMap");
+        view = new RiskView(new Board("OriginRiskMap"));
+        riskModel.addView(view);
         riskModel.setPlayerNum(2);
         riskModel.addPlayersName(new String[]{"Player_1", "Player_2"},new Boolean[]{false,false});
         riskModel.initialGame();
+        riskModel.setCurrentStage(Stage.DRAFT);
+        view.setStatusLabel("");
 
 
         player1 = riskModel.getCurrentPlayer();
@@ -33,6 +40,7 @@ public class RiskModelTest {
 
 
         country1Name = country1.getName();
+        mapName = "OriginRiskMap";
 
 
 
@@ -149,6 +157,97 @@ public class RiskModelTest {
         assertEquals(1,fortifycounrty2.getTroops());//original country troops decrease
         assertEquals(origianlCountry2troops+moveCountry2troops,fortifiedcountry2.getTroops());
         //destination country troops increase
+    }
+
+    @Test
+    public void testHandleSaveAndLoadFileName() throws Exception {
+
+        String filename = "testFile";
+        riskModel.handleSaveByFileName(filename,mapName);
+        view.dispose();
+
+        XMLHandler handler = new XMLHandler(mapName);
+        String fileName = filename + "_" + this.mapName;
+        handler.importXMLFileByName(fileName);
+
+        RiskModel testmodel1 = handler.getModel();
+        testmodel1.reload();
+
+        //test current stage
+        assertEquals(Stage.DRAFT,riskModel.getCurrentStage());
+
+        //test all territory successful load
+        assertEquals(testmodel1.getAllCountries().size(),riskModel.getAllCountries().size());
+
+        assertEquals(testmodel1.getCurrentPlayer().getTerritoriesString(),riskModel.getCurrentPlayer().getTerritoriesString());
+        assertEquals(testmodel1.getCurrentPlayer().getTroops(),riskModel.getCurrentPlayer().getTroops());
+
+        assertEquals(testmodel1.getNextPlayer(0).getTerritoriesString(),riskModel.getNextPlayer(0).getTerritoriesString());
+        assertEquals(testmodel1.getNextPlayer(0).getTroops(),riskModel.getNextPlayer(0).getTroops());
+
+        //test player1 territory troops
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(0).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(0).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(1).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(1).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(2).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(2).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(3).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(3).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(4).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(4).getTroops());
+        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(5).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(5).getTroops());
+
+
+        //test player2 territory troops
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(0).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(0).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(1).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(1).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(2).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(2).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(3).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(3).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(4).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(4).getTroops());
+        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(5).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(5).getTroops());
+
+        //test player is correct
+        assertEquals(2,testmodel1.getNumberPlayers());//test player num saved and load successful
+        assertEquals(0,testmodel1.getCurrentPlayer().getID());//test player1 ID is 0
+        assertEquals(1,testmodel1.getNextPlayer(0).getID());//test player2 ID is 1
+        assertEquals("Player_1",testmodel1.getCurrentPlayer().getName());//test current player
+        assertEquals("Player_2",testmodel1.getNextPlayer(0).getName());//test current player
+
+
+    }
+    @Test
+    public void testInvalidLoad() throws Exception {
+        String invalid1 = "Invalid1";
+        RiskModel testmodel2 = new RiskModel(invalid1);
+        assertEquals(true,testmodel2.invalidMap());
+
+
+        String invalid2 = "Invalid2";
+        RiskModel testmodel3 = new RiskModel(invalid2);
+        assertEquals(true,testmodel3.invalidMap());
+
+        //test load Map1
+        String map1 = "Map1";
+        RiskModel testmodel4 = new RiskModel(map1);
+
+        testmodel4.setPlayerNum(2);
+        testmodel4.addPlayersName(new String[]{"Player_3", "Player_4"},new Boolean[]{false,false});
+        testmodel4.initialGame();
+
+
+        assertEquals(false,testmodel4.invalidMap());
+        assertEquals(41,testmodel4.getAllCountries().size());//test Map1 territory all load to current model
+
+        //test load Map2
+        String map2 = "Map2";
+        RiskModel testmodel5 = new RiskModel(map2);
+
+        testmodel5.setPlayerNum(2);
+        testmodel5.addPlayersName(new String[]{"Player_5", "Player_6"},new Boolean[]{false,false});
+        testmodel5.initialGame();
+
+
+        assertEquals(false,testmodel5.invalidMap());
+        assertEquals(39,testmodel5.getAllCountries().size());//test Map1 territory all load to current model
+
+
+
     }
 
 

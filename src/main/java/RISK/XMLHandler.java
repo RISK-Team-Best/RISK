@@ -68,7 +68,8 @@ public class XMLHandler extends DefaultHandler {
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            Result result = new StreamResult(filename+ ".xml");
+            File file = new File(filename+".xml");
+            Result result = new StreamResult(file);
             handler.setResult(result);
 
             AttributesImpl attr = new AttributesImpl();
