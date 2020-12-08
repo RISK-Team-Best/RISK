@@ -1080,6 +1080,16 @@ public class   RiskModel implements Serializable {
         this.currentPlayer = currentPlayer;
     }
 
+    public String getFileNameThroughView(){
+        for(RiskViewInterface view:viewList){
+            return view.getFileName();
+        }
+        return "";
+    }
+
+    public String getNewMapName(){
+        return new LoadNewMapDialog().getMapName();
+    }
 
     public Player getPlayerByName(String name) {
         for (Player player : players) {
@@ -1264,4 +1274,6 @@ public class   RiskModel implements Serializable {
     public void setStatusString(String statusLabel) {
         this.statusLabel = statusLabel;
     }
+
+
 }

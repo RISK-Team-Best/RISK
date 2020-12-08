@@ -83,7 +83,7 @@ public class RiskController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                mapName = new LoadNewMapDialog().getMapName();
+                mapName = model.getNewMapName();
                 RiskModel tempModel = new RiskModel(mapName);
                 if(tempModel.invalidMap()){
                     JOptionPane.showMessageDialog(null,"Invalid Map! One or more countries are isolated!","INVALID MAP",JOptionPane.ERROR_MESSAGE);
@@ -170,7 +170,7 @@ public class RiskController {
             XMLHandler handler = null;
             try {
                 handler = new XMLHandler(mapName);
-                String fileName = view.getFileName();
+                String fileName = model.getFileNameThroughView();
                 if(fileName==null||fileName.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Enter the file name you want to load! Try to load it again.", "Empty file name", JOptionPane.ERROR_MESSAGE);
                     return;
