@@ -62,7 +62,7 @@ public class MapEditorV3 extends JFrame {
         continents.setModel(model);
         model.setView(continents);
         continents.addListSelectionListener(e -> {
-            model.changeSubmodel();
+            model.changeSubModel();
         });
         JScrollPane scrollPane= new JScrollPane(continents);
         controlArea.add(scrollPane);
@@ -87,8 +87,6 @@ public class MapEditorV3 extends JFrame {
             model.removeTerritory();
         });
         controlArea.add(removeTerritory);
-
-
 
         //button 3
         JButton writeMap = new JButton("Generate Map");
