@@ -12,11 +12,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 /**
  * The type Board which read the files and create map information.
  */
-
-
 public class Board extends DefaultHandler {
     private HashMap<String,Territory> countryHashMap;
     private HashMap<String,Continent> continentHashMap;
@@ -41,6 +40,12 @@ public class Board extends DefaultHandler {
     private boolean memberTerritory = false;
     private boolean neighborTerritory = false;
 
+    /**
+     * Instantiates a new Board.
+     *
+     * @param fileName the file name
+     * @throws Exception the exception
+     */
     public Board(String fileName) throws Exception {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();

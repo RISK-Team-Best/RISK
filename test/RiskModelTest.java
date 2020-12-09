@@ -41,12 +41,6 @@ public class RiskModelTest {
 
         country1Name = country1.getName();
         mapName = "OriginRiskMap";
-
-
-
-
-
-
     }
 
 
