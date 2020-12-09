@@ -8,8 +8,7 @@ import java.io.Serializable;
 /**
  * MapPanel class for add map on GUI
  */
-public class
-MapPanel extends JPanel implements Serializable{
+public class MapPanel extends JPanel implements Serializable{
 
     private BufferedImage image;
 
