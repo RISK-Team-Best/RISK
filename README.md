@@ -78,9 +78,9 @@ documentation
 
 #### Contribution: 
 Guanqun Dong &emsp;:Board.java, refactor, packaging using maven, QA, MapEditor, All things in ToolsAndTries package.<br>
-Jiatong Han &emsp;:RiskView.java, Alcatraz map(Continent part), UML, javadoc<br>
+Jiatong Han &emsp;: 1/3 of Alcatraz map(Continent part), 1/3 of javadoc<br>
 Jiawei Ma &emsp;:All classes in RISK package, refactor, debug, Sequence Diagram, Readme, Alcatraz map(Neighbor Countries part)<br>
-Tiantian Lin &emsp;:AIPlayer.java, Player.java, XMLHandler.java,RiskView.java, RiskController.java, JUnit test, whole Seaport part (include graph), Alcatraz map(Graph and country part)<br>
+Tiantian Lin &emsp;:AIPlayer.java, Player.java, XMLHandler.java,RiskView.java, RiskController.java, JUnit test, UML, whole Seaport part (include graph), Alcatraz map(Graph and country part)<br>
 
 
 
