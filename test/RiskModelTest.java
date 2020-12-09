@@ -17,6 +17,7 @@ public class RiskModelTest {
 
 
     /**
+     * Set up
      * @throws Exception
      */
     @Before
@@ -41,12 +42,6 @@ public class RiskModelTest {
 
         country1Name = country1.getName();
         mapName = "OriginRiskMap";
-
-
-
-
-
-
     }
 
 
@@ -107,9 +102,6 @@ public class RiskModelTest {
         assertEquals(true,(attackDice.getIndexDice(0)>0)||(attackDice.getIndexDice(0)<=6));
         assertEquals(true,(defenceDice.getIndexDice(0)>0)||(defenceDice.getIndexDice(0)<=6));//test dice between 0-6
 
-
-
-
     }
 
     /**
@@ -118,15 +110,13 @@ public class RiskModelTest {
      */
     @Test
     public void testDeployTroops() {
-
-
         Territory attackCountry = riskModel.getAttackTerritoriesList(player1).get(0);
         Territory defenceCountry = riskModel.getDefenceTerritories(player1,attackCountry).get(0);
-        int movetroops = attackCountry.getTroops()-1;
+        int moveTroops = attackCountry.getTroops()-1;
         int originalDefenceTroops = defenceCountry.getTroops();
-        riskModel.deployTroops(attackCountry,defenceCountry,movetroops);
+        riskModel.deployTroops(attackCountry,defenceCountry,moveTroops);
         assertEquals(1,attackCountry.getTroops());//original country troops decrease
-        assertEquals(originalDefenceTroops+movetroops,defenceCountry.getTroops());//defence country troops increase
+        assertEquals(originalDefenceTroops+moveTroops,defenceCountry.getTroops());//defence country troops increase
         assertEquals(attackCountry.getHolder().getName(),defenceCountry.getHolder().getName());//holder name changed
 
     }
@@ -139,23 +129,23 @@ public class RiskModelTest {
     @Test
     public void testFortify() {
 
-        Territory fortifycounrty = riskModel.getFortifyTerritories(player1).get(0);
-        Territory fortifiedcountry = riskModel.getFortifiedTerritory(fortifycounrty,player1).get(0);
-        int movetroops = fortifycounrty.getTroops()-1;
-        int origianltroops = fortifiedcountry.getTroops();
-        riskModel.fortify(fortifycounrty,fortifiedcountry,movetroops);
-        assertEquals(1,fortifycounrty.getTroops());//original country troops decrease
-        assertEquals(origianltroops+movetroops,fortifiedcountry.getTroops());
+        Territory fortifiedCountry = riskModel.getFortifyTerritories(player1).get(0);
+        Territory fortifiedcountry = riskModel.getFortifiedTerritory(fortifiedCountry,player1).get(0);
+        int moveTroops = fortifiedCountry.getTroops()-1;
+        int originalTroops = fortifiedcountry.getTroops();
+        riskModel.fortify(fortifiedCountry,fortifiedcountry,moveTroops);
+        assertEquals(1,fortifiedCountry.getTroops());//original country troops decrease
+        assertEquals(originalTroops+moveTroops,fortifiedcountry.getTroops());
         //destination country troops increase
 
 
-        Territory fortifycounrty2 = riskModel.getFortifyTerritories(player2).get(0);
-        Territory fortifiedcountry2 = riskModel.getFortifiedTerritory(fortifycounrty2,player2).get(0);
-        int moveCountry2troops = fortifycounrty2.getTroops()-1;
-        int origianlCountry2troops = fortifiedcountry2.getTroops();
-        riskModel.fortify(fortifycounrty2,fortifiedcountry2,moveCountry2troops);
-        assertEquals(1,fortifycounrty2.getTroops());//original country troops decrease
-        assertEquals(origianlCountry2troops+moveCountry2troops,fortifiedcountry2.getTroops());
+        Territory fortifiedCountry2 = riskModel.getFortifyTerritories(player2).get(0);
+        Territory fortifiedcountry2 = riskModel.getFortifiedTerritory(fortifiedCountry2,player2).get(0);
+        int moveCountry2troops = fortifiedCountry2.getTroops()-1;
+        int originalCountry2troops = fortifiedcountry2.getTroops();
+        riskModel.fortify(fortifiedCountry2,fortifiedcountry2,moveCountry2troops);
+        assertEquals(1,fortifiedCountry2.getTroops());//original country troops decrease
+        assertEquals(originalCountry2troops+moveCountry2troops,fortifiedcountry2.getTroops());
         //destination country troops increase
     }
 
@@ -170,93 +160,84 @@ public class RiskModelTest {
         String fileName = filename + "_" + this.mapName;
         handler.importXMLFileByName(fileName);
 
-        RiskModel testmodel1 = handler.getModel();
-        testmodel1.reload();
+        RiskModel testModel1 = handler.getModel();
+        testModel1.reload();
 
         //test current stage
         assertEquals(Stage.DRAFT,riskModel.getCurrentStage());
 
         //test all territory successful load
-        assertEquals(testmodel1.getAllCountries().size(),riskModel.getAllCountries().size());
+        assertEquals(testModel1.getAllCountries().size(),riskModel.getAllCountries().size());
 
-        assertEquals(testmodel1.getCurrentPlayer().getTerritoriesString(),riskModel.getCurrentPlayer().getTerritoriesString());
-        assertEquals(testmodel1.getCurrentPlayer().getTroops(),riskModel.getCurrentPlayer().getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritoriesString(),riskModel.getCurrentPlayer().getTerritoriesString());
+        assertEquals(testModel1.getCurrentPlayer().getTroops(),riskModel.getCurrentPlayer().getTroops());
 
-        assertEquals(testmodel1.getNextPlayer(0).getTerritoriesString(),riskModel.getNextPlayer(0).getTerritoriesString());
-        assertEquals(testmodel1.getNextPlayer(0).getTroops(),riskModel.getNextPlayer(0).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritoriesString(),riskModel.getNextPlayer(0).getTerritoriesString());
+        assertEquals(testModel1.getNextPlayer(0).getTroops(),riskModel.getNextPlayer(0).getTroops());
 
         //test player1 territory troops
-        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(0).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(0).getTroops());
-        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(1).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(1).getTroops());
-        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(2).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(2).getTroops());
-        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(3).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(3).getTroops());
-        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(4).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(4).getTroops());
-        assertEquals(testmodel1.getCurrentPlayer().getTerritories().get(5).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(5).getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritories().get(0).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(0).getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritories().get(1).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(1).getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritories().get(2).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(2).getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritories().get(3).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(3).getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritories().get(4).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(4).getTroops());
+        assertEquals(testModel1.getCurrentPlayer().getTerritories().get(5).getTroops(),riskModel.getCurrentPlayer().getTerritories().get(5).getTroops());
 
 
         //test player2 territory troops
-        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(0).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(0).getTroops());
-        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(1).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(1).getTroops());
-        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(2).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(2).getTroops());
-        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(3).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(3).getTroops());
-        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(4).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(4).getTroops());
-        assertEquals(testmodel1.getNextPlayer(0).getTerritories().get(5).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(5).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritories().get(0).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(0).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritories().get(1).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(1).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritories().get(2).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(2).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritories().get(3).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(3).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritories().get(4).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(4).getTroops());
+        assertEquals(testModel1.getNextPlayer(0).getTerritories().get(5).getTroops(),riskModel.getNextPlayer(0).getTerritories().get(5).getTroops());
 
         //test player is correct
-        assertEquals(2,testmodel1.getNumberPlayers());//test player num saved and load successful
-        assertEquals(0,testmodel1.getCurrentPlayer().getID());//test player1 ID is 0
-        assertEquals(1,testmodel1.getNextPlayer(0).getID());//test player2 ID is 1
-        assertEquals("Player_1",testmodel1.getCurrentPlayer().getName());//test current player
-        assertEquals("Player_2",testmodel1.getNextPlayer(0).getName());//test current player
+        assertEquals(2,testModel1.getNumberPlayers());//test player num saved and load successful
+        assertEquals(0,testModel1.getCurrentPlayer().getID());//test player1 ID is 0
+        assertEquals(1,testModel1.getNextPlayer(0).getID());//test player2 ID is 1
+        assertEquals("Player_1",testModel1.getCurrentPlayer().getName());//test current player
+        assertEquals("Player_2",testModel1.getNextPlayer(0).getName());//test current player
 
 
     }
+
     @Test
     public void testInvalidLoad() throws Exception {
         String invalid1 = "Invalid1";
-        RiskModel testmodel2 = new RiskModel(invalid1);
-        assertEquals(true,testmodel2.invalidMap());
+        RiskModel testModel2 = new RiskModel(invalid1);
+        assertEquals(true,testModel2.invalidMap());
 
 
         String invalid2 = "Invalid2";
-        RiskModel testmodel3 = new RiskModel(invalid2);
-        assertEquals(true,testmodel3.invalidMap());
+        RiskModel testModel3 = new RiskModel(invalid2);
+        assertEquals(true,testModel3.invalidMap());
 
         //test load Map1
         String map1 = "Map1";
-        RiskModel testmodel4 = new RiskModel(map1);
+        RiskModel testModel4 = new RiskModel(map1);
 
-        testmodel4.setPlayerNum(2);
-        testmodel4.addPlayersName(new String[]{"Player_3", "Player_4"},new Boolean[]{false,false});
-        testmodel4.initialGame();
+        testModel4.setPlayerNum(2);
+        testModel4.addPlayersName(new String[]{"Player_3", "Player_4"},new Boolean[]{false,false});
+        testModel4.initialGame();
 
 
-        assertEquals(false,testmodel4.invalidMap());
-        assertEquals(41,testmodel4.getAllCountries().size());//test Map1 territory all load to current model
+        assertEquals(false,testModel4.invalidMap());
+        assertEquals(41,testModel4.getAllCountries().size());//test Map1 territory all load to current model
 
         //test load Map2
         String map2 = "Map2";
-        RiskModel testmodel5 = new RiskModel(map2);
+        RiskModel testModel5 = new RiskModel(map2);
 
-        testmodel5.setPlayerNum(2);
-        testmodel5.addPlayersName(new String[]{"Player_5", "Player_6"},new Boolean[]{false,false});
-        testmodel5.initialGame();
-
-
-        assertEquals(false,testmodel5.invalidMap());
-        assertEquals(39,testmodel5.getAllCountries().size());//test Map1 territory all load to current model
+        testModel5.setPlayerNum(2);
+        testModel5.addPlayersName(new String[]{"Player_5", "Player_6"},new Boolean[]{false,false});
+        testModel5.initialGame();
 
 
+        assertEquals(false,testModel5.invalidMap());
+        assertEquals(39,testModel5.getAllCountries().size());//test Map1 territory all load to current model
 
     }
-
-
-
-
-
-
-
-
 
 }
 
