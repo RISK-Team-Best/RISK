@@ -21,7 +21,8 @@ Add features: bonus army placement, fortifying phases, and AI player
 
 ### Milestone 4:
 
-
+Add feature: load new maps (Seaport,Alcatraz, Invalid_Isolated_Territory,Invalid_Isolated_Groups). Save/load feature based on each Map.
+Notes: Both Invalid maps are using Seaport map. In Invalid_Isolated_Territory, we created one new isolated territory and make it has no connection with others. And in Invalid_Isolated_Groups, we disconnect the connection between ships and the island.(You can check neighborCountry of each territory in neighborList in both xml files)
 
 
 
@@ -53,12 +54,17 @@ Then the map will automatically generate territories and troops for you.<br>
 &emsp;(2)choose the territory button you want move troops to(click again to cancel and reselect)          
 &emsp;(3)choose the number of troops you want to send to destination territory on the troop Box    
 &emsp;(4)once you choose the territories and troops number, click confirm to process<br>       
-7.After the steps above, the program will automatically pass to next player until one of the player owns all the territories<br>
-8.Once there is a player lost all territory or there is a player win the game, the Frame will pop window to show the result<br>
-9.If you need start again, please click File->New to start a new game<br>
+7.After the steps above, the program will automatically pass to next player until one of the player owns all the territories<br><br>
+8.Once there is a player lost all territory or there is a player win the game, the Frame will pop window to show the result<br><br>
+9.If you need start again, please click File->New to start a new game<br><br>
+10.Click "Load New Map" button in menu, the prompt with JCombo box will allow you to select the map you want to play. The program will also reject invalid map(isolated territory/territories)<br><br>
+11.Click save button and type the name you want your file called (For example: testFile). The program will generate an XML file (for example: testFile_MapName.xml) on current path of program.<br><br>
+12.Click load button and type the name you saved (For example: testFile), the program will find the full name of the XML file (for example: testFile_MapName.xml) on current path of program.<br><br>
 
 Note for AI player: AI player will pop result window in each stage:Draft,Attack(Skip when there is no territory can attack),Deploy(If win in the battle),Fortify(Skip when there is no territory can send troops). It will also pass to next player after finished its round.
 User clicks the "OK" button to allow AI player enter the next stage.<br>
+
+Note for Save/Load feature: Cannot be used directly in JAR file. Need extract the program.
 
 
 
@@ -71,15 +77,11 @@ documentation
 
 
 #### Contribution: 
-Board.java:Guanqun Dong(Figured out using outputstream method to read text and map image and make it can read in Jar), Jiawei Ma(All other things)                         
-RiskModel.java,Continent.java:Jiawei Ma                                 
-RiskView.java:Jiawei Ma,Jiatong Han,Tiantian Lin                                              
-RiskController.java, ReadMe File: Jiawei Ma,Tiantian Lin                                    
-RiskGame.java,MapPanel.java,Sequence Diagram,PlayerSettingDialog.java,RiskViewInterface.java:Jiawei Ma                                                                           
-Territory.java,AttackWay.java,Stage.java:Jiatong Han                                                                    
-Dices.java,Player.java,RiskModelTest.java,UML Class Diagram:Tiantian Lin                                                
-Map info text files: Jiawei Ma<br>
-Map image file: Tiantian Lin
+Guanqun Dong &emsp;:Board.java, refactor, packaging using maven, QA, MapEditor, All things in ToolsAndTries package.<br>
+Jiatong Han &emsp;:RiskView.java, Alcatraz map(Continent part), UML, javadoc<br>
+Jiawei Ma &emsp;:All classes in RISK package, refactor, debug, Sequence Diagram, Readme, Alcatraz map(Neighbor Countries part)<br>
+Tiantian Lin &emsp;:AIPlayer.java, Player.java, XMLHandler.java,RiskView.java, RiskController.java, JUnit test, whole Seaport part (include graph), Alcatraz map(Graph and country part)<br>
+
 
 
 ### Design Decisions: 
@@ -96,27 +98,31 @@ Map image file: Tiantian Lin
 
 3. Fortify part, use recursion method to visit all available territory that can be fortified.
 
+4. Save/load feature:<br><br>
+    &emsp;&emsp;(1)Save: Use SAX to generate XML file. The file contains all needed info (Map's image name, Players info include Name, ID, Territories, Continents; model's current player and current stage.). Then file name format is "customFileName+_+mapName.xml"<br><br>
+    &emsp;&emsp;(2)Load: Determine the mapName through the full file name. And use SAX parser to parse saved XML file. And retore all model and view info through model's info includes currentStage, currentPlayer. Through different currentStage, the view could load to saved progress.<br>
+
 ### Data Structure: 
 <b>Type -- Purpose -- Classes </b><br>
 HashMap -- Store a pair of information and prevent duplication -- Player, Board, RiskController, RiskModel<br>
 HashMap with ArrayList in value -- Store a key and store a bunch of info related to the Key -- Board<br>
 Enum -- Prevent Typo and easy to get through IntelliJ's suggestion. -- AttackWay, Stage<br>
 ArrayList -- Instantiate of List to store same type info -- Continent, Dices, RiskModel<br>
-LinkedHashSet -- Store one type of info, prevent duplication and can be trace in order -- RiskModel
+LinkedHashSet -- Store one type of info, prevent duplication and can be trace in order -- RiskModel<br>
 LinkedHashMap -- Store the corresponding player's name and type. Also, can iterate to get each player in sequence.-- PlayerSettingDialog
 
 
 ### Known Issue:     
-1.Load Game and Save Game Button did not be developed because they are the features for future.<br>                                                                                                                    
+NULL                                                                                                                   
 
 ### Changes:        
 1.We've refactor the code in Controller, Model and added viewInterface as listener to avoid smelly                                                  
 2.We've added a View Interface to implement different update view methods                                     
 3.We've added default names for user to choose when add players                                                               
-4.We've fixed the error that MAC OS don't show the button color                                                            
-
-### Roadmap Ahead:                  
-Currently,we have saved and load buttons on the menu. These two options are for M4, and not yet developed.There are code for XML Writer and Reader in branch AIPlayer, which are some preparation for M4 development.
+4.We've fixed the error that MAC OS don't show the button color<br>
+5.Make Stage more specific. Take ATTACK stage as example, it specified to DRAFTEND, ATTACK, and ATTACKEND stages.<br>
+6.Use SAX parser (in XMLHandler class) to create and parse the XML file for save/load feature.<br>
+7.Creating Board from reading text files to parse and handle new map xml files.<br>
 
 
 
