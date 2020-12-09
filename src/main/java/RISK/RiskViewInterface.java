@@ -263,7 +263,7 @@ public interface RiskViewInterface {
 
     void updateDraftCountryClick(String territoryName);
 
-    void updateAIDeploy(String statuslabel);
+    void updateAIDeploy(String statusLabel);
 
     void updateAIWinAttack();
 

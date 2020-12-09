@@ -70,7 +70,7 @@ public class XMLDOMReader {
             NodeList troops = territory.getElementsByTagName("troops");//other information
             String t = troops.item(0).getTextContent();
 
-            riskModel.ImportTerritory(n,Integer.parseInt(t),h);
+            riskModel.importTerritory(n,Integer.parseInt(t),h);
 
         }
     }

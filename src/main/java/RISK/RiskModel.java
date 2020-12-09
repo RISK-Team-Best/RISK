@@ -994,7 +994,7 @@ public class   RiskModel implements Serializable {
         return currentStage;
     }
 
-    public void ImportPlayer(String name, int troops, int ID, String ownTerritory) {
+    public void importPlayer(String name, int troops, int ID, String ownTerritory) {
         Player player = new Player(name, this);
         player.setID(ID);
         player.setTroops(troops);
@@ -1017,7 +1017,7 @@ public class   RiskModel implements Serializable {
 
     }
 
-    public void ImportTerritory(String name, int troops, String holderName) {
+    public void importTerritory(String name, int troops, String holderName) {
         Territory territory = new Territory(name);
         territory.setTroops(troops);
         for (Player p : this.players) {
