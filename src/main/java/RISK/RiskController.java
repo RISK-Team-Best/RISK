@@ -15,9 +15,11 @@ public class RiskController {
 
 
     /**
-     * @param riskModel
-     * @param riskView
-     * @throws IOException
+     * Instantiates a new Risk controller.
+     *
+     * @param riskModel the risk model
+     * @param riskView  the risk view
+     * @throws IOException the io exception
      */
     public RiskController(RiskModel riskModel,RiskView riskView) throws IOException{
         this.model = riskModel;
@@ -47,7 +49,7 @@ public class RiskController {
     /**
      * Inner class implement NewGame function
      */
-     class NewGameMenuListener implements ActionListener {
+    class NewGameMenuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -78,6 +80,9 @@ public class RiskController {
         }
     }
 
+    /**
+     * The type New map listener.
+     */
     public class NewMapListener implements ActionListener{
 
         @Override
@@ -157,6 +162,9 @@ public class RiskController {
         }
     }
 
+    /**
+     * The type Save button listener.
+     */
     public class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -164,6 +172,9 @@ public class RiskController {
         }
     }
 
+    /**
+     * The type Load button listener.
+     */
     public class LoadButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

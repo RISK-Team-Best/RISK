@@ -4,17 +4,23 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The type Ai player.
+ */
 public class AIPlayer extends Player{
     /**
      * Instantiates a new Player.
      *
      * @param name  the player's name
-     * @param model
+     * @param model the model
      */
     public AIPlayer(String name, RiskModel model) {
         super(name, model);
     }
 
+    /**
+     * Draft process for AIPlayer
+     */
     @Override
     public void draftPrepare(){
         model.checkContinent(this);
@@ -39,6 +45,9 @@ public class AIPlayer extends Player{
         model.setCurrentStage(Stage.DRAFTEND);
     }
 
+    /**
+     * Attack process for AIPlayer
+     */
     @Override
     public void attackPrepare(){
         if(model.getAttackTerritoriesList(this).size()==0){
@@ -77,6 +86,9 @@ public class AIPlayer extends Player{
         model.setCurrentStage(Stage.ATTACKEND);
     }
 
+    /**
+     * Deploy process for AIPlayer
+     */
     @Override
     public void deployPrepare(){
         Territory attackTerritory = model.getAttackTerritory();

@@ -259,21 +259,65 @@ public interface RiskViewInterface {
      */
     void updateAIFortify(Player currentPlayer, String fortifyTerritoryName, String fortifiedTerritoryName);
 
+    /**
+     * Gets file name.
+     *
+     * @return the file name
+     */
     String getFileName();
 
+    /**
+     * Update draft country click.
+     *
+     * @param territoryName the territory name
+     */
     void updateDraftCountryClick(String territoryName);
 
-    void updateAIDeploy(String statusLabel);
+    /**
+     * Update ai deploy.
+     *
+     * @param statuslabel the statuslabel
+     */
+    void updateAIDeploy(String statuslabel);
 
+    /**
+     * Update ai win attack.
+     */
     void updateAIWinAttack();
 
+    /**
+     * Disable all territory button.
+     */
     void disableAllTerritoryButton();
 
+    /**
+     * Enable button.
+     *
+     * @param buttonName the button name
+     */
     void enableButton(String buttonName);
 
+    /**
+     * Gets status label.
+     *
+     * @return the status label
+     */
     String getStatusLabel();
 
+    /**
+     * Paint origin and target territory.
+     *
+     * @param originTerritoryButtonPressed the origin territory button pressed
+     * @param targetTerritoryButtonPressed the target territory button pressed
+     * @param originTerritoryName          the origin territory name
+     * @param targetTerritoryName          the target territory name
+     */
     void paintOriginAndTargetTerritory(boolean originTerritoryButtonPressed, boolean targetTerritoryButtonPressed, String originTerritoryName, String targetTerritoryName);
 
+    /**
+     * Sets attack troops box.
+     *
+     * @param attackTerritoryTroops the attack territory troops
+     */
     void setAttackTroopsBox(int attackTerritoryTroops);
 }

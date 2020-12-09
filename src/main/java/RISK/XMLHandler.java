@@ -209,9 +209,9 @@ public class XMLHandler extends DefaultHandler {
     }
 
 
-
-
-    //import saved games with name
+    /**
+     *import saved games with name
+     */
     public void importXMLFileByName(String filename) throws Exception {
         String[] names = filename.split("_");
 

@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 /**
  * The class Player store the information of the player's territory and calculate the troops each turn.
- *
  */
 public class Player implements Serializable {
     protected String name;
@@ -22,7 +21,8 @@ public class Player implements Serializable {
     /**
      * Instantiates a new Player.
      *
-     * @param name the player's name
+     * @param name  the player's name
+     * @param model the model
      */
     public Player(String name,RiskModel model){
         this.name = name;
@@ -49,6 +49,11 @@ public class Player implements Serializable {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -300,6 +305,13 @@ public class Player implements Serializable {
         attackProcessResult(attackTerritory,defenceTerritory,gainTerritory);
     }
 
+    /**
+     * Attack process result.
+     *
+     * @param attackTerritory  the attack territory
+     * @param defenceTerritory the defence territory
+     * @param gainTerritory    the gain territory
+     */
     protected void attackProcessResult(Territory attackTerritory, Territory defenceTerritory,boolean gainTerritory){
         for(RiskViewInterface view: model.getViewList()) {
             view.setTerritoryButtonTroops(attackTerritory.getName(), attackTerritory.getTroops());
@@ -317,6 +329,13 @@ public class Player implements Serializable {
         model.checkContinent(this);
     }
 
+    /**
+     * Deploy process.
+     *
+     * @param originTerritoryName the origin territory name
+     * @param targetTerritoryName the target territory name
+     * @param moveTroops          the move troops
+     */
     protected void deployProcess(String originTerritoryName,String targetTerritoryName,int moveTroops){
         for(RiskViewInterface view: model.getViewList()) {
             view.setContinentsLabel(model.getMapInfoThroughContinent());
@@ -331,6 +350,13 @@ public class Player implements Serializable {
     }
 
 
+    /**
+     * Fortify process result.
+     *
+     * @param startCountry       the start country
+     * @param destinationCountry the destination country
+     * @param moveTroops         the move troops
+     */
     protected void fortifyProcessResult(Territory startCountry,Territory destinationCountry,int moveTroops){
         for(RiskViewInterface view: model.getViewList()) {
             JOptionPane.showMessageDialog(null,model.getCurrentPlayer().getName() +" moved "+ moveTroops+ " troops from "+startCountry.getName()+" to "+destinationCountry.getName()+".");

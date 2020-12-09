@@ -2,7 +2,6 @@ package RISK;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.*;
@@ -63,7 +62,8 @@ public class   RiskModel implements Serializable {
     /**
      * Instantiates a new Game.
      *
-     * @throws IOException the io exception
+     * @param mapName the map name
+     * @throws Exception the exception
      */
     public RiskModel(String mapName) throws Exception {
         this.mapName = mapName;
@@ -87,6 +87,11 @@ public class   RiskModel implements Serializable {
         colorIDHashMap.put(5, Color.LIGHT_GRAY);
     }
 
+    /**
+     * Invalid map boolean.
+     *
+     * @return the boolean
+     */
     public boolean invalidMap(){
         for(Territory territory:board.getAllCountries()){
             tempNeighborCountries.clear();
@@ -98,6 +103,11 @@ public class   RiskModel implements Serializable {
         return false;
     }
 
+    /**
+     * Add all neighbor countries.
+     *
+     * @param territory the territory
+     */
     public void addAllNeighborCountries(Territory territory){
         int size = tempNeighborCountries.size();
         for(Territory neighbor : board.getAllNeighbors(territory.getName())){
@@ -108,14 +118,29 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Sets board.
+     *
+     * @param board the board
+     */
     public void setBoard(Board board) {
         this.board = board;
     }
 
+    /**
+     * Sets all continents.
+     *
+     * @param allContinents the all continents
+     */
     public void setAllContinents(ArrayList<Continent> allContinents) {
         this.allContinents = allContinents;
     }
 
+    /**
+     * Add view.
+     *
+     * @param viewInterface the view interface
+     */
     public void addView(RiskViewInterface viewInterface) {
         viewList.add(viewInterface);
     }
@@ -140,12 +165,20 @@ public class   RiskModel implements Serializable {
 
     }
 
+    /**
+     * Gets map name.
+     *
+     * @return the map name
+     */
     public String getMapName() {
         return mapName;
     }
 
     /**
      * This method is adding player names into the game
+     *
+     * @param playerNameList the player name list
+     * @param AITypeList     the ai type list
      */
     public void addPlayersName(String[] playerNameList, Boolean[] AITypeList) {
         players.clear();
@@ -155,6 +188,11 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Import players.
+     *
+     * @param players the players
+     */
     public void importPlayers(ArrayList<Player> players) {
         this.players.clear();
         this.playerIDHashMap.clear();
@@ -255,9 +293,10 @@ public class   RiskModel implements Serializable {
      * This method is for Draft stage.
      * Assign troops in player to his/her territories until the player has no troops in hand.
      *
-     * @param player the player process draft stage
+     * @param player    the player process draft stage
+     * @param territory the territory
+     * @param troops    the troops
      */
-
     public void draft(Player player, String territory, int troops) {
         player.getTerritoryByString(territory).increaseTroops(troops);
         player.decreaseTroops(troops);
@@ -267,7 +306,7 @@ public class   RiskModel implements Serializable {
     /**
      * This method is getting the player's territories which are available to attack
      *
-     * @param player
+     * @param player the player
      * @return the attack territory list
      */
     public ArrayList<Territory> getAttackTerritoriesList(Player player) {
@@ -282,8 +321,8 @@ public class   RiskModel implements Serializable {
     /**
      * This method is getting the enemy's territories which are surrounded this player's this territory
      *
-     * @param player
-     * @param territory
+     * @param player    the player
+     * @param territory the territory
      * @return the defence territory list
      */
     public ArrayList<Territory> getDefenceTerritories(Player player, Territory territory) {
@@ -304,6 +343,7 @@ public class   RiskModel implements Serializable {
      *
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
+     * @param attackWay      the attack way
      * @return Whether player conquered the target territory.
      */
     public boolean battle(Territory attackCountry, Territory defenceCountry, AttackWay attackWay) {
@@ -377,6 +417,7 @@ public class   RiskModel implements Serializable {
      *
      * @param attackCountry  the attack country
      * @param defenceCountry the defence country
+     * @param deployTroops   the deploy troops
      */
     public void deployTroops(Territory attackCountry, Territory defenceCountry, int deployTroops) {
         attackCountry.decreaseTroops(deployTroops);
@@ -390,7 +431,7 @@ public class   RiskModel implements Serializable {
     /**
      * This method is getting the player's available territories for fortify
      *
-     * @param player
+     * @param player the player
      * @return the fortify territory list
      */
     public ArrayList<Territory> getFortifyTerritories(Player player) {
@@ -408,8 +449,8 @@ public class   RiskModel implements Serializable {
     /**
      * This method is getting the territories connect to the fortifyCountry and can be fortified
      *
-     * @param fortifyCountry
-     * @param player
+     * @param fortifyCountry the fortify country
+     * @param player         the player
      * @return the fortified territory list
      */
     public ArrayList<Territory> getFortifiedTerritory(Territory fortifyCountry, Player player) {
@@ -428,9 +469,9 @@ public class   RiskModel implements Serializable {
     /**
      * The fortify move troops from fortifyCountry to fortifiedCountry
      *
-     * @param fortifyCountry
-     * @param fortifiedCountry
-     * @param troop
+     * @param fortifyCountry   the fortify country
+     * @param fortifiedCountry the fortified country
+     * @param troop            the troop
      */
     public void fortify(Territory fortifyCountry, Territory fortifiedCountry, int troop) {
         fortifyCountry.decreaseTroops(troop);
@@ -462,10 +503,9 @@ public class   RiskModel implements Serializable {
     /**
      * This method is checking whether the territory has the enemy neighbors.
      *
-     * @param territory
-     * @param player
-     * @return ture if the territory has attackable neighbors
-     * false if the territory has no attackable neighbors
+     * @param territory the territory
+     * @param player    the player
+     * @return ture if the territory has attackable neighbors false if the territory has no attackable neighbors
      */
     public boolean checkAttackableNeighbors(Territory territory, Player player) {
         for (Territory neighbor : board.getAllNeighbors(territory.getName())) {
@@ -516,6 +556,8 @@ public class   RiskModel implements Serializable {
 
     /**
      * This method is setting the number of players
+     *
+     * @param playerNum the player num
      */
     public void setPlayerNum(int playerNum) {
         this.numberPlayers = playerNum;
@@ -543,7 +585,7 @@ public class   RiskModel implements Serializable {
     /**
      * Get the next player
      *
-     * @param currentPlayerID
+     * @param currentPlayerID the current player id
      * @return the next player
      */
     public Player getNextPlayer(int currentPlayerID) {
@@ -575,7 +617,7 @@ public class   RiskModel implements Serializable {
     /**
      * Get the territory's reference by territory's name
      *
-     * @param territoryName
+     * @param territoryName the territory name
      * @return the territory that have the territoryName
      */
     public Territory getTerritoryByString(String territoryName) {
@@ -588,7 +630,7 @@ public class   RiskModel implements Serializable {
     /**
      * Get player through ID
      *
-     * @param id
+     * @param id the id
      * @return player match the id
      */
     public Player getPlayerById(int id) {
@@ -656,6 +698,8 @@ public class   RiskModel implements Serializable {
     }
 
     /**
+     * Gets continent bonus string.
+     *
      * @return the list of the Continent name if the player own continents
      */
     public String getContinentBonusString() {
@@ -820,7 +864,7 @@ public class   RiskModel implements Serializable {
     /**
      * This method update the view when user click the button on the map
      *
-     * @param territoryName
+     * @param territoryName the territory name
      */
     public void territoryButtonClickProcess(String territoryName) {
         if (currentStage == Stage.DRAFT) {
@@ -834,6 +878,11 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Draft stage territory button action.
+     *
+     * @param territoryName the territory name
+     */
     public void draftStageTerritoryButtonAction(String territoryName) {
         if (originTerritoryButtonPressed) {
             originTerritoryName = territoryName;
@@ -850,6 +899,11 @@ public class   RiskModel implements Serializable {
         originTerritoryButtonPressed = !originTerritoryButtonPressed;
     }
 
+    /**
+     * Attack stage territory button action.
+     *
+     * @param territoryName the territory name
+     */
     public void attackStageTerritoryButtonAction(String territoryName) {
         if (originTerritoryButtonPressed) {
             originTerritoryName = territoryName;
@@ -883,6 +937,11 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Fortify stage territory button action.
+     *
+     * @param territoryName the territory name
+     */
     public void fortifyStageTerritoryButtonAction(String territoryName) {
         if (originTerritoryButtonPressed) {
             originTerritoryName = territoryName;
@@ -917,6 +976,8 @@ public class   RiskModel implements Serializable {
     }
 
     /**
+     * Paint territory buttons.
+     *
      * @param view Update the map view using after each action
      */
     public void paintTerritoryButtons(RiskViewInterface view) {
@@ -928,6 +989,8 @@ public class   RiskModel implements Serializable {
 
 
     /**
+     * Gets max troops attack territory list.
+     *
      * @return the territory list that have the max num of troops
      */
     public ArrayList<Territory> getMaxTroopsAttackTerritoryList() {
@@ -943,7 +1006,9 @@ public class   RiskModel implements Serializable {
     }
 
     /**
-     * @param territories
+     * Gets max troops in territory list.
+     *
+     * @param territories the territories
      * @return the max num of troops in one territory list
      */
     public int getMaxTroopsInTerritoryList(ArrayList<Territory> territories) {
@@ -957,7 +1022,9 @@ public class   RiskModel implements Serializable {
     }
 
     /**
-     * @param attackTerritory
+     * Gets min troops defence territory.
+     *
+     * @param attackTerritory the attack territory
      * @return the territory list that has the minimum num of troops
      */
     public ArrayList<Territory> getMinTroopsDefenceTerritory(Territory attackTerritory) {
@@ -973,7 +1040,9 @@ public class   RiskModel implements Serializable {
     }
 
     /**
-     * @param territories
+     * Gets min troops in territory list.
+     *
+     * @param territories the territories
      * @return get the minimum num of troops in one territory list
      */
     public int getMinTroopsInTerritoryList(ArrayList<Territory> territories) {
@@ -986,15 +1055,33 @@ public class   RiskModel implements Serializable {
         return minTroops;
     }
 
+    /**
+     * Gets number players.
+     *
+     * @return the number players
+     */
     public int getNumberPlayers() {
         return this.numberPlayers;
     }
 
+    /**
+     * Gets current stage.
+     *
+     * @return the current stage
+     */
     public Stage getCurrentStage() {
         return currentStage;
     }
 
-    public void importPlayer(String name, int troops, int ID, String ownTerritory) {
+    /**
+     * Import player.
+     *
+     * @param name         the name
+     * @param troops       the troops
+     * @param ID           the id
+     * @param ownTerritory the own territory
+     */
+    public void ImportPlayer(String name, int troops, int ID, String ownTerritory) {
         Player player = new Player(name, this);
         player.setID(ID);
         player.setTroops(troops);
@@ -1017,7 +1104,14 @@ public class   RiskModel implements Serializable {
 
     }
 
-    public void importTerritory(String name, int troops, String holderName) {
+    /**
+     * Import territory.
+     *
+     * @param name       the name
+     * @param troops     the troops
+     * @param holderName the holder name
+     */
+    public void ImportTerritory(String name, int troops, String holderName) {
         Territory territory = new Territory(name);
         territory.setTroops(troops);
         for (Player p : this.players) {
@@ -1028,58 +1122,128 @@ public class   RiskModel implements Serializable {
         this.allCountries.add(territory);
     }
 
+    /**
+     * Sets current stage.
+     *
+     * @param stage the stage
+     */
     public void setCurrentStage(Stage stage) {
         this.currentStage = stage;
     }
 
+    /**
+     * Gets attack territory.
+     *
+     * @return the attack territory
+     */
     public Territory getAttackTerritory() {
         return attackTerritory;
     }
 
+    /**
+     * Gets defence territory.
+     *
+     * @return the defence territory
+     */
     public Territory getDefenceTerritory() {
         return defenceTerritory;
     }
 
+    /**
+     * Gets origin territory name.
+     *
+     * @return the origin territory name
+     */
     public String getOriginTerritoryName() {
         return originTerritoryName;
     }
 
+    /**
+     * Gets target territory name.
+     *
+     * @return the target territory name
+     */
     public String getTargetTerritoryName() {
         return targetTerritoryName;
     }
 
+    /**
+     * Gets view list.
+     *
+     * @return the view list
+     */
     public List<RiskViewInterface> getViewList() {
         return viewList;
     }
 
+    /**
+     * Sets origin territory button pressed.
+     *
+     * @param originTerritoryButtonPressed the origin territory button pressed
+     */
     public void setOriginTerritoryButtonPressed(boolean originTerritoryButtonPressed) {
         this.originTerritoryButtonPressed = originTerritoryButtonPressed;
     }
 
+    /**
+     * Sets target territory button pressed.
+     *
+     * @param targetTerritoryButtonPressed the target territory button pressed
+     */
     public void setTargetTerritoryButtonPressed(boolean targetTerritoryButtonPressed) {
         this.targetTerritoryButtonPressed = targetTerritoryButtonPressed;
     }
 
+    /**
+     * Sets origin territory name.
+     *
+     * @param originTerritoryName the origin territory name
+     */
     public void setOriginTerritoryName(String originTerritoryName) {
         this.originTerritoryName = originTerritoryName;
     }
 
+    /**
+     * Sets target territory name.
+     *
+     * @param targetTerritoryName the target territory name
+     */
     public void setTargetTerritoryName(String targetTerritoryName) {
         this.targetTerritoryName = targetTerritoryName;
     }
 
+    /**
+     * Sets attack territory.
+     *
+     * @param attackTerritory the attack territory
+     */
     public void setAttackTerritory(Territory attackTerritory) {
         this.attackTerritory = attackTerritory;
     }
 
+    /**
+     * Sets defence territory.
+     *
+     * @param defenceTerritory the defence territory
+     */
     public void setDefenceTerritory(Territory defenceTerritory) {
         this.defenceTerritory = defenceTerritory;
     }
 
+    /**
+     * Sets current player.
+     *
+     * @param currentPlayer the current player
+     */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Get file name through view string.
+     *
+     * @return the string
+     */
     public String getFileNameThroughView(){
         for(RiskViewInterface view:viewList){
             return view.getFileName();
@@ -1087,10 +1251,21 @@ public class   RiskModel implements Serializable {
         return "";
     }
 
+    /**
+     * Get new map name string.
+     *
+     * @return the string
+     */
     public String getNewMapName(){
         return new LoadNewMapDialog().getMapName();
     }
 
+    /**
+     * Gets player by name.
+     *
+     * @param name the name
+     * @return the player by name
+     */
     public Player getPlayerByName(String name) {
         for (Player player : players) {
             if (player.getName().equals(name)) return player;
@@ -1098,6 +1273,9 @@ public class   RiskModel implements Serializable {
         return null;
     }
 
+    /**
+     * Save process.
+     */
     public void saveProcess() {
         if (currentStage == null) {
             JOptionPane.showMessageDialog(null, "You have to start game first!", "No need to save", JOptionPane.ERROR_MESSAGE);
@@ -1113,6 +1291,12 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Handle save by file name.
+     *
+     * @param fileName the file name
+     * @param mapName  the map name
+     */
     public void handleSaveByFileName(String fileName,String mapName){
         try{
             XMLHandler handler = new XMLHandler(mapName);
@@ -1123,6 +1307,9 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Reload process for view.
+     */
     public void reload() {
         this.allCountries.clear();
         setPlayerNum(players.size());
@@ -1144,6 +1331,9 @@ public class   RiskModel implements Serializable {
         reloadStageProcess();
     }
 
+    /**
+     * Reload stage process depends on different stage.
+     */
     public void reloadStageProcess() {
         if (currentStage == Stage.DRAFT) {
             reloadDraftProcess();
@@ -1171,6 +1361,9 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Reload Draft View
+     */
     private void reloadDraftProcess() {
         for (RiskViewInterface view : viewList) {
             view.updateDraftPrepare(currentPlayer, currentStage, getContinentBonusString());
@@ -1179,14 +1372,18 @@ public class   RiskModel implements Serializable {
             }
         }
     }
-
+    /**
+     * Reload Draft finished View
+     */
     private void reloadDraftEndProcess() {
         for (RiskViewInterface view : viewList) {
             view.disableAllCommandButtons();
             view.updateDraftFinish(currentPlayer);
         }
     }
-
+    /**
+     * Reload attack View
+     */
     private void reloadAttackProcess() {
         for (RiskViewInterface view : viewList) {
             if (originTerritoryButtonPressed && targetTerritoryButtonPressed) {
@@ -1203,7 +1400,9 @@ public class   RiskModel implements Serializable {
             view.enableButton("Skip");
         }
     }
-
+    /**
+     * Reload attack to deploy View (before clicking deploy button)
+     */
     private void reloadAttackToDeployProcess() {
         setAttackTerritory(getTerritoryByString(originTerritoryName));
         setDefenceTerritory(getTerritoryByString(targetTerritoryName));
@@ -1213,7 +1412,9 @@ public class   RiskModel implements Serializable {
             view.paintOriginAndTargetTerritory(originTerritoryButtonPressed, targetTerritoryButtonPressed, originTerritoryName, targetTerritoryName);
         }
     }
-
+    /**
+     * Reload deploy View
+     */
     private void reloadDeploy() {
         attackTerritory = getTerritoryByString(originTerritoryName);
         defenceTerritory = getTerritoryByString(targetTerritoryName);
@@ -1223,7 +1424,9 @@ public class   RiskModel implements Serializable {
             view.updateDeployPrepare(currentPlayer, currentStage, getTerritoryByString(originTerritoryName).getTroops());
         }
     }
-
+    /**
+     * Reload attack finished View
+     */
     private void reloadAttackEnd() {
         resetButtonsAndBoxProcedure();
         for (RiskViewInterface view : viewList) {
@@ -1231,7 +1434,9 @@ public class   RiskModel implements Serializable {
             view.updateSkipAttack(currentPlayer);
         }
     }
-
+    /**
+     * Reload fortify View
+     */
     private void reloadFortify() {
         for (RiskViewInterface view : viewList) {
             if (originTerritoryButtonPressed && targetTerritoryButtonPressed) {
@@ -1249,6 +1454,9 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Reload Fortify finished View
+     */
     private void reloadFortifyEnd() {
         resetButtonsAndBoxProcedure();
         for (RiskViewInterface view : viewList) {
@@ -1256,14 +1464,29 @@ public class   RiskModel implements Serializable {
         }
     }
 
+    /**
+     * Is origin territory button pressed boolean.
+     *
+     * @return the boolean
+     */
     public boolean isOriginTerritoryButtonPressed() {
         return originTerritoryButtonPressed;
     }
 
+    /**
+     * Is target territory button pressed boolean.
+     *
+     * @return the boolean
+     */
     public boolean isTargetTerritoryButtonPressed() {
         return targetTerritoryButtonPressed;
     }
 
+    /**
+     * Gets status string.
+     *
+     * @return the status string
+     */
     public String getStatusString() {
         for (RiskViewInterface view : viewList) {
             return view.getStatusLabel();
@@ -1271,6 +1494,11 @@ public class   RiskModel implements Serializable {
         return null;
     }
 
+    /**
+     * Sets status string.
+     *
+     * @param statusLabel the status label
+     */
     public void setStatusString(String statusLabel) {
         this.statusLabel = statusLabel;
     }
